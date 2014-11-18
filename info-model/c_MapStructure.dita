@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN"
+ "concept.dtd">
+<?Pub UDT _bookmark _target?>
+<?Pub Inc?>
+<concept id="MapStructure">
+ <title>Map Structure</title>
+ <conbody>
+  <p>Most map structures depend on the specific content in the particular deliverable. You create
+   that structure by combining and nesting map elements as needed. You must begin your map with a
+   title, but all other elements can be interspersed as needed. </p>
+  <ul id="ul_wwj_oaz_kd">
+   <li>&lt;map> (mandatory)<ul id="ul_ahd_mg3_sl">
+     <li>&lt;title> (mandatory)</li>
+     <li>&lt;topicmeta> (optional)</li>
+     <li>Any number, at any level, and in any order of the following:<ul id="ul_mb2_3pc_sn">
+       <li>&lt;topichead></li>
+       <li>&lt;topicgroup></li>
+       <li>&lt;mapref></li>
+       <li>&lt;topicref></li>
+      </ul></li>
+     <li>&lt;reltable> (optional)</li>
+    </ul></li>
+  </ul>
+  <p><keyword keyref="companyname"/> uses the following map templates to enforce standard structures
+   of certain documents, regardless of the product or group producing them.</p>
+  <table frame="all" id="table_nzk_fyj_ln">
+   <title>Map Templates</title>
+   <tgroup cols="3">
+    <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+    <colspec colname="c2" colnum="2" colwidth="1.0*"/>
+    <colspec colname="c3" colnum="3" colwidth="1.0*"/>
+    <thead>
+     <row>
+      <entry>Template</entry>
+      <entry>Description</entry>
+      <entry>Structure</entry>
+     </row>
+    </thead>
+    <tbody>
+     <row>
+      <entry/>
+      <entry/>
+      <entry/>
+     </row>
+     <row>
+      <entry/>
+      <entry/>
+      <entry/>
+     </row>
+     <row>
+      <entry/>
+      <entry/>
+      <entry/>
+     </row>
+    </tbody>
+   </tgroup>
+  </table>
+  <p> </p>
+ </conbody>
+</concept>

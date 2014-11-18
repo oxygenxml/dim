@@ -1,0 +1,239 @@
+
+<!DOCTYPE html
+  SYSTEM "about:legacy-compat">
+<html xml:lang="en-us" lang="en-us">
+<head><meta name="description" content="Company Name uses relationship tables to define and manage links to related topics within an online deliverable. Relationship tables free you from the burden of creating and maintaining links in your ..."></meta><meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta><meta name="copyright" content="(C) Copyright 2005"></meta><meta name="DC.rights.owner" content="(C) Copyright 2005"></meta><meta name="DC.Type" content="concept"></meta><meta name="DC.Title" content="Relationship Tables"></meta><meta name="DC.Relation" scheme="URI" content="c_LinkingStrategies.html"></meta><meta name="DC.Format" content="XHTML"></meta><meta name="DC.Identifier" content="RelTableOverview"></meta><link rel="stylesheet" type="text/css" href="oxygen-webhelp/resources/css/commonltr.css"><!----></link><title>Relationship Tables</title><meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta><link rel="stylesheet" type="text/css" href="oxygen-webhelp/resources/css/webhelp_topic.css"><!----></link><link rel="stylesheet" type="text/css" href="oxygen-webhelp/resources/skins/skin.css"><!----></link><script type="text/javascript"><!--
+          
+          var prefix = "index.html";
+          
+          --></script><script type="text/javascript" src="oxygen-webhelp/resources/js/jquery-1.8.2.min.js"><!----></script><script type="text/javascript" src="oxygen-webhelp/resources/js/jquery.cookie.js"><!----></script><script type="text/javascript" src="oxygen-webhelp/resources/js/jquery-ui.custom.min.js"><!----></script><script type="text/javascript" src="oxygen-webhelp/resources/js/jquery.highlight-3.js"><!----></script><script type="text/javascript" charset="utf-8" src="oxygen-webhelp/resources/js/webhelp_topic.js"><!----></script></head>
+<body onload="highlightSearchTerm()" class="frmBody" id="RelTableOverview">
+<table class="nav"><tbody><tr><td colspan="2"><div id="printlink"><a href="javascript:window.print();" title="Print this page"></a></div><div id="permalink"><a href="#" title="Link to this page"></a></div></td></tr><tr><td width="75%"><a class="navheader_parent_path" href="c_LinkingStrategies.html" title="Linking Strategies">Linking Strategies</a></td><td><div class="navheader">
+<span class="navparent"><a class="link" href="c_LinkingStrategies.html" title="Linking Strategies"><span class="navheader_label">Parent topic</span><span class="navheader_separator">: </span><span class="navheader_linktext">Linking Strategies</span></a></span>  </div></td></tr></tbody></table>
+
+    <h1 class="title topictitle1">Relationship Tables</h1>
+
+    <div class="body conbody">
+        <div class="section" id="RelTableOverview__reltableintro">
+            <p class="p"><span class="keyword">Company Name</span> uses relationship tables to define and manage links
+                to related topics within an online deliverable. Relationship tables free you from
+                the burden of creating and maintaining links in your individual topics. Links
+                hardcoded within individual topics are usually hard to maintain and often break when
+                you move or delete the target topic. By using relationship tables at the map level,
+                you ensure that the links you establish are between topics included in the map,
+                eliminating broken links, and if you need to change a link, you need only make the
+                change once, in the map itself rather than in every topic affected by the
+                change.</p>
+
+            <p class="p">Relationship tables are created using a table of rows and columns to define links.
+                Each column in the table typically groups together the same information type. Each
+                row in the table represents a unique relationship, which is generally rendered as a
+                link, and each cell lists participants in the relationship. Each topic or map
+                reference in a cell links to the topic and map references in the other cells in the
+                same row. Using the topic references in your map to build the table, you can easily
+                link from concepts to tasks and back again, link reference information to multiple
+                tasks, and link task information to supporting information needed to complete the
+                task. </p>
+
+            <p class="p">You can include relationship tables in both DITA maps and bookmaps.</p>
+
+        </div>
+
+        <div class="section"><h2 class="title sectiontitle">Creating a Relationship Table</h2>
+            
+            <p class="p">Use your authoring tool's relationship table tool to create a four-column
+                relationship table with each column corresponding to one of the primary information
+                types, concept, task, troubleshooting, and reference. Build the relationships
+                between topics by adding &lt;topicref&gt; elements to the appropriate rows and columns.
+                As you add the topic references, keep in mind the following rules governing
+                relationship tables:</p>
+
+            <ul class="ul">
+                <li class="li">Each row in the table represents a separate set of relationships and links.</li>
+
+                <li class="li">No relationships exist between the rows in a table.</li>
+
+                <li class="li">Topic references are not needed in every cell in a row, but at least two cells
+                    should have references in order to establish a relationship.</li>
+
+                <li class="li">Each cell can contain multiple topic references. However, by default, no
+                    relationship is established between topics that share the same cell. See <a class="xref" href="#RelTableOverview__section_zqj_kqw_kn">Linking to Topics Within the Same Cell</a> for instructions
+                    on creating such links.</li>
+
+                <li class="li">Topic references can be repeated in multiple rows.</li>
+
+            </ul>
+
+            <div class="p">In addition, consider these best practices: <ul class="ul" id="RelTableOverview__ul_nhd_4pj_ch">
+                    <li class="li">Wherever possible, use DITA's automatic hierarchical linking to avoid the
+                        need for creating relationships. For example, within a map, DITA
+                        automatically creates two-way linking between parent topics and each of
+                        their children topics; you do not need to include those relationships in
+                        your relationship table.</li>
+
+                    <li class="li">Be careful not to duplicate links. For example, if the topic already
+                        contains an &lt;xref&gt; to a topic, do not include that same relationship in
+                        the relationship table.</li>
+
+                    <li class="li">Make sure all links take users to meaningful, related content.</li>
+
+                    <li class="li">Limit the number of relationships you include to less than five per topic.
+                        Too many links can be overwhelming for users. </li>
+
+                    <li class="li">Take the time to validate your links before publication.</li>
+
+                    <li class="li">When nesting maps, include relationship tables to establish the
+                        relationships in the map level common to all topics in the relationship. For
+                        example, if topics are in separate maps, establish their relationship in the
+                        map that references their individual maps.</li>
+
+                </ul>
+</div>
+
+        </div>
+
+        <div class="section"><h2 class="title sectiontitle">Relationship Table Elements</h2>
+            
+            <div class="p">Use the following elements when creating a relationship table:<div class="note note"><span class="notetitle">Note:</span> Use your tool's
+                    relationship table commands to build a relationship table without needing to
+                    hand code these elements.</div>
+</div>
+
+            <dl class="dl">
+                
+                    <dt class="dt dlterm"><a name="RelTableOverview__reltable"><!-- --></a>&lt;reltable&gt; relationship table </dt>
+
+                    <dd class="dd">
+                        <p class="p">Use the
+                            &lt;reltable&gt; element to create the framework for the relationship
+                            table. Add all elements in the relationship table between the beginning
+                            and ending tags of the &lt;reltable&gt; element. The &lt;reltable&gt; element
+                            is a child of the &lt;map&gt; or &lt;bookmap&gt; element.</p>
+
+                    </dd>
+
+                
+                
+                    <dt class="dt dlterm">&lt;relheader&gt; relationship table header </dt>
+
+                    <dd class="dd">Use the
+                        &lt;relheader&gt; element as a container for the column specifications,
+                        including header rows, if desired.</dd>
+
+                
+                
+                    <dt class="dt dlterm"><a name="RelTableOverview__relcolspec"><!-- --></a>&lt;relcolspec&gt; relationship column specification </dt>
+
+                    <dd class="dd">
+                        <p class="p">Use the &lt;relcolspec&gt; element to define
+                            each column in the relationship table. Each &lt;reltable&gt; should contain
+                            at least two &lt;relcolspec&gt; elements to form meaningful relationships
+                            among your topics. Typically, you will include four &lt;relcolspec&gt;
+                            elements, with each column corresponding to one of the four primary
+                            topic types: task, troubleshooting, concept, and reference. </p>
+
+                    </dd>
+
+                
+                
+                    <dt class="dt dlterm"><a name="RelTableOverview__relrow"><!-- --></a>&lt;relrow&gt; relationship table row </dt>
+
+                    <dd class="dd">
+                        <p class="p">Use the
+                            &lt;relrow&gt; element to define the relationships among the topics in each
+                            relationship row. Each &lt;relrow&gt; element defines a new set of
+                            relationships. You can add as many &lt;relrow&gt; elements as needed to the
+                            relationship table.</p>
+
+                    </dd>
+
+                
+                
+                    <dt class="dt dlterm"><a name="RelTableOverview__relcell"><!-- --></a>&lt;relcell&gt; relationship table cell </dt>
+
+                    <dd class="dd">
+                        <p class="p">Use the
+                            &lt;relcell&gt; element to define the topic references. These topic
+                            references will be linked during processing. Nest &lt;topicref&gt; elements
+                            for each topic involved in the relationship, using the <em class="ph i">@href
+                            </em>attribute to point to the appropriate topic.</p>
+
+                        <p class="p">The number of &lt;relcell&gt; elements must match the number of
+                            &lt;relcolspec&gt; elements. If you do not want to include a topic
+                            reference in one of the cells in a row, you must still add an empty
+                            &lt;relcell&gt; element for the empty cell. </p>
+
+                    </dd>
+
+                
+            </dl>
+
+        </div>
+
+        <div class="section" id="RelTableOverview__section_zqj_kqw_kn"><h2 class="title sectiontitle">Linking to Topics Within the Same Cell</h2>
+            
+            <p class="p">In a relationship table, topic references in the same cell are not linked together.
+                However, there are instances when they should be linked.</p>
+
+            <p class="p">To link topics in a cell together,
+                group them with a &lt;topicgroup&gt; element and set its <em class="ph i">@collection-type</em>
+                attribute to "family". </p>
+
+            <pre class="pre codeblock">Placeholder for example.</pre>
+
+            <div class="p">If the topics should be viewed in a specific order, set the <em class="ph i">@collection-type</em>
+                attribute to "sequence" instead. Topics will be linked as Next and Previous topics
+                in the sequence the topics occur in the cell. Use this option when you have an
+                all-encompassing task that has multiple sub-task
+                    topics.<pre class="pre codeblock">Placeholder for example.</pre>
+<div class="note note"><span class="notetitle">Note:</span> If you
+                    find you are creating sequential relationships in relationship tables,
+                    reconsider the grouping of your topics within your maps. It makes sense to
+                    include sequential elements next to each other in the map, which would allow you
+                    to establish the relationship between the topics directly in the &lt;topicref&gt;
+                    element in the map, rather than through a relationship table.</div>
+</div>
+
+        </div>
+
+        <div class="section"><h2 class="title sectiontitle">Creating One-Way Links</h2>
+            
+            <p class="p">By default, the links in a relationship table go both ways. However, you might want
+                to make the links one way. For example, you might want to point multiple topics to a
+                glossary, but you would not want the glossary to link back to all those individual
+                topics. </p>
+
+            <div class="p">To create a one-way link, set the
+                    <em class="ph i">@linking</em> attribute in the topic reference that you do not want to link
+                back from to "targetonly". Conversely, you could also set the <em class="ph i">@linking
+                </em>attribute in the topic reference that you do not want to link back to as
+                "sourceonly". The two rows in the example accomplish exactly the same
+                thing.<pre class="pre codeblock">&lt;relrow&gt;
+  &lt;relcell&gt;
+    &lt;topicref href="t_tasktopic.dita"/&gt;
+  &lt;/relcell&gt;
+  &lt;relcell&gt;
+    &lt;topicref href="g_glossary.dita" 
+       linking="targetonly"/&gt;
+  &lt;/relcell&gt;
+&lt;/relrow&gt;   
+&lt;relrow&gt;
+  &lt;relcell&gt;
+    &lt;topicref href="t_tasktopic.dita" 
+        linking="sourceonly"/&gt;
+  &lt;/relcell&gt;
+  &lt;relcell&gt;
+    &lt;topicref href="g_glossary.dita"/&gt;
+  &lt;/relcell&gt;
+&lt;/relrow&gt;   </pre>
+</div>
+
+        </div>
+
+    </div>
+
+<div class="related-links"></div>
+<div class="navfooter"><!---->
+<span class="navparent"><a class="link" href="c_LinkingStrategies.html" title="Linking Strategies"><span class="navheader_label">Parent topic</span><span class="navheader_separator">: </span><span class="navheader_linktext">Linking Strategies</span></a></span>  </div><div class="footer">WebHelp output generated by<a href="http://www.oxygenxml.com" target="_blank"><span class="oXygenLogo"><img src="oxygen-webhelp/resources/img/LogoOxygen100x22.png" alt="Oxygen"></img></span><span class="xmlauthor">XML Author</span></a></div>
+</body>
+</html>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>oXygen Sample Framework</title>
+  </head>
+  <body>
+    <h1>oXygen Sample Framework </h1>
+    <p>This is intended to be a sample startup project for developers that need to extend the oXygen
+      Author editing capabilities for specific XML document types by implementing Java
+      extensions.</p>
+    <section>
+      <h2>Dependencies</h2>
+      <ul>
+        <li><a href="../bundle-frameworks/README.html">bundle-frameworks</a></li>
+        <li><a href="../bundle-options/README.html">bundle-options</a></li>
+        <li><a href="../bundle-samplefiles/README.html">bundle-samplefiles</a></li>
+      </ul>
+    </section>
+    <section>
+      <h2>The contents of this project</h2>
+      <table>
+        <tr>
+          <td>src</td>
+          <td>The Java source code for the Simple Documentation Framework (SDF). This framework is
+            used as a sample in the <a
+              href="http://www.oxygenxml.com/doc/ug-editor/#topics/author-devel-guide-intro.html">
+              Author Developer Guide</a>. </td>
+        </tr>
+        <tr>
+          <td>pom.xml</td>
+          <td>The Maven project file</td>
+        </tr>
+        <tr>
+          <td>assembly.xml</td>
+          <td>Controls the packaging of the project into a final ZIP containing the framework.</td>
+        </tr>
+        <tr>
+          <td>frameworkFiles</td>
+          <td>The set of other resources (CSS files, Schema files, images, etc..) composing the
+            sample framework. These files together with the compiled classes compose the framework
+            deliverable.</td>
+        </tr>
+        <tr>
+          <td>doc</td>
+          <td>The java doc and the developer guide in PDF format.</td>
+        </tr>
+        <tr>
+          <td>samples/Oxygen Default Frameworks/src</td>
+          <td>
+            <p>Sources for the extension implementations Oxygen provides out of the box for Docbook,
+              DITA, TEI and XHTML.</p>
+            <p>They can be used to alter the corresponding libraries (docbook.jar, dita.jar, etc) in
+              the Oxygen <code>frameworks</code> directory.</p>
+            <p>Please note that in order to make the framework sources compilable, you have to add
+              dependencies for the Eclipse specific jars, more specific for these bundles:</p>
+            <pre>          org.eclipse.swt
+          org.eclipse.core.runtime
+          org.eclipse.jface
+          org.eclipse.jface.text
+          org.eclipse.core.commands
+          org.eclipse.swt.win32.win32
+          org.eclipse.text
+          org.eclipse.ui.editors
+          org.eclipse.ui.workbench</pre>
+            <p>The <code>pom.xml</code> file already contains some commented dependencies for the
+              Eclipse related packages.</p>
+            <p>Note: The Eclipse artifacts published on Maven Central repository are quite old. If
+              you require newer versions you should add them on your own internal Maven repository.
+              As an alternative, you can declare dependencies directly to JARs from the Eclipse
+              'plugins' directory of an Eclipse installation:</p>
+            <pre>        &lt;dependency>
+          &lt;groupId>org.eclipse.jface&lt;/groupId>
+          &lt;artifactId>jface.text&lt;/artifactId>
+          &lt;version>3.8&lt;/version>
+          &lt;scope>system&lt;/scope>
+          &lt;systemPath>{eclipse.install.dir}/plugins/org.eclipse.jface.text_3.8.101.v20130802-1147.jar&lt;/systemPath>
+        &lt;/dependency>       </pre>
+          </td>
+        </tr>
+      </table>
+    </section>
+    <section>
+      <h2>Resouces</h2>
+      <p> More details can be found in the oXygen <a
+          href="http://www.oxygenxml.com/doc/ug-editor/#topics/author-devel-guide-intro.html">
+          Author Developer Guide</a>. </p>
+    </section>
+    <section>
+      <h2>How to build the project</h2>
+      <p>This project may be built in the absence of an Eclipse IDE, using the command:</p>
+      <pre>mvn package</pre>
+      <p> Note: This will create a ZIP file from the <code>target</code> directory. This package can
+        be unziped into Oxygen installation <code>frameworks</code> directory and Oxygen will
+        automatically load it at startup. </p>
+      <p> Note: This will also overwrite the <code>samples</code> and <code>doc</code> directories
+        by unpacking artifacts from the SDK. </p>
+    </section>
+  </body>
+</html>

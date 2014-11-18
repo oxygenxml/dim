@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN"
+ "concept.dtd">
+<?Pub UDT _bookmark _target?>
+<?Pub Inc?>
+<concept id="TaskInformationTypes">
+ <title>Tasks</title>
+ <conbody>
+    <p>Task topics provide instructions for completing specific tasks. They typically contain:<ul
+    id="ul_mgk_ivy_kd">
+    <li>Information immediately required by users to accomplish a single task.</li>
+    <li>Minimal information to explain concepts to understand the task.</li>
+    <li>Links to related information that can help with executing the task.</li>
+   </ul></p>
+  <p>They do not provide conceptual descriptions of product features or explanations of how
+   something works, nor do they provide detailed data that might be needed to complete the task. Use
+   concept and reference topics to provide this type of information.</p>
+   <p>Task topics include the following categories of information:<draft-comment>Modify this list to
+    reflect the types of tasks found at this specific company.</draft-comment></p><ul id="ul_xfo_oiz_kd">
+   <li>Installation</li>
+   <li>Configuration</li>
+   <li>Maintenance</li>
+   <li>Removal and replacement</li>
+   <li>Performance monitoring</li>
+  </ul>
+
+ </conbody>
+</concept>

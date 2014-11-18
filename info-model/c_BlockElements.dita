@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN"
+ "concept.dtd">
+<concept id="StructureElements" xml:lang="en-us">
+ <title>Block Elements</title>
+ <conbody>
+    <p>Block elements are common to all DITA information types. Nest these elements within topic
+      body elements (such as &lt;conbody>), topic-specific elements (such as &lt;context>), and
+      other block elements to create your topic content. Common block elements include:</p>
+   <ul id="BlockElements">
+    <li>Paragraphs </li>
+    <li>Lists </li>
+    <li>Notes</li>
+     <li>Figures</li>
+     <li>Tables</li>
+    
+    
+   </ul>
+   <p>The following sections describe the use of these elements within a topic.</p>
+    <note>Be sure to select the block element that fits your content structure best. Do not simply
+      use paragraphs, for example, when other tagging is more appropriate.</note>
+  
+
+ </conbody>
+</concept>

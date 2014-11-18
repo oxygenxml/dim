@@ -1,0 +1,166 @@
+
+<!DOCTYPE html
+  SYSTEM "about:legacy-compat">
+<html xml:lang="en-us" lang="en-us">
+<head><meta name="description" content="DITA requires that you provide a title for all topics (except Glossary topics), which is then rendered as the heading of the topic's content in the final output. The &lt;title&gt; element is the first ..."></meta><meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta><meta name="copyright" content="(C) Copyright 2005"></meta><meta name="DC.rights.owner" content="(C) Copyright 2005"></meta><meta name="DC.Type" content="concept"></meta><meta name="DC.Title" content="Titling Topics"></meta><meta name="DC.Relation" scheme="URI" content="c_BeginningATopic.html"></meta><meta name="DC.Format" content="XHTML"></meta><meta name="DC.Identifier" content="TitlingTopics"></meta><link rel="stylesheet" type="text/css" href="oxygen-webhelp/resources/css/commonltr.css"><!----></link><title>Titling Topics</title><meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta><link rel="stylesheet" type="text/css" href="oxygen-webhelp/resources/css/webhelp_topic.css"><!----></link><link rel="stylesheet" type="text/css" href="oxygen-webhelp/resources/skins/skin.css"><!----></link><script type="text/javascript"><!--
+          
+          var prefix = "index.html";
+          
+          --></script><script type="text/javascript" src="oxygen-webhelp/resources/js/jquery-1.8.2.min.js"><!----></script><script type="text/javascript" src="oxygen-webhelp/resources/js/jquery.cookie.js"><!----></script><script type="text/javascript" src="oxygen-webhelp/resources/js/jquery-ui.custom.min.js"><!----></script><script type="text/javascript" src="oxygen-webhelp/resources/js/jquery.highlight-3.js"><!----></script><script type="text/javascript" charset="utf-8" src="oxygen-webhelp/resources/js/webhelp_topic.js"><!----></script></head>
+<body onload="highlightSearchTerm()" class="frmBody" id="TitlingTopics">
+<table class="nav"><tbody><tr><td colspan="2"><div id="printlink"><a href="javascript:window.print();" title="Print this page"></a></div><div id="permalink"><a href="#" title="Link to this page"></a></div></td></tr><tr><td width="75%"><a class="navheader_parent_path" href="c_InformationTypes.html" title="Information Types">Information Types</a> / <a class="navheader_parent_path" href="c_BeginningATopic.html" title="Beginning a Topic">Beginning a Topic</a></td><td><div class="navheader">
+<span class="navparent"><a class="link" href="c_BeginningATopic.html" title="Beginning a Topic"><span class="navheader_label">Parent topic</span><span class="navheader_separator">: </span><span class="navheader_linktext">Beginning a Topic</span></a></span>  </div></td></tr></tbody></table>
+
+  <h1 class="title topictitle1">Titling Topics</h1>
+
+  <div class="body conbody">
+    <div class="p">DITA requires that you provide a title for all topics (except Glossary topics), which is then
+      rendered as the heading of the topic's content in the final output. The &lt;title&gt; element is
+      the first element within the topic root element (such as &lt;task&gt; or &lt;reference&gt;). Type
+      your text directly into the &lt;title&gt; element, keeping in mind the following coding
+        constraints:<ul class="ul" id="TitlingTopics__ul_r5v_crv_nl">
+        <li class="li">You cannot nest block elements or most inline elements within &lt;title&gt;. Even when they
+          are allowed, avoid using inline elements that might override the format of the heading
+          style.</li>
+
+        <li class="li">Titles cannot be conditionalized. If you are writing a topic for reuse that will require
+          a change in title, use the &lt;ph&gt; element within the &lt;title&gt; element and apply
+          conditional or key attributes to that element. The following examples show how both
+          approaches might be used to change the name of a product within a
+          title.<pre class="pre codeblock">&lt;title&gt;... &lt;ph product="..."&gt;...&lt;/ph&gt;
+&lt;ph product="..."&gt;...&lt;/ph&gt;&lt;/title&gt;</pre>
+<pre class="pre codeblock">&lt;title&gt;... 
+  &lt;ph conkeyref="..."/&gt; ....&lt;/title&gt;</pre>
+</li>
+
+        <li class="li">Do not conref entire titles. If you are writing a topic that has the same title as
+          another topic, consider whether both topics should be combined into a single, normalized,
+          and/or conditionalized topic. If not, add distinguishing information to the titles to help
+          end users understand the difference between the two topics.</li>
+
+      </ul>
+</div>
+
+    <div class="p">Typically, the content of the &lt;title&gt; element is rendered as the heading of the content
+      and appears in the table of contents and other navigation features to assist users in locating
+      the information. As a result, the title must clearly convey the content found in the topic.
+      When writing titles, follow these guidelines:<ul class="ul" id="TitlingTopics__ul_1n2_lfw_5g">
+        <li class="li">Make the title specific to help users distinguish it from other similar topics. </li>
+
+        <li class="li">Use words that accurately describe the content and that are specific, concise, and
+          meaningful. Avoid headings that identify the type of information, but not the subject
+          matter; for example, Introduction or Overview, without further clarifying words to
+          indicate what content is introduced or what you are providing an overview about. Content
+          titles not only provide clarity for the user but will assist other authors in locating
+          relevant information in the repository. </li>
+
+        <li class="li">Use terms that the user recognizes, even if those terms do not appear in the
+          product.</li>
+
+        <li class="li">Use industry standard and commonly used words.</li>
+
+        <li class="li">Use the same terms consistently in topics that cover the same subject.</li>
+
+        <li class="li">Although it will not always be possible, try to limit the length of the title to no more
+          than eight words.</li>
+
+        <li class="li">Use plural forms of nouns unless the subject makes sense only in the singular.</li>
+
+        <li class="li">Avoid using acronyms and abbreviations in a title, unless they are industry
+          standards.</li>
+
+        <li class="li">Use articles (a, an, and the) to improve readability.</li>
+
+        <li class="li">Use title case, capitalizing each major word in the title. Do not capitalize articles,
+          coordinating conjunctions, or prepositions.</li>
+
+      </ul>
+</div>
+
+    <p class="p">In addition to these general guidelines, the following sections discuss unique considerations
+      for each information type.</p>
+
+    <div class="section"><h2 class="title sectiontitle">Titling Task Topics</h2>
+      
+      <p class="p">When titling a task topic, use an
+        imperative
+        verb form to help users distinguish between topics that tell <em class="ph i">how</em>
+        to complete the task and other topics that might only provide conceptual information about
+        the task.</p>
+
+      <pre class="pre codeblock">&lt;task&gt;
+  &lt;title&gt;...&lt;/title&gt;
+  ...
+&lt;/task&gt;</pre>
+
+    </div>
+
+    <div class="section"><h2 class="title sectiontitle">Titling Troubleshooting Topics</h2>
+      
+      <div class="p">When titling a troubleshooting topic, follow these guidelines:<ul class="ul" id="TitlingTopics__ul_ggm_2kv_nl">
+          <li class="li">Summarize the observable symptom that characterizes the problem you are addressing.
+            You can provide additional detail in the &lt;condition&gt; element.</li>
+
+          <li class="li">Be as specific as possible regarding the context of the problem.
+            For
+            example, instead of "<em class="ph i">License Not Valid</em>", indicate which type of license is not
+            valid.</li>
+
+        </ul>
+</div>
+
+      <pre class="pre codeblock">Placeholder for example.</pre>
+
+    </div>
+
+    <div class="section"><h2 class="title sectiontitle">Titling Concept Topics</h2>
+      
+      <div class="p">When titling a concept topic, follow these guidelines:<ul class="ul" id="TitlingTopics__ul_wth_dhx_sl">
+          <li class="li">Use noun phrases as a signal to users that the topic will <em class="ph i">not</em> tell them how to
+            complete a task.</li>
+
+          <li class="li">Place important words at the beginning of the title to draw the users attention, for
+            example, Installation Guidelines, not Guidelines for  Installation.</li>
+
+        </ul>
+</div>
+
+      <pre class="pre codeblock">&lt;concept&gt;
+  &lt;title&gt;...&lt;/title&gt;
+  ...
+&lt;/concept&gt;</pre>
+
+    </div>
+
+    <div class="section"><h2 class="title sectiontitle">Titling Reference Topics</h2>
+      
+      <div class="p">When titling a reference topic, follow these guidelines:<ul class="ul">
+          <li class="li">Use noun phrases as a signal to users that the topic will <em class="ph i">not</em> tell them how to
+            complete a task.</li>
+
+          <li class="li">Use the name of the referenced information in the
+            title.
+            For example, if providing specifications for a specific board, include the name of the
+            board in the title.</li>
+
+          <li class="li">Title topics for specific categories of reference information
+            consistently.
+            For example, include the word "cables" in all topic titles dealing with <span class="keyword">Company Name</span> cables.</li>
+
+        </ul>
+</div>
+
+      <pre class="pre codeblock">&lt;reference&gt;
+  &lt;title&gt;...&lt;/title&gt;
+  ...
+&lt;/reference&gt;</pre>
+
+    </div>
+
+  </div>
+
+<div class="related-links"></div>
+<div class="navfooter"><!---->
+<span class="navparent"><a class="link" href="c_BeginningATopic.html" title="Beginning a Topic"><span class="navheader_label">Parent topic</span><span class="navheader_separator">: </span><span class="navheader_linktext">Beginning a Topic</span></a></span>  </div><div class="footer">WebHelp output generated by<a href="http://www.oxygenxml.com" target="_blank"><span class="oXygenLogo"><img src="oxygen-webhelp/resources/img/LogoOxygen100x22.png" alt="Oxygen"></img></span><span class="xmlauthor">XML Author</span></a></div>
+</body>
+</html>

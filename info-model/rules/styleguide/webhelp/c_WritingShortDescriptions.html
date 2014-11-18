@@ -1,0 +1,144 @@
+
+<!DOCTYPE html
+  SYSTEM "about:legacy-compat">
+<html xml:lang="en-us" lang="en-us">
+<head><meta name="description" content="The &lt;shortdesc&gt; element immediately following the &lt;title&gt; element of a topic expands on the title to provide additional information about the content of the topic. The content of the &lt;shortdesc&gt; ..."></meta><meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta><meta name="copyright" content="(C) Copyright 2005"></meta><meta name="DC.rights.owner" content="(C) Copyright 2005"></meta><meta name="DC.Type" content="concept"></meta><meta name="DC.Title" content="Writing Short Descriptions"></meta><meta name="DC.Relation" scheme="URI" content="c_BeginningATopic.html"></meta><meta name="DC.Format" content="XHTML"></meta><meta name="DC.Identifier" content="ShortDescriptions"></meta><link rel="stylesheet" type="text/css" href="oxygen-webhelp/resources/css/commonltr.css"><!----></link><title>Writing Short Descriptions</title><meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta><link rel="stylesheet" type="text/css" href="oxygen-webhelp/resources/css/webhelp_topic.css"><!----></link><link rel="stylesheet" type="text/css" href="oxygen-webhelp/resources/skins/skin.css"><!----></link><script type="text/javascript"><!--
+          
+          var prefix = "index.html";
+          
+          --></script><script type="text/javascript" src="oxygen-webhelp/resources/js/jquery-1.8.2.min.js"><!----></script><script type="text/javascript" src="oxygen-webhelp/resources/js/jquery.cookie.js"><!----></script><script type="text/javascript" src="oxygen-webhelp/resources/js/jquery-ui.custom.min.js"><!----></script><script type="text/javascript" src="oxygen-webhelp/resources/js/jquery.highlight-3.js"><!----></script><script type="text/javascript" charset="utf-8" src="oxygen-webhelp/resources/js/webhelp_topic.js"><!----></script></head>
+<body onload="highlightSearchTerm()" class="frmBody" id="ShortDescriptions">
+<table class="nav"><tbody><tr><td colspan="2"><div id="printlink"><a href="javascript:window.print();" title="Print this page"></a></div><div id="permalink"><a href="#" title="Link to this page"></a></div></td></tr><tr><td width="75%"><a class="navheader_parent_path" href="c_InformationTypes.html" title="Information Types">Information Types</a> / <a class="navheader_parent_path" href="c_BeginningATopic.html" title="Beginning a Topic">Beginning a Topic</a></td><td><div class="navheader">
+<span class="navparent"><a class="link" href="c_BeginningATopic.html" title="Beginning a Topic"><span class="navheader_label">Parent topic</span><span class="navheader_separator">: </span><span class="navheader_linktext">Beginning a Topic</span></a></span>  </div></td></tr></tbody></table>
+
+ <h1 class="title topictitle1">Writing Short Descriptions</h1>
+
+ <div class="body conbody">
+   <div class="p">The &lt;shortdesc&gt; element immediately following the &lt;title&gt; element of a topic expands on
+      the title to provide additional information about the content of the topic. The content of the
+      &lt;shortdesc&gt; element is rendered as the first paragraph of the topic. As a result, it should
+      always be composed of complete sentences and form a comprehensive thought. However, as its
+      name implies, the short description should be concise and to the point. Because it is meant to
+      be short, the &lt;shortdesc&gt; element cannot contain block elements, such as paragraphs or
+      lists, nor most inline elements.</div>
+
+   <div class="p">
+      
+      
+      <ul class="ul" id="ShortDescriptions__ul_dx1_kf1_5g">
+        
+        <li class="li">Do not simply restate the title. </li>
+
+        <li class="li">Limit the description to no more than 50 words in two or three sentences.</li>
+
+        <li class="li">Avoid starting the sentence with "This topic ..." or a similar structure.</li>
+
+        <li class="li">Do not use the short description as a lead-in sentence (for example, "To remove and
+          replace the board, follow these steps:").</li>
+
+        <li class="li">Do not conref short descriptions. If the description of the content of a topic is the
+          same as another one, consider whether the topics should be merged into one normalized
+          and/or conditionalized topic.</li>
+
+        <li class="li">Avoid topics that contain nothing but a short description. Typically, these types of
+          topics serve only as transitions between topics and are of little value to the user who is
+          searching for an answer to a specific question, not reading the manual, or even a chapter,
+          from cover to cover.<div class="note note"><span class="notetitle">Note:</span> For navigation purposes, you might want to group several topics
+            together under a heading; instead of creating a container topic for that heading and a
+            short description, use the &lt;topichead&gt; element in your map. See <a class="xref" href="c_mapelements.html#Maps">Map Elements</a> for more information.</div>
+</li>
+
+      </ul>
+
+      
+    </div>
+
+  <div class="section"><h2 class="title sectiontitle">Writing Short Descriptions for Tasks</h2>
+   
+  <div class="p">When writing short descriptions for tasks, include information such as:<ul class="ul">
+          <li class="li">Why users need to complete the task</li>
+
+          <li class="li">When users might need to complete the task</li>
+
+          <li class="li">Who needs to complete the task</li>
+
+        </ul>
+Keep in mind that the task topic includes a &lt;context&gt; element that can provide much
+        more detail about these items than you should include within the short description. If you
+        find you need more than two sentences to describe this information, include it in
+        &lt;context&gt; instead.</div>
+
+ 
+    <pre class="pre codeblock">&lt;task&gt;
+  &lt;title&gt;... &lt;/title&gt;
+  &lt;shortdesc&gt;...
+  &lt;/shortdesc&gt;
+&lt;/task&gt;</pre>
+
+  </div>
+
+    <div class="section"><h2 class="title sectiontitle">Writing Short Descriptions for Troubleshooting</h2>
+      
+      <div class="p">When writing short descriptions for troubleshooting topics, include information such as:<ul class="ul" id="ShortDescriptions__ul_ak4_cpg_dn">
+          <li class="li">The observable symptoms of the problem being addressed </li>
+
+          <li class="li">When the problem might occur</li>
+
+          <li class="li">Who can fix the issue</li>
+
+        </ul>
+Keep in mind that the troubleshooting topic includes a &lt;condition&gt; element that can
+        provide much more detail about these items than you should include within the short
+        description. If you find you need more than two sentences to describe this information,
+        include it in &lt;condition&gt; instead.</div>
+
+      <pre class="pre codeblock">&lt;troubleshooting&gt;
+  &lt;title&gt;...&lt;/title&gt;
+  &lt;shortdesc&gt;...
+  &lt;/shortdesc&gt;
+&lt;/troubleshooting&gt;</pre>
+
+    </div>
+
+  <div class="section"><h2 class="title sectiontitle">Writing Short Descriptions for Concepts</h2>
+   
+   <div class="p">When writing short descriptions for concepts, include information such as:<ul class="ul">
+          <li class="li">A summary of the main point of the content</li>
+
+          <li class="li">Why this information is important to understand</li>
+
+        </ul>
+</div>
+
+    <pre class="pre codeblock">&lt;concept&gt;
+  &lt;title&gt;...&lt;/title&gt;
+  &lt;shortdesc&gt;...&lt;/shortdesc&gt;
+&lt;/concept&gt;</pre>
+
+  </div>
+
+  <div class="section"><h2 class="title sectiontitle">Writing Short Descriptions for References</h2>
+   
+   <div class="p">When writing short descriptions for references, include information such as:<ul class="ul">
+          <li class="li">What the reference item does, what it is, or what it is used for</li>
+
+          <li class="li">The specific type of information provided for each referenced item</li>
+
+        </ul>
+</div>
+
+   <pre class="pre codeblock">&lt;concept&gt;
+  &lt;title&gt;...&lt;/title&gt;
+  &lt;shortdesc&gt;... 
+  &lt;/shortdesc&gt;
+&lt;/concept&gt;</pre>
+
+  </div>
+
+ </div>
+
+<div class="related-links"></div>
+<div class="navfooter"><!---->
+<span class="navparent"><a class="link" href="c_BeginningATopic.html" title="Beginning a Topic"><span class="navheader_label">Parent topic</span><span class="navheader_separator">: </span><span class="navheader_linktext">Beginning a Topic</span></a></span>  </div><div class="footer">WebHelp output generated by<a href="http://www.oxygenxml.com" target="_blank"><span class="oXygenLogo"><img src="oxygen-webhelp/resources/img/LogoOxygen100x22.png" alt="Oxygen"></img></span><span class="xmlauthor">XML Author</span></a></div>
+</body>
+</html>

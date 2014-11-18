@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN"
+ "concept.dtd">
+<concept id="InlineElements">
+ <title>User Interface Elements</title>
+ <conbody>
+  <section>
+   <p>Use these inline elements when referring to elements within the graphic user
+     interface:<draft-comment>not included in this list because not common: shortcut, screen, msgph,
+      msgblock, msgnum</draft-comment></p><table pgwide="1" id="table_s4z_bst_yg">
+       <tgroup cols="4">
+        <colspec colname="c2" colnum="1" colwidth="1*"/>
+        <colspec colname="c3" colnum="2" colwidth="2*"/>
+        <colspec colname="newCol4" colnum="3" colwidth="2*"/>
+        <colspec colname="newCol5" colnum="4" colwidth="2*"/>
+        <thead>
+         <row>
+          <entry>Inline element</entry>
+          <entry>Description</entry>
+          <entry>Example code</entry>
+          <entry>Output</entry>
+         </row>
+        </thead>
+        <tbody>
+         <row>
+          <entry>user interface control &lt;uicontrol></entry>
+          <entry><indexterm>user interface control &lt;uicontrol></indexterm>Use &lt;uicontrol> to mark
+           up any item that might appear on a screen, such as a window title, button label, menu option,
+           or field name.</entry>
+          <entry/>
+          <entry/>
+         </row>
+      <row>
+       <entry> file path &lt;filepath></entry>
+       <entry><indexterm>file path &lt;filepath></indexterm>Use the &lt;filepath&gt; element to mark
+        up both file paths and file names.</entry>
+       <entry/>
+       <entry/>
+      </row>
+      <row>
+       <entry>menu cascade &lt;menucascade></entry>
+       <entry><indexterm>menu cascade &lt;menucascade></indexterm>Use the &lt;menucascade> to
+        present a series of menu choices. The &lt;menucascade> element contains two or more
+        &lt;uicontrol> elements. On output, the content of the &lt;uicontrol> elements will be bold
+        and separated by an angle bracket (>). </entry>
+       <entry/>
+       <entry/>
+      </row>
+      <row>
+       <entry>window title &lt;wintitle> </entry>
+       <entry><indexterm>window title &lt;wintitle&gt;</indexterm>Use the &lt;wintitle&gt; element
+        to mark up the title of a window, dialog box, tab, or wizard page name.</entry>
+       <entry/>
+       <entry/>
+      </row>
+        </tbody>
+       </tgroup>
+      </table>
+   <p>Use the table below to select the appropriate inline element when documenting a user
+    interface.</p>
+   <table>
+    <tgroup cols="2">
+     <thead>
+      <row>
+       <entry>Interface object</entry>
+       <entry>DITA inline element to use</entry>
+      </row>
+     </thead>
+     <tbody>
+      <row>
+       <entry>Window or dialog box name</entry>
+       <entry>&lt;wintitle></entry>
+      </row>
+      <row>
+       <entry>Icon names</entry>
+       <entry>&lt;uicontrol>; to include the actual icon, use the &lt;image> element.</entry>
+      </row>
+      <row>
+       <entry>Screen buttons</entry>
+       <entry>&lt;uicontrol></entry>
+      </row>
+      <row>
+       <entry>Field names, radio or checkbox names, dropdown menu selections </entry>
+       <entry>&lt;uicontrol></entry>
+      </row>
+      <row>
+       <entry>Menu paths</entry>
+       <entry>&lt;menucascade></entry>
+      </row>
+      <row>
+       <entry>File paths</entry>
+       <entry>&lt;filepath></entry>
+      </row>
+            <row>
+       <entry>System messages or output of any kind</entry>
+       <entry>&lt;systemoutput></entry>
+      </row>
+      <row>
+       <entry>Anything that the user must type verbatim</entry>
+       <entry>&lt;userinput></entry>
+      </row>
+      <row>
+       <entry>Variables that the user must replace with their own information</entry>
+       <entry>&lt;varname></entry>
+      </row>
+     </tbody>
+    </tgroup>
+   </table>
+  </section>
+ </conbody>
+</concept>

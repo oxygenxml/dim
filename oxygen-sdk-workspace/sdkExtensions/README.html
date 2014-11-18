@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>oXygen SDK Sample Projects</title>
+  </head>
+  <body>
+    <h1>Samples for the oXygen SDK</h1>
+    <p>The oXygen SDK allows you to extend or create new applications based on the oXygen XML
+      editing technology. </p>
+    <section><h2>The contents of this project</h2>Main sample sub-projects:<table>
+        <colgroup>
+          <col width="31%" />
+          <col width="69%" />
+        </colgroup>
+        <tr>
+          <td><a href="oxygen-sample-applet/README.html">oxygen-sample-applet</a></td>
+          <td> This project is a sample application of using an oXygen XML Author Component for
+            building an applet.</td>
+        </tr>
+        <tr>
+          <td><a href="oxygen-sample-eclipse-plugin/README.html"
+            >oxygen-sample-eclipse-plugin</a></td>
+          <td> You can use this as a starting project for creating an Eclipse IDE plug-in that
+            extends the oXygen XML Editor plug-in for Eclipse.</td>
+        </tr>
+        <tr>
+          <td><a href="oxygen-sample-framework/README.html"
+            >oxygen-sample-framework</a></td>
+          <td> You can use this as a starting project for creating an Java extensions needed 
+          by an Author customization for a specific type of XML documents.</td>
+        </tr>
+        <tr>
+          <td><a href="oxygen-sample-plugins/README.html">oxygen-sample-plugins</a></td>
+          <td>You can find here a set of plugins for the oXygen XML Editor standalone
+            distribution.</td>
+        </tr>
+        <tr>
+          <td><a href="oxygen-sample-webapp/README.html">oxygen-sample-webapp</a></td>
+          <td> Starting with version 16.0, oXygen can be deployed sever-side, as a web application.
+            The editing logic is kept on the server, while the document UI is delivered to the
+            browser using HTML5 and JQuery.</td>
+        </tr>
+      </table><p>Resources sub-projects:</p><table>
+        <col width="31%" />
+        <col width="69%" />
+        <tr>
+          <td><a href="bundle-frameworks/README.html">bundle-frameworks</a></td>
+          <td> Packs the frameworks you need to deploy to the applet or to the webapp.</td>
+        </tr>
+        <tr>
+          <td><a href="bundle-options/README.html">bundle-options</a></td>
+          <td> Packs the default oXygen options you need to deploy to the applet or to the
+            webapp.</td>
+        </tr>
+        <tr>
+          <td><a href="bundle-plugins/README.html">bundle-plugins</a></td>
+          <td>Packs the plugins you need to deploy to the applet or to the webapp. Uses all the
+            plugins from the <code>oxygen-sample-plugins</code> project.</td>
+        </tr>
+        <tr>
+          <td><a href="bundle-samplefiles/README.html">bundle-samplefiles</a></td>
+          <td>Packs the samples you need to deploy to the applet or to the webapp.</td>
+        </tr>
+      </table></section>
+    <section>
+      <h2>Keep what you need</h2>
+      <p>This sample project is modular. You can keep any of the main sample sub-projects and its
+        dependencies and delete the rest. Make sure you update also the pom.xml file.</p>
+      <p>For instance if you want to develop a web application you could keep the
+          <code>oxygen-sample-webapp</code> and delete from the filesystem the other
+          <code>oxygen-sample-*</code> projects. Since this project depends on the other
+          <code>bundle-*</code> projects make sure you keep them.</p>
+    </section>
+    <section><h2>How to build the project</h2><p>All the subprojects, except for the <code><a
+            href="oxygen-sample-applet/README.html">oxygen-sample-applet</a></code> can be built
+        directly. The applet project needs extra configuration, in order to be able to sign and
+        deploy the applet to a web server.</p>So, running the
+      command<pre>mvn install</pre></section>
+    <p>will build all artifacts, but will fail building the applet. </p>
+  </body>
+</html>

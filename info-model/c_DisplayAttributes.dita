@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN"
+ "reference.dtd">
+<reference id="select-atts" xml:lang="en-us">
+ <title>Display Attributes</title>
+ <refbody><section><draft-comment>It's possible the company will not allow/use any of these attributes and the whole
+    topic be eliminated. </draft-comment></section>
+ <table>
+   <desc>Display attributes affect the way in which an element is rendered in your final
+    output.</desc>
+   <tgroup cols="4">
+    <?PubTbl tgroup dispwid="806.00px"?>
+    <colspec colname="col1" colwidth="1*"/>
+    <colspec colname="col2" colwidth="4*"/>
+    <colspec colname="col4" colwidth="1*"/>
+    <colspec colname="col5" colwidth="1*"/>
+    <thead>
+     <row>
+      <entry valign="top">Name</entry>
+      <entry valign="top">Description</entry>
+      <entry valign="top">Available Values</entry>
+      <entry valign="top">Required</entry>
+     </row>
+    </thead>
+    <tbody>
+     
+     <row>
+      <entry><i>frame</i></entry>
+      <entry><indexterm>frame attribute</indexterm>Specifies if a border should surround the element
+       and on what sides.<draft-comment>Not typically allowed by most
+       companies.</draft-comment></entry>
+      <entry>top | bottom | topbot | all | sides | none</entry>
+      <entry>No</entry>
+     </row>
+     <row>
+      <entry><i>scale</i></entry>
+      <entry><indexterm>scale attribute</indexterm>Specifies a percentage used to resize fonts or
+       images in proportion to their normal size. This attribute is used primarily for print
+       outputs. As a best practice, resize images within the source file rather than relying on this
+        attribute.<draft-comment>Not typically allowed by most companies.</draft-comment></entry>
+      <entry>50 | 60 | 70 | 80 | 90 | 100 | 110 | 120 | 140 | 160 | 180 | 200</entry>
+      <entry>No</entry>
+     </row>
+     <row>
+      <entry><i>outputclass</i></entry>
+      <entry><indexterm>outputclass attribute</indexterm>Specifies that a special styling be used
+       during output processing. <draft-comment>List and describe all outputclasses used by this
+        company. Include the name of the outputclass, the element it can be used on, and the
+        result.</draft-comment></entry>
+      <entry/>
+      <entry>No</entry>
+     </row>
+     <row>
+      <entry><i>rev</i></entry>
+      <entry><indexterm>rev attribute</indexterm>Indicates a specific revision level or tracks a
+       change to a specific change request or problem report. In addition to allowing you to
+       generate reports that show all changes in the entire repository that are related to a
+       specific change request or problem report, this attribute can also be used to flag changes in
+       the final output so that readers can easily scan for changes to the last version; for
+       example, all new and changed content added since the last release might be formatted with
+       change bars.<p>Define the value of the attribute as the version and release of the product;
+        for example <codeph>rev="v1.r1"</codeph>. When users view topics that contain flagged
+        content, they have the option to select a specific revision number and see the changes for
+        that revision highlighted within the topic.<note>Do not use the <i>@rev</i> attribute for
+         minor changes such as editorial issues that are unrelated to a change in the
+         product.</note></p></entry>
+      <entry/>
+      <entry>No</entry>
+     </row>
+     
+    </tbody>
+   </tgroup>
+  </table>
+ </refbody>
+</reference>

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN"
+ "concept.dtd">
+<?Pub UDT _bookmark _target?>
+<?Pub Inc?>
+<concept id="ShortDescriptions">
+ <title>Writing Short Descriptions</title>
+ <conbody>
+   <p>The &lt;shortdesc> element immediately following the &lt;title> element of a topic expands on
+      the title to provide additional information about the content of the topic. The content of the
+      &lt;shortdesc> element is rendered as the first paragraph of the topic. As a result, it should
+      always be composed of complete sentences and form a comprehensive thought. However, as its
+      name implies, the short description should be concise and to the point. Because it is meant to
+      be short, the &lt;shortdesc> element cannot contain block elements, such as paragraphs or
+      lists, nor most inline elements.<draft-comment>Discuss with the company how they intend to use
+          shortdesc:<ul id="ul_uwn_xhl_j3">
+          <li>Rendered as first paragraph</li>
+          <li>Rollover for links </li>
+          <li>Information displayed with topic titles in searches</li>
+          <li>Keyword container to help raise topic in search priorities</li>
+        </ul><p>In light of that decision discuss whether shortdesc can be optional or required.
+          Discuss implications:<ul id="ul_ggc_23l_j3">
+            <li>Requiring: end up with pointless, repetitive content with the title.</li>
+            <li>Optional: inconsistent across writers which could be visible to users depending on
+              how the element is rendered (if at all)</li>
+          </ul></p></draft-comment></p>
+   <p>
+      <!--When writing short descriptions, follow these guidelines:-->
+      <?oxy_comment_start author="stefany" timestamp="20140530T152106-0600" comment="If short description is not required, include this.
+If you have nothing more to add, do not include a short description"?>
+      <ul id="ul_dx1_kf1_5g">
+        <?oxy_comment_end?>
+        <li>Do not simply restate the title. </li>
+        <li>Limit the description to no more than 50 words in two or three sentences.</li>
+        <li>Avoid starting the sentence with "This topic ..." or a similar structure.</li>
+        <li>Do not use the short description as a lead-in sentence (for example, "To remove and
+          replace the board, follow these steps:").</li>
+        <li>Do not conref short descriptions. If the description of the content of a topic is the
+          same as another one, consider whether the topics should be merged into one normalized
+          and/or conditionalized topic.</li>
+        <li>Avoid topics that contain nothing but a short description. Typically, these types of
+          topics serve only as transitions between topics and are of little value to the user who is
+          searching for an answer to a specific question, not reading the manual, or even a chapter,
+          from cover to cover.<note>For navigation purposes, you might want to group several topics
+            together under a heading; instead of creating a container topic for that heading and a
+            short description, use the &lt;topichead> element in your map. See <xref
+              href="c_mapelements.dita#Maps"/> for more information.<draft-comment>Rephrase this
+              note if they aren't requiring a shortdesc--instead of creating an empty container
+              topic for that heading </draft-comment></note></li>
+      </ul>
+      <draft-comment>Find shortdesc examples within company content.</draft-comment>
+    </p>
+  <section>
+   <title>Writing Short Descriptions for Tasks</title>
+  <p>When writing short descriptions for tasks, include information such as:<ul>
+          <li>Why users need to complete the task</li>
+          <li>When users might need to complete the task</li>
+          <li>Who needs to complete the task</li>
+        </ul>Keep in mind that the task topic includes a &lt;context> element that can provide much
+        more detail about these items than you should include within the short description. If you
+        find you need more than two sentences to describe this information, include it in
+        &lt;context> instead.</p>
+ 
+    <codeblock>&lt;task>
+  &lt;title>... &lt;/title>
+  &lt;shortdesc>...
+  &lt;/shortdesc>
+&lt;/task></codeblock>
+  </section>
+    <section>
+      <title>Writing Short Descriptions for Troubleshooting</title>
+      <p>When writing short descriptions for troubleshooting topics, include information such as:<ul
+          id="ul_ak4_cpg_dn">
+          <li>The observable symptoms of the problem being addressed </li>
+          <li>When the problem might occur</li>
+          <li>Who can fix the issue</li>
+        </ul>Keep in mind that the troubleshooting topic includes a &lt;condition> element that can
+        provide much more detail about these items than you should include within the short
+        description. If you find you need more than two sentences to describe this information,
+        include it in &lt;condition> instead.</p>
+      <codeblock scale="80">&lt;troubleshooting>
+  &lt;title>...&lt;/title>
+  &lt;shortdesc>...
+  &lt;/shortdesc>
+&lt;/troubleshooting></codeblock>
+    </section>
+  <section>
+   <title>Writing Short Descriptions for Concepts</title>
+   <p>When writing short descriptions for concepts, include information such as:<ul>
+          <li>A summary of the main point of the content</li>
+          <li>Why this information is important to understand</li>
+        </ul></p>
+    <codeblock>&lt;concept>
+  &lt;title>...&lt;/title>
+  &lt;shortdesc>...&lt;/shortdesc>
+&lt;/concept></codeblock>
+  </section>
+  <section>
+   <title>Writing Short Descriptions for References</title>
+   <p>When writing short descriptions for references, include information such as:<ul>
+          <li>What the reference item does, what it is, or what it is used for</li>
+          <li>The specific type of information provided for each referenced item</li>
+        </ul></p>
+   <codeblock>&lt;concept>
+  &lt;title>...&lt;/title>
+  &lt;shortdesc>... 
+  &lt;/shortdesc>
+&lt;/concept></codeblock>
+  </section>
+ </conbody>
+</concept>

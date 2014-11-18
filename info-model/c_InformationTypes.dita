@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN"
+ "concept.dtd">
+<?Pub UDT _bookmark _target?>
+<?Pub Inc?>
+<concept id="InformationTypes">
+ <title>Information Types</title>
+ <conbody>
+  <p><keyword keyref="companyname"/> categorizes content into five information types:<dl>
+        <dlentry>
+          <dt>Tasks</dt>
+          <dd>Provide procedural information, typically providing step-by-step instructions for
+            accomplishing a goal. A task typically answers a "How Do I..." question.</dd>
+        </dlentry>
+        <dlentry>
+          <dt>Troubleshooting Topics</dt>
+          <dd>Provide strategies for isolating and solving potential problems end users might
+            encounter using <keyword keyref="companyname"/> products. A troubleshooting topic
+            typically answers a "How Do I Identify and Resolve..." question.</dd>
+        </dlentry>
+        <dlentry>
+          <dt>Concepts</dt>
+          <dd>Provide overview and background information that helps end users understand essential
+            information about a product, interface, or task. A concept topic typically answers a
+            "What is..." question. Conceptual information is read once or twice to provide the
+            necessary background information required to complete a task.</dd>
+        </dlentry>
+        <dlentry>
+          <dt>References</dt>
+          <dd>Provide "look-up" information that end users might need to refer to when completing a
+            task. A reference topic may answer questions like "How Much...", "How Many...", or "What
+            Form..." It is intended to be referred to frequently, as-needed, perhaps while an end
+            user is completing a task. </dd>
+        </dlentry>
+        <dlentry>
+          <dt>Glossary Terms</dt>
+          <dd>Provide definitions of terms and acronyms used within the <keyword
+              keyref="companyname"/> documentation. </dd>
+        </dlentry>
+        <!--<dlentry>
+          <dt>Learning overviews</dt>
+          <dd>Provide essential introductory information about a <keyword keyref="companyname"/>
+            lesson or course</dd>
+        </dlentry>
+        <dlentry>
+          <dt>Learning assessments</dt>
+          <dd>Provide questions that help instructors evaluate whether or not students have met the
+            objectives of a training course</dd>
+        </dlentry>-->
+      </dl>All content must be placed into topics that are based on one of these basic information
+      types. As you work, take care not to mix information types within a single topic file. You can
+      always combine topics by placing them in relation to each other in a DITA map.</p>
+ </conbody>
+</concept>

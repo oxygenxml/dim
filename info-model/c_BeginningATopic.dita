@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN"
+ "concept.dtd">
+<?Pub UDT _bookmark _target?>
+<?Pub Inc?>
+<concept id="AuthoringGuidelines">
+ <title>Beginning a Topic</title>
+ <conbody>
+  <p>With the exception of glossary topics, you must include a title and prolog section before you
+   begin the body of the topic. In addition, you can optionally include a short description of the
+   topic. The following sections provide guidelines for these common elements.</p>
+  <note>
+   <p>When creating a new topic, always start with the <keyword keyref="companyname"/> template for
+    the corresponding information type, if one is available. If you copy another topic, you could
+    inadvertently duplicate element IDs and you risk overlooking elements that you might need for
+    the new topic that were removed from the topic you copied.</p>
+  </note>
+ </conbody>
+</concept>

@@ -1,0 +1,280 @@
+
+<!DOCTYPE html
+  SYSTEM "about:legacy-compat">
+<html xml:lang="en-us" lang="en-us">
+<head><meta name="description" content="Collection files are used to hold content that you want to reuse by reference in other topics. They enable you to edit similar content in one location and maintain simple and direct links between ..."></meta><meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta><meta name="copyright" content="(C) Copyright 2005"></meta><meta name="DC.rights.owner" content="(C) Copyright 2005"></meta><meta name="DC.Type" content="concept"></meta><meta name="DC.Title" content="Reusing Elements Through Collection Files"></meta><meta name="DC.Relation" scheme="URI" content="c_ReuseStrategy.html"></meta><meta name="DC.Format" content="XHTML"></meta><meta name="DC.Identifier" content="concept_vtz_r2q_xh"></meta><link rel="stylesheet" type="text/css" href="oxygen-webhelp/resources/css/commonltr.css"><!----></link><title>Reusing Elements Through Collection Files</title><meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta><link rel="stylesheet" type="text/css" href="oxygen-webhelp/resources/css/webhelp_topic.css"><!----></link><link rel="stylesheet" type="text/css" href="oxygen-webhelp/resources/skins/skin.css"><!----></link><script type="text/javascript"><!--
+          
+          var prefix = "index.html";
+          
+          --></script><script type="text/javascript" src="oxygen-webhelp/resources/js/jquery-1.8.2.min.js"><!----></script><script type="text/javascript" src="oxygen-webhelp/resources/js/jquery.cookie.js"><!----></script><script type="text/javascript" src="oxygen-webhelp/resources/js/jquery-ui.custom.min.js"><!----></script><script type="text/javascript" src="oxygen-webhelp/resources/js/jquery.highlight-3.js"><!----></script><script type="text/javascript" charset="utf-8" src="oxygen-webhelp/resources/js/webhelp_topic.js"><!----></script></head>
+<body onload="highlightSearchTerm()" class="frmBody" id="concept_vtz_r2q_xh">
+<table class="nav"><tbody><tr><td colspan="2"><div id="printlink"><a href="javascript:window.print();" title="Print this page"></a></div><div id="permalink"><a href="#" title="Link to this page"></a></div></td></tr><tr><td width="75%"><a class="navheader_parent_path" href="c_ReuseStrategy.html" title="Reuse Strategy">Reuse Strategy</a></td><td><div class="navheader">
+<span class="navparent"><a class="link" href="c_ReuseStrategy.html" title="Reuse Strategy"><span class="navheader_label">Parent topic</span><span class="navheader_separator">: </span><span class="navheader_linktext">Reuse Strategy</span></a></span>  </div></td></tr></tbody></table>
+
+ <h1 class="title topictitle1">Reusing Elements Through Collection Files</h1>
+
+ <div class="body conbody">
+    
+    <p class="p">Collection files are used to hold content that you want to reuse by reference in other
+   topics. They enable you to edit similar content in one location and maintain simple and direct
+   links between small pieces of reusable content and the topics in which they are used. By using
+   collection files, you avoid complex inter-topic linking structures that are difficult to maintain
+   and that rely on authors knowing which specific, individual topics contain information that might
+   be useful to them. Instead, authors are able to easily locate reusable content in common folders
+   and files. In addition, creating collection files helps to protect shared content from changes
+   that would not apply in all reuse situations. When making changes in collection files, authors
+   are aware that the content is reused and that they need to be aware of implications for changing
+   the content.</p>
+
+  <div class="section"><h2 class="title sectiontitle">When to Use</h2>
+   
+   <p class="p">Use collection files any time that you want to reuse portions of another topic within your
+    current topic. Do not reuse content from a file that is not a collection file. Instead, move
+    common content to a collection topic and then reference it.</p>
+
+   <div class="note note"><span class="notetitle">Note:</span> 
+    <p class="p">Keep in mind that content within collection files can also be conditionalized or reference
+          keys. Therefore, similar, but not exact, content might still be a candidate to be placed
+          into collection files. </p>
+
+   </div>
+
+   <p class="p">It is possible to create a topic body that is nothing but content references to other topics.
+        However, if you find that all the references go to the same topic, you should probably be
+        simply reusing that topic, perhaps with variables or conditional processing, instead of
+        creating a new one. In addition, in all cases, the topic title and short description must be
+        unique. Do not conref titles or short descriptions.</p>
+</div>
+
+  <div class="section"><h2 class="title sectiontitle">Creating and Structuring Collection Files</h2>
+   
+   <p class="p">Move shared content into collection files on the first instance of reuse and point both the
+    original and new topic to the collection file. Do not reuse content from a file that is not a
+    collection file. This practice reduces the overhead of managing and controlling common
+    content.</p>
+
+   <div class="p">When creating or adding information to a collection file, follow these guidelines:<ul class="ul" id="concept_vtz_r2q_xh__ul_ysg_3hx_xh">
+     <li class="li">With the obvious exception of elements exclusive to task or troubleshooting topics,
+            use &lt;reference&gt; topics for your collection topics. Use the &lt;section&gt; element with
+            titles to logically sort the collected content into related groupings so authors can
+            more easily locate information in the collection.</li>
+
+          <li class="li">For task and troubleshooting topics, use the &lt;task&gt; and &lt;troubleshooting&gt; topic
+            types, respectively. Because these topics will not allow you to nest their unique
+            elements within a &lt;section&gt; element, you will have to rely on xml comments to locate
+            the information within the collection.</li>
+
+          <li class="li">Sort content into element-specific collection files, such as:<ul class="ul" id="concept_vtz_r2q_xh__ul_kym_1gx_xh">
+       <li class="li">Notes</li>
+
+       <li class="li">Warnings</li>
+
+       <li class="li">Cautions</li>
+
+       <li class="li">Steps</li>
+
+       <li class="li">Prerequisites</li>
+
+       <li class="li">Postrequisites</li>
+
+       <li class="li">Descriptive paragraphs</li>
+
+      </ul>
+By storing reusable information by element type, authors can more easily locate
+      information when it is needed.<div class="note note"><span class="notetitle">Note:</span> Do not create collection files for &lt;title&gt; or
+       &lt;shortdesc&gt; elements. These elements should be unique for each topic to help distinguish
+       it from other topics.</div>
+</li>
+
+     <li class="li">To control the size of collection files, limit their content to a specific scope. If
+            content applies globally across all <span class="keyword">Company Name</span> products, put that
+            content together; however, if content is shared only within a specific product, or a
+            module within the product, create a collection file for that more limited scope, rather
+            than including all content within the same file.</li>
+
+          <li class="li">Store collection files in the Common Content folder at the appropriate level of reuse.
+            For example, notes that are shared across all of <span class="keyword">Company Name</span> are
+            kept in the coll_ReusableNotes.dita file in the Common folder at the root of the file
+            server. However, notes that are used only within a specific component are kept in the
+              coll_<em class="ph i">Component</em>_ReusableNotes.dita file in the Common folder within the
+            appropriate component folder.</li>
+
+     <li class="li">Include content no smaller than a sentence in length. If you want to vary sentence content
+            by a word or phrase, use key files instead.</li>
+
+     <li class="li">Ensure each element in the file has a unique ID. Use your authoring tool to generate an ID
+      if it does not automatically assign it when you add the element. </li>
+
+     <li class="li">Keep in mind that any nested elements are included when you reference an element. Be sure to
+      nest all content that will be used together in a single element; however, if nested content
+      might also be reused alone, ensure that you have provided IDs on those nested elements as
+      well. If an element might be reused without its nested content, do not nest the content in the
+      collection file; in situations where all content is needed, you will have to include multiple
+      references.</li>
+
+     <li class="li">Use xml comments to document your collection files. Include information that helps identify
+      when each element in the file is referenced as well as metadata keywords that might help
+      authors find the specific content they need. </li>
+
+    </ul>
+</div>
+
+   <div class="p">
+    <pre class="pre codeblock">Placeholder for example.</pre>
+
+   </div>
+
+  </div>
+<div class="section"><h2 class="title sectiontitle">Replacing Conditional Processing with Collection Files</h2>
+      
+      <p class="p">In situations where unique content to a specific condition represents more than 50% of the
+        topic content, create a topic-specific collection file rather than cluttering a single topic
+        with a large amount of conditional text. When a file contains significant amounts of
+        conditional content, it becomes much more difficult for an author to interpret the exact
+        outcome they will get when processing the file for each condition. Instead, isolate the
+        common content to all situations in a topic-specific collection file and then create
+        individual files for each condition that also has unique content. In each of the individual
+        files, conref to the common content in the topic-specific collection file and include the
+        unique content in the appropriate places within the file. For example, suppose a single
+        topic contains conditions for three products, as shown:</p>
+
+      <pre class="pre codeblock">&lt;p&gt;This paragraph is common to all.&lt;/p&gt;
+&lt;p product="A"&gt;This paragraph is true only for product A.&lt;/p&gt;
+&lt;p product="B C"&gt;This paragraph is true for both product B and C.&lt;/p&gt;
+&lt;p&gt;This paragraph is common to all.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li product="A"&gt;This list item is true only for product A.&lt;/li&gt;
+&lt;li product="B"&gt;This list item is true only for product B.&lt;/li&gt;
+&lt;li product="C"&gt;This list item is true only for product C.&lt;/li&gt;
+&lt;li&gt;This list item is true for all.&lt;/li&gt;
+&lt;li&gt;This list item is true for all.&lt;/li&gt;
+&lt;li product="A B"&gt;This list item is true for both product A and B.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;This paragraph is common to all.</pre>
+
+      <p class="p">Although this is a simplistic case, it is clear that the more conditions set within the a
+        file, the more difficult it can be for an author to easily determine what content applies in
+        what situations. To avoid this situation, create four files: a common collection file for
+        the topic and three separate topic files for each product. In this format, it is readily
+        apparent what the output of each file will be for a specific product, while avoiding copying
+        and pasting content that might later have to be updated in each file separately.</p>
+
+      <pre class="pre codeblock">&lt;title&gt;Common collection file&lt;/title&gt;
+&lt;p id="p1"&gt;This paragraph is common to all.&lt;/p&gt;
+&lt;p id="p2"&gt;This paragraph is true for both product B and C.&lt;/p&gt;
+&lt;p id="p3"&gt;This paragraph is common to all.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li id="li1"&gt;This list item is true for all.&lt;/li&gt;
+&lt;li id="li2"&gt;This list item is true for all.&lt;/li&gt;
+&lt;li id="li3"&gt;This list item is true for both product A and B.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p id="p4"&gt;This paragraph is common to all.</pre>
+
+      <pre class="pre codeblock">&lt;title&gt;Product A&lt;/title&gt;
+&lt;p conref="CommonContent/p1"/&gt;
+&lt;p&gt;This paragraph is true only for product A.&lt;/p&gt;
+&lt;p conref="CommonContent/p3"/&gt;
+&lt;ul&gt;
+&lt;li&gt;This list item is true only for product A.&lt;/li&gt;
+&lt;li conref="CommonContent/li1"/&gt;
+&lt;li conref="CommonContent/li2"/&gt;
+&lt;li conref="CommonContent/li3"/&gt;
+&lt;/ul&gt;
+&lt;p conref="CommonContent/p4"/&gt;</pre>
+
+      <pre class="pre codeblock">&lt;title&gt;Product B&lt;/title&gt;
+&lt;p conref="CommonContent/p1"/&gt;
+&lt;p conref="CommonContent/p2"/&gt;
+&lt;p conref="CommonContent/p3"/&gt;
+&lt;ul&gt;
+&lt;li&gt;This list item is true only for product B.&lt;/li&gt;
+&lt;li conref="CommonContent/li1"/&gt;
+&lt;li conref="CommonContent/li2"/&gt;
+&lt;li conref="CommonContent/li3"/&gt;
+&lt;/ul&gt;
+&lt;p conref="CommonContent/p4"/&gt;</pre>
+
+      <pre class="pre codeblock">&lt;title&gt;Product C&lt;/title&gt;
+&lt;p conref="CommonContent/p1"/&gt;
+&lt;p conref="CommonContent/p2"/&gt;
+&lt;p conref="CommonContent/p3"/&gt;
+&lt;ul&gt;
+&lt;li&gt;This list item is true only for product C.&lt;/li&gt;
+&lt;li conref="CommonContent/li1"/&gt;
+&lt;li conref="CommonContent/li2"/&gt;
+&lt;/ul&gt;
+&lt;p conref="CommonContent/p4"/&gt;</pre>
+
+    </div>
+<div class="section"><h2 class="title sectiontitle">Referencing Individual Elements from Collection Files</h2>
+   
+   <p class="p">In order to reference information from a collection
+        file, the referenced information must be valid at the location you are referencing it in the
+        new topic. To ensure that the element is valid, you first insert an empty element of the
+        same type you are referencing at the location where you want the information to occur. You
+        then assign a <em class="ph i">conref</em> attribute to the element that points to the appropriate element
+        in the collection file. The reference must be in the following syntax:
+          <samp class="ph codeph">FilePathAndName#topicID/elementID</samp>. For example, suppose you want to
+        reference the following note which is found in the file CollectionFiles/coll_Caution.dita,
+        which has a topic id of "Caution".</p>
+
+   <p class="p"><samp class="ph codeph">&lt;note type="Caution" ID="..."&gt;...&lt;/note&gt;</samp></p>
+
+   <p class="p">You would include the following element in your topic:</p>
+
+   <p class="p"><samp class="ph codeph">&lt;note conref="CollectionFiles/coll_Caution.dita#Caution/..."/&gt;</samp></p>
+
+   <div class="note tip"><span class="tiptitle">Tip:</span> Use your authoring tool's menus and commands to insert content references to
+    avoid coding the element by hand and to ensure the reference syntax is correct.</div>
+
+   <p class="p">The <em class="ph i">@conref</em> attribute can reference only one element at a time. However, all nested
+    elements within that element are also included in the reference. Before referencing an element,
+    make sure that all nested content applies in your specific situation.</p>
+
+  </div>
+
+  <div class="section"><h2 class="title sectiontitle">Referencing a range of elements from a collection file </h2>
+   
+   <p class="p">In DITA 1.2, you can add a contiguous set of
+    unnested elements by using a conref range. To do so, the first and last elements in the range
+    must be the same element type, share the same parent, and have unique IDs. For example, to
+    reference a set of steps, both the first and last elements in the range would be &lt;step&gt;
+    elements, which share the same &lt;steps&gt; parent.</p>
+
+   <div class="p">To use a conref range, include an element of the same type you are referencing and assign two
+     attributes:<ul class="ul" id="concept_vtz_r2q_xh__ul_cq2_kdx_xh">
+     <li class="li">the <em class="ph i">@conref</em> attribute points to the first element in the range</li>
+
+     <li class="li">the <em class="ph i">@conrefend</em> attribute points to the last element in the range</li>
+
+    </ul>
+ For example, suppose you have created a collection file,
+    "CollectionFiles/coll_Steps.dita", with a topic <em class="ph i">id</em> of "Steps", as shown in the
+    example.</div>
+
+   <pre class="pre codeblock">&lt;steps&gt;
+  &lt;step ID="Step1"&gt;&lt;cmd&gt;This is step 1.&lt;/cmd&gt;&lt;/step&gt;
+  &lt;step ID="Step2"&gt;&lt;cmd&gt;This is step 2.&lt;/cmd&gt;&lt;/step&gt;
+  &lt;step ID="Step3"&gt;&lt;cmd&gt;This is step 3.&lt;/cmd&gt;&lt;/step&gt;
+  &lt;step ID="Step4"&gt;&lt;cmd&gt;This is step 4.&lt;/cmd&gt;&lt;/step&gt;
+  &lt;step ID="Step5"&gt;&lt;cmd&gt;This is step 5.&lt;/cmd&gt;&lt;/step&gt;
+&lt;/steps&gt;</pre>
+
+   <p class="p">To reference steps 1 through 4, you would include the following in your topic:</p>
+
+   <p class="p"><samp class="ph codeph">&lt;step conref="CollectionFiles/coll_Steps.dita#Steps/Step1"
+     conrefend="CollectionFiles/coll_Steps.dita#Steps/Step4"/&gt;</samp></p>
+
+   <div class="note tip"><span class="tiptitle">Tip:</span> Use your authoring tool's menus and commands to insert content references to
+    avoid coding the element by hand and to ensure the reference syntax is correct.</div>
+
+  </div>
+
+  
+ </div>
+
+<div class="related-links"></div>
+<div class="navfooter"><!---->
+<span class="navparent"><a class="link" href="c_ReuseStrategy.html" title="Reuse Strategy"><span class="navheader_label">Parent topic</span><span class="navheader_separator">: </span><span class="navheader_linktext">Reuse Strategy</span></a></span>  </div><div class="footer">WebHelp output generated by<a href="http://www.oxygenxml.com" target="_blank"><span class="oXygenLogo"><img src="oxygen-webhelp/resources/img/LogoOxygen100x22.png" alt="Oxygen"></img></span><span class="xmlauthor">XML Author</span></a></div>
+</body>
+</html>

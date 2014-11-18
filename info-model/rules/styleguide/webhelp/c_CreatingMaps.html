@@ -1,0 +1,146 @@
+
+<!DOCTYPE html
+  SYSTEM "about:legacy-compat">
+<html xml:lang="en-us" lang="en-us">
+<head><meta name="description" content="A map file consists of a hierarchical organization of &lt;topicref&gt;, &lt;mapref&gt;, and &lt;glossref&gt; elements. Each of these elements requires an @href attribute that points to an individual topic, map, or ..."></meta><meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta><meta name="copyright" content="(C) Copyright 2005"></meta><meta name="DC.rights.owner" content="(C) Copyright 2005"></meta><meta name="DC.Type" content="concept"></meta><meta name="DC.Title" content="Creating Maps"></meta><meta name="DC.Relation" scheme="URI" content="c_Maps.html"></meta><meta name="DC.Format" content="XHTML"></meta><meta name="DC.Identifier" content="concept_qly_bwm_ch"></meta><link rel="stylesheet" type="text/css" href="oxygen-webhelp/resources/css/commonltr.css"><!----></link><title>Creating Maps</title><meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta><link rel="stylesheet" type="text/css" href="oxygen-webhelp/resources/css/webhelp_topic.css"><!----></link><link rel="stylesheet" type="text/css" href="oxygen-webhelp/resources/skins/skin.css"><!----></link><script type="text/javascript"><!--
+          
+          var prefix = "index.html";
+          
+          --></script><script type="text/javascript" src="oxygen-webhelp/resources/js/jquery-1.8.2.min.js"><!----></script><script type="text/javascript" src="oxygen-webhelp/resources/js/jquery.cookie.js"><!----></script><script type="text/javascript" src="oxygen-webhelp/resources/js/jquery-ui.custom.min.js"><!----></script><script type="text/javascript" src="oxygen-webhelp/resources/js/jquery.highlight-3.js"><!----></script><script type="text/javascript" charset="utf-8" src="oxygen-webhelp/resources/js/webhelp_topic.js"><!----></script></head>
+<body onload="highlightSearchTerm()" class="frmBody" id="concept_qly_bwm_ch">
+<table class="nav"><tbody><tr><td colspan="2"><div id="printlink"><a href="javascript:window.print();" title="Print this page"></a></div><div id="permalink"><a href="#" title="Link to this page"></a></div></td></tr><tr><td width="75%"><a class="navheader_parent_path" href="c_MapsAndBookMaps.html" title="Maps and Bookmaps">Maps and Bookmaps</a> / <a class="navheader_parent_path" href="c_Maps.html" title="Maps">Maps</a></td><td><div class="navheader">
+<span class="navparent"><a class="link" href="c_Maps.html" title="Maps"><span class="navheader_label">Parent topic</span><span class="navheader_separator">: </span><span class="navheader_linktext">Maps</span></a></span>  </div></td></tr></tbody></table>
+
+ <h1 class="title topictitle1">Creating Maps</h1>
+
+ <div class="body conbody">
+  
+  <p class="p">A map file consists of a hierarchical organization of &lt;topicref&gt;, &lt;mapref&gt;, and
+   &lt;glossref&gt; elements. Each of these elements requires an <em class="ph i">@href</em> attribute that
+   points to an individual topic, map, or glossary topic. </p>
+
+  <div class="p">When building a map, consider the following strategies:<ul class="ul" id="concept_qly_bwm_ch__ul_kgc_xwl_ch">
+    <li class="li">Start by adding task topics, which should be the primary focus of your documentation
+     according to minimalism principles. Consider how best to organize these tasks based on your
+     audience. For example, you might order the tasks based on workflow or the sequence in which the
+     tasks might be completed; based on frequency of use from most common to least common; or based
+     on who will be performing the tasks. Then, add concept, troubleshooting, and reference topics
+     that support the tasks. Do not add concept or reference topics that you cannot relate to at
+     least one task.</li>
+
+    <li class="li">You can include a topic more than once within your map. However, to maintain context for the
+     user during navigation, you should provide a unique name for each instance of the topic using
+     the <em class="ph i">@copy-to</em> attribute.</li>
+
+    <li class="li">Just because you have created multiple topic files doesn't mean that they need to be
+     displayed as multiple topics. Sometimes you may have created multiple topics for reuse
+     purposes, but the end user should see all the content as one comprehensive topic. Specify
+      <em class="ph i">@chunk="to-content"</em> on the parent topic to combine it with all nested children into one
+     topic on output.</li>
+
+    <li class="li">Rather than nest topics several levels deep, consider creating submaps that you then
+     reference with a &lt;mapref&gt;. In general, it's a good idea to create submaps whenever you are
+     nesting more than five topics to keep your maps clean and easily interpretable by others.</li>
+
+    <li class="li">Avoid nesting topics more than four levels deep. Although you can nest maps in maps, keep in
+     mind the levels you are creating by nesting maps in maps. </li>
+
+    <li class="li">A table of contents is automatically built when you process a map. To keep a topic from
+     appearing in the TOC, set the <em class="ph i">@toc </em>attribute to "no".</li>
+
+   </ul>
+</div>
+
+  <div class="section" id="concept_qly_bwm_ch__TitlingMaps"><h2 class="title sectiontitle">Titling Maps</h2>
+   
+   <div class="p">In general, follow the same guidelines for writing map titles as for topics; see <a class="xref" href="c_TitlingTopics.html#TitlingTopics">Titling Topics</a>. In addition, however, consider the following:<ul class="ul" id="concept_qly_bwm_ch__ul_u23_2rp_xh">
+     <li class="li">In general, map titles will tend to be less specific than topic titles because they are
+      summarizing the content of all the topics nested within the map. Think about how you might
+      categorize the information in the map; often that category should be part of the map
+      title.</li>
+
+     <li class="li"> Ensure the title indicates the range of topics it contains. For example, if the content
+      covers both removal and replacement procedures for a board, it would be incomplete and
+      misleading to title the map "Replacing Boards."  </li>
+
+     <li class="li">In any single publication, the map titles will be closely tied together. Each will deal
+      with some aspect of the overall topic of the book. Therefore, be careful to make each map
+      title clearly differentiated in terms of the specific contents it contains compared to others
+      in the same publication.</li>
+
+     <li class="li">Avoid starting all map titles with the same words, such as a product name. Users are
+      scanning for words that help them differentiate between the maps; put those words first.</li>
+
+    </ul>
+</div>
+
+  </div>
+
+  <div class="section" id="concept_qly_bwm_ch__section_rk1_1bw_kn"><h2 class="title sectiontitle">Linking Topics</h2>
+   
+   <div class="p">In addition to establishing a hierarchy among topics, the way you group topics together in
+        your map affects the manner in which you establish links among them. In DITA, parent and
+        child topics automatically receive a two-way link between each other. However, all other
+        relationships must be explicitly established through attributes or relationship tables. The
+          <em class="ph i">@collection-type</em> attribute enables you to establish links through the hierarchical
+        structure of your map, thereby saving you effort in defining those links through a
+        relationship table. You can establish two types of relationships with the
+          <em class="ph i">@collection-type</em> attribute:<dl class="dl" id="concept_qly_bwm_ch__collectiontype">
+          
+            <dt class="dt dlterm">family</dt>
+
+            <dd class="dd">All topics within the group are related to all other topics.</dd>
+
+          
+          
+            <dt class="dt dlterm">sequence</dt>
+
+            <dd class="dd">Topics are related to the topics immediately before and after them in the map
+              through Next and Previous links.</dd>
+
+          
+        </dl>
+</div>
+
+   <p class="p">Specify the <em class="ph i">@collection-type</em> attribute on the parent topic of the topics you want to
+    link together.</p>
+
+   <pre class="pre codeblock">placeholder for example</pre>
+
+   <div class="note note"><span class="notetitle">Note:</span> In some cases you may not want to promote one topic over another. In this case, you can first nest the related topics in a
+        &lt;topicgroup&gt; and then assign the <em class="ph i">@collection-type</em> attribute to establish the type
+        of relationship.<pre class="pre codeblock">Placeholder for example</pre>
+</div>
+
+   <p class="p">When topics are not grouped together within the hierarchy of the map, you must use a
+        relationship table to establish links among them. See <a class="xref" href="c_RelationshipTables.html#RelTableOverview">Relationship Tables</a> for instructions. </p>
+
+  </div>
+
+  <div class="section"></div>
+
+  <div class="section" id="concept_qly_bwm_ch__section_sb5_hjd_q4"><h2 class="title sectiontitle">Compiling a Glossary Map</h2>
+   
+   <p class="p">To compile all your glossary terms into a single glossary for a deliverable, create a &lt;map&gt;
+    file for the glossary. Insert each term in the map using a &lt;glossref&gt; element, instead of the
+    typical &lt;topicref&gt;. The &lt;glossref&gt; element requires that you provide a <em class="ph i">@keys
+    </em>attribute. In most cases, use the term or an abbreviation as the <em class="ph i">@keys</em> value. In
+    addition, if you want the glossary terms and acronyms to appear in PDF output, you also need to
+    set the <em class="ph i">@print </em>attribute to "yes".</p>
+
+   <div class="note note"><span class="notetitle">Note:</span> You may find it useful to alphabetize the glossary entries in your map. However, the
+     <span class="keyword">Company Name</span> transform will automatically alphabetize the terms for you when
+    you generate your content.</div>
+
+   
+   <pre class="pre codeblock">Placeholder for example not related to topichead</pre>
+
+  </div>
+
+ </div>
+
+<div class="related-links"></div>
+<div class="navfooter"><!---->
+<span class="navparent"><a class="link" href="c_Maps.html" title="Maps"><span class="navheader_label">Parent topic</span><span class="navheader_separator">: </span><span class="navheader_linktext">Maps</span></a></span>  </div><div class="footer">WebHelp output generated by<a href="http://www.oxygenxml.com" target="_blank"><span class="oXygenLogo"><img src="oxygen-webhelp/resources/img/LogoOxygen100x22.png" alt="Oxygen"></img></span><span class="xmlauthor">XML Author</span></a></div>
+</body>
+</html>

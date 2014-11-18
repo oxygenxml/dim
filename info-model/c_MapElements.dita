@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN"
+ "concept.dtd">
+<concept id="Maps">
+  <title>Map Elements</title>
+  <conbody>
+    <section>
+      <p><indexterm>map &lt;map></indexterm>Nest the following items in the &lt;map> base element when creating a map.</p>
+      <dl>
+        <dlentry>
+          <dt>&lt;title>title</dt>
+          <dd><indexterm>map title &lt;title></indexterm>Use the &lt;title> element to define a title for the group of topics; for example, a
+            chapter or section heading.</dd>
+        </dlentry>
+        <dlentry>
+          <dt>&lt;topicmeta> topic metadata </dt>
+          <dd><indexterm>topic metadata &lt;topicmeta></indexterm>Use the &lt;topicmeta> element to
+            specify metadata about the map as a whole, a group of topics referenced within the map,
+            or a specific topic or map reference. Metadata specified in a &lt;topicmeta> element
+            cascades to all elements contained within the element to which the &lt;topicmeta> is
+            attached. For example, metadata within a &lt;topicmeta> element that appears immediately
+            after the base &lt;map> element applies to all elements in the entire map. However,
+            &lt;topicmeta> attached to a &lt;topicgroup> applies only to the topics within that
+            group, and &lt;topicmeta> attached to a single &lt;topicref> applies only to that topic.
+            Metadata specified in &lt;topicmeta> within a map overrides any metadata values for the
+            same elements specified in the topics, unless multiple elements of that type are
+            allowed. </dd>
+        </dlentry>
+        <dlentry>
+          <dt>&lt;topicref> topic reference </dt>
+          <dd><indexterm>topic reference &lt;topicref></indexterm>Use the &lt;topicref> element to
+            point to a single DITA topic. You must include the <i>@href</i> attribute to point to
+            the path and file name for the DITA topic or external file you want to include. Use
+            multiple &lt;topicref > elements to point to multiple topics to build your deliverable.
+            Nesting the &lt;topicref> elements in one another creates a navigational and
+            hierarchical structure. </dd>
+        </dlentry>
+        <dlentry id="mapref">
+          <dt>&lt;mapref> map reference <i> (optional)</i></dt>
+          <dd><indexterm>map reference &lt;mapref></indexterm>Use the &lt;mapref> element to point
+            to a map of DITA topics. You must include the <i>@href</i> attribute to point to the
+            path and file name for the DITA map you want to include. </dd>
+        </dlentry>
+        <dlentry>
+          <dt>&lt;glossref> glossary reference (optional)</dt>
+          <dd><indexterm>glossary reference &lt;glossref></indexterm>Use the &lt;glossref> element
+            to point to a glossentry topic, when building a glossary map. You must include the
+              <i>@href</i> attribute to point to the path and file name for the DITA map you want to
+            include. In addition, you must specify a <i>@keys</i> attribute so that the glossentry
+            can be referenced from within the text of other topics using the &lt;term> or
+            &lt;abbreviated-form> elements.</dd>
+        </dlentry>
+        <dlentry>
+          <dt>&lt;reltable> relationship table <i> (optional)</i>
+          </dt>
+          <dd><indexterm>relationship table &lt;reltable></indexterm>Use the &lt;reltable> element
+            to specify relationships between topics. See <xref
+              href="c_RelationshipTables.dita#RelTableOverview"/> for information about building
+            relationship tables.</dd>
+        </dlentry>
+        <dlentry>
+          <dt>&lt;topicgroup> topic group (optional)</dt>
+          <dd><indexterm>topic group &lt;topicgroup></indexterm>Nest &lt;topicref> elements in a
+            &lt;topicgroup> to establish linking relationships between them. Use the
+              <i>@collection-type</i> attribute to establish the type of relationship. See <xref
+              href="c_CreatingMaps.dita#concept_qly_bwm_ch/section_rk1_1bw_kn"/> for more
+            information.</dd>
+        </dlentry>
+        <dlentry>
+          <dt>&lt;topichead> topic head <i> (optional)</i></dt>
+          <dd><indexterm>topic head &lt;topichead></indexterm><indexterm>navigation title
+              &lt;navtitle></indexterm>Use the &lt;topichead> element to provide a title-only entry
+            for a table of contents and within the rendered content. To define the title, nest a
+            &lt;navtitle> element within a &lt;topicmeta> element within this
+            element.<codeblock>&lt;topichead>
+  &lt;topicmeta>
+    &lt;navtitle>...&lt;/navtitle>
+  &lt;/topicmeta>
+&lt;/topichead></codeblock></dd>
+        </dlentry>
+
+
+
+
+      </dl>
+    </section>
+  </conbody>
+</concept>

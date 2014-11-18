@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN"
+ "concept.dtd">
+<?Pub UDT _bookmark _target?>
+<?Pub Inc?>
+<concept id="TaskElements">
+ <title>Task Elements</title>
+ <conbody>
+    <p>Choose from the following elements when writing a task topic. An asterisk (*) next to the
+      element name indicates that you can nest the block and inline elements that are common to all
+      information types as described in <xref href="c_BlockElements.dita#StructureElements"/> and
+        <xref href="c_UsingInlineElements.dita#InlineElements"/> within the element. </p>
+  <section>
+   <title>&lt;taskbody> Elements</title>
+   <p>Nest these elements within the &lt;taskbody> element.</p>
+   <dl>
+    <dlentry>
+     <dt>&lt;prereq> prerequisite<sup>*</sup></dt>
+     <dd><indexterm>prerequisite &lt;prereq></indexterm>Use the &lt;prereq> element to specify
+            anything that the user needs to know or do before starting the task; for example, to
+            describe actions that must be completed prior to beginning the task or to list special
+            tools or equipment that the user needs to complete the task. You might also use
+            &lt;prereq> as a container for notes and hazard statements specific to the entire task.
+            Nest an unordered list in this section and include each required item in a list item
+            (li). Do not include an introductory sentence. </dd>
+
+    </dlentry>
+        <dlentry>
+          <dt>&lt;context> context <sup>*</sup></dt>
+          <dd><indexterm>context &lt;context></indexterm>Use the &lt;context> element to identify
+            the purpose or goal of the task, as well as to indicate to the users what they gain by
+            completing the task. The context section should answer questions like "who," "what,"
+            "why," "where," and "when," while the steps section then answers the question "how."
+            Although the context information may contain some basic conceptual information, it
+            should not replace or recreate a related concept topic. </dd>
+        </dlentry>
+        <dlentry>
+          <dt>&lt;steps> steps</dt>
+          <dd><indexterm>steps &lt;steps></indexterm><indexterm>step &lt;step></indexterm>Use the
+            &lt;steps> element to create a numbered list of all the steps that the user must follow
+            to complete the task. The &lt;steps> element can contain any number of &lt;step> and
+            &lt;stepsection> elements. The &lt;steps>, &lt;steps-unordered>, or &lt;steps-informal>
+            element is required within a task topic. <!--The &lt;steps> element is included in the
+            General Task Template.--><dl>
+              <dlentry>
+                <dt>&lt;stepsection> step section</dt>
+                <dd><indexterm>step section &lt;stepsection></indexterm>Nest the &lt;stepsection>
+                  element within &lt;steps> to specify conditions that might require the user to
+                  skip the next step or series of steps within a procedure. The &lt;stepsection>
+                  element should be placed immediately before the first step that might be skipped
+                  and should contain an &lt;xref> element pointing to the next relevant step for
+                  situations that meet the specified condition. The &lt;stepsection> element does
+                  not interrupt the sequencing of the individual
+                  steps.<codeblock scale="80">Placeholder for Example</codeblock>
+                </dd>
+              </dlentry>
+              <dlentry>
+                <dt>step</dt>
+                <dd><indexterm>step &lt;step></indexterm>Use the &lt;step> element for each step
+                  that the user must follow to complete the task. Each &lt;step> element must be
+                  nested in a &lt;steps> or &lt;steps-unordered> container element and must include
+                  a &lt;cmd> element. You may use one or more &lt;step> elements within each
+                  &lt;steps> or &lt;steps-unordered> element. </dd>
+              </dlentry>
+            </dl><p>A &lt;steps>, &lt;steps-unordered>, or &lt;steps-informal> element is required
+              within a task topic. </p></dd>
+        </dlentry>
+        <dlentry>
+          <dt>&lt;steps-unordered> steps unordered (mandatory in a checklist task) </dt>
+          <dd><indexterm>steps unordered &lt;steps-unordered></indexterm><indexterm>step
+              &lt;step></indexterm>Use the &lt;steps-unordered> element if your task only has one
+            step or if the steps do not need to be performed in a specific order. On output,
+            &lt;step> elements nested in a &lt;steps-unordered> element will be formatted with
+            checkboxes rather than numbers. As with the &lt;steps> element, the &lt;steps-unordered>
+            element is a container for all &lt;stepsection> and individual &lt;step> elements that
+            the task contains (see &lt;steps> for more information). <!--The &lt;steps>,
+            &lt;steps-unordered>, or &lt;steps-informal> element is required within a task topic.
+            The &lt;steps-unordered> element is included in the Checklist Task Template.--> </dd>
+        </dlentry>
+    <dlentry>
+     <dt>&lt;stepsection> step section</dt>
+     <dd><indexterm>step section &lt;stepsection></indexterm>Use the &lt;stepsection> element to put
+      a title before a set of steps in a procedure. The &lt;stepsection> element does not interrupt
+      the sequencing of the individual steps.<draft-comment>Companies should have good reason for
+       keeping this element. Used only rarely in our experience.</draft-comment></dd>
+    </dlentry>
+    <dlentry>
+     <dt>&lt;result> result<sup>*</sup></dt>
+     <dd><indexterm>result &lt;result></indexterm>Use the &lt;result> element to describe the
+            expected outcome for the task as a whole. The &lt;result> element could include a final
+            description using figures, tables, or visual cues that show end users that they have
+            successfully completed the task. </dd>
+    </dlentry>
+        <dlentry>
+          <dt>&lt;tasktroubleshooting> task troubleshooting<sup>*</sup> (optional)</dt>
+          <dd><indexterm>task troubleshooting &lt;tasktroubleshooting></indexterm>Use the
+            &lt;tasktroubleshooting> element to help users resolve any problems that may arise
+            during the completion of the task, for example, what to do if they don't get the
+            expected result. </dd>
+        </dlentry>
+    <dlentry>
+     <dt>&lt;example&gt; example<sup>*</sup>
+          </dt>
+     <dd><indexterm>example &lt;example></indexterm>Use the &lt;example&gt; element in a task to
+            include a specific scenario for completing the task. The &lt;example&gt; element could
+            include graphics or text that show or describe to users how they would complete the task
+            in the given circumstances. </dd>
+    </dlentry>
+    <dlentry>
+     <dt>&lt;postreq> post requiremen<sup>*</sup>t</dt>
+     <dd><indexterm>post requirement &lt;postreq></indexterm>Use the &lt;postreq> element to specify
+            anything that the user needs to know or do after completing the task. This information
+            might include recommended next steps, such as clean up, testing, and adjusting.</dd>
+    </dlentry>
+   </dl>
+  </section>
+   <section id="stepelements">
+      <title>&lt;step> Elements</title>
+      <p>Use the &lt;step> element for each step that the user must follow to complete the task.
+        Each &lt;step> element must be nested in a &lt;steps> or &lt;steps-unordered> container
+        element and must begin with a &lt;cmd> element. You may use one or more &lt;step> elements
+        within each &lt;steps> or &lt;steps-unordered> element. </p>
+      <p>You can nest any of these elements within a &lt;step> element:</p>
+      <!--<note>All information after the &lt;cmd> element can be collapsed into a "twistie" to provide
+        users the ability to show or hide the additional information. To do so, add an
+          <i>@outputclass</i> attribute to the step and indicate whether it should be initially
+        collapsed (<codeph>&lt;step outputclass="collapse"></codeph>) or initially displayed
+          (<codeph>&lt;step outputclass="open"></codeph>). If no <i>@outputclass</i> is specified,
+        the information can never be hidden.</note>-->
+      <dl>
+        <dlentry>
+          <dt>&lt;note> note or &lt;hazardstatement> hazard statement<sup>*</sup></dt>
+          <dd><indexterm>note &lt;note></indexterm><indexterm>hazard statement
+              &lt;hazardstatement></indexterm>Include a &lt;note> or &lt;hazardstatement> element to
+            notify users of dangers or other important information about the step before they see
+            the step.<draft-comment>Valid in dita 1.2 only.</draft-comment>
+          </dd>
+        </dlentry>
+        <dlentry>
+          <dt>&lt;cmd> command</dt>
+          <dd><indexterm>command &lt;cmd></indexterm>Use the &lt;cmd> element to describe the action
+            the user needs to take in a &lt;step> or &lt;substep> element. This element is required
+            within &lt;step> and &lt;substep> elements.</dd>
+        </dlentry>
+        <dlentry>
+          <dt>&lt;info> information<sup>*</sup></dt>
+          <dd><indexterm>information &lt;info></indexterm>Use the &lt;info> element to provide
+            additional information for completing a step beyond the instruction in the &lt;cmd>
+            element or as a container for a &lt;note> element that pertains to the specific step.
+          </dd>
+        </dlentry>
+        <dlentry>
+          <dt>&lt;substeps> sub-steps and nested &lt;substep> sub-step elements</dt>
+          <dd><indexterm>substeps &lt;substeps></indexterm><indexterm>substep
+              &lt;substep></indexterm>Use the &lt;substeps> element to break a step down into a
+            series of actions. This element is a container for the individual &lt;substep> elements.
+            Use a &lt;substep> element for each sub-step that a user must follow to complete the
+            step. The &lt;substep> element has the same structure as the &lt;step> element, but it
+            cannot contain another level of &lt;substeps>, &lt;choice>, or &lt;choicetable>
+            elements.</dd>
+          <dd>
+            <note>If you need to use &lt;substeps>, consider creating a new task instead so that the
+              steps are not embedded in another task. Use of sub-steps should be limited, and only
+              one level of substep is permitted. </note>
+          </dd>
+        </dlentry>
+        <dlentry>
+          <dt>&lt;choices> choices and nested &lt;choice> choice elements<sup>*</sup></dt>
+          <dd><indexterm>choices &lt;choices></indexterm><indexterm>choice
+            &lt;choice></indexterm>Use the &lt;choices> element to create a list of options that the
+            user may select to complete the task. Use &lt;choicetable> when the user has many
+            options that lead to different results. The &lt;choices> element is a container for
+            individual &lt;choice> elements. Nest a &lt;choice&gt; element within &lt;choices> for
+            each option that the user can select. Do not insert the word "or" between the choices.
+            If necessary, you can add additional elements such as &lt;p>, &lt;ul>, or &lt;ol> to a
+            &lt;choice> element.</dd>
+        </dlentry>
+        <dlentry>
+          <dt>&lt;choicetable> choice table</dt>
+          <dd><indexterm>choice table &lt;choice table></indexterm>Use the &lt;choicetable> element
+            to create a table of options that the user may select to complete the task. The choice
+            table lends itself well to an if/then configuration; for example:<table
+              id="table_rgb_xop_od">
+              <tgroup cols="2">
+                <thead>
+                  <row>
+                    <entry>If you want to...</entry>
+                    <entry>Then...</entry>
+                  </row>
+                </thead>
+                <tbody>
+                  <row>
+                    <entry>Create a bulleted list of options</entry>
+                    <entry>Use the &lt;choices> element</entry>
+                  </row>
+                  <row>
+                    <entry>Create a table of options</entry>
+                    <entry>Use the &lt;choicetable> element</entry>
+                  </row>
+                </tbody>
+              </tgroup>
+            </table>However, you can title the columns as needed according to the choices to be
+            made. Use your authoring tool's table creation features to create the choice table. The
+            specific elements required in a choice table are explained in <xref
+              href="#TaskElements/choicetableelements" format="dita"/>.</dd>
+        </dlentry>
+        <dlentry>
+          <dt>&lt;stepxmp> step example<sup>*</sup></dt>
+          <dd><indexterm>step example &lt;stepxmp&gt;</indexterm>Use the &lt;stepxmp> to include an
+            example illustrating the step. While the &lt;cmd> element is typically written
+            generically to apply to any situation, the &lt;stepxmp> element shows a specific
+            application of the &lt;cmd> statement to help users better understand how to complete
+            the step.</dd>
+        </dlentry>
+        <dlentry>
+          <dt>&lt;tutorialinfo&gt; tutorial information<sup>*</sup></dt>
+          <dd><indexterm>tutorial information &lt;tutorialinfo></indexterm>Use the
+            &lt;tutorialinfo&gt; element to provide specific information that applies to a scenario
+            established for a tutorial. For example, a task might include the generic step,
+            <?oxy_comment_start author="stefany" timestamp="20140602T122350-0600" comment="Fill these blanks"?>"..."
+            <?oxy_comment_end?>In the &lt;tutorialinfo> element, you would provide the specific
+            values for that step, such
+            as<?oxy_comment_start author="stefany" timestamp="20140602T122404-0600" comment="Fill these blanks"?>
+            ... <?oxy_comment_end?>:<draft-comment>provide example from
+            company</draft-comment><codeblock>&lt;tutorialinfo>.... 
+  &lt;dl>
+    &lt;dlentry>
+      &lt;dt>...&lt;/dt>
+      &lt;dd>....&lt;/dd>
+    &lt;/dlentry>
+    &lt;dlentry>
+      &lt;dt>...&lt;/dt>
+      &lt;dd>...&lt;/dd>
+    &lt;/dlentry>
+    &lt;dlentry>
+      &lt;dt>...&lt;/dt>
+      &lt;dd>...&lt;/dd>
+    &lt;/dlentry>
+  &lt;/dl>
+&lt;/tutorialinfo></codeblock></dd>
+        </dlentry>
+        <dlentry>
+          <dt>&lt;stepresult> step result<sup>*</sup></dt>
+          <dd><indexterm>step result &lt;stepresult></indexterm>Use the &lt;stepresult> element to
+            explain the expected outcome of a step. Step results assure users that they are on
+            track, but do not need to be included on all steps. Use this element only as much as
+            necessary to keep the user on task, where it is really useful to the users, not just to
+            illustrate what they can see on the screen. Remember, if you don't use this element, you
+            can use orienting language in the step itself, such as "On the XYZ screen,
+              do...".<note>You can include only one &lt;stepresult> in a step, and nothing except a
+              &lt;steptroubleshooting> element can follow it.</note></dd>
+        </dlentry>
+      </dl>
+      <dl>
+        <dlentry>
+          <dt>&lt;steptroubleshooting> step troubleshooting<sup>*</sup> (optional)</dt>
+          <dd><indexterm>step troubleshooting &lt;steptroubleshooting></indexterm>Use the
+            &lt;steptroubleshooting> element to provide information to users for how to recover from
+            mistakes made or errors encountered during this step. Consider including this element
+            whenever you include a &lt;stepresult> so that users immediately know what to do if they
+            don't see the expected result. <note>When included, the &lt;steptroubleshooting> element
+              must be the last element within a &lt;step>. </note></dd>
+        </dlentry>
+      </dl>
+    </section>
+  <section id="choicetableelements">
+   <title>&lt;choicetable> Elements</title>
+   <p>Your authoring tool will likely set up a &lt;choicetable> element for you without you ever
+    needing to code the individual table elements. However, for reference purposes, the following
+    list describes the elements that make up a choice table.</p>
+   <dl>
+    <dlentry>
+     <dt>&lt;chhead> choice head</dt>
+     <dd><indexterm>choice table head &lt;chhead></indexterm>Use the &lt;chhead> element to provide
+      headings for the columns in a choice table. The &lt;chhead> element contains the
+      &lt;choptionhd> and &lt;chdeschd> elements. If you do not specify these elements, the default
+      headings are "Option" and "Description."<dl>
+       <dlentry>
+        <dt>&lt;choptionhd> choice option head</dt>
+        <dd><indexterm>choice table first column head &lt;choptionhd></indexterm>Use the
+         &lt;choptionhd> element to specify the heading for the first column of a choice table.
+        </dd>
+       </dlentry>
+       <dlentry>
+        <dt>&lt;chdeschd> choice description head</dt>
+        <dd><indexterm>choice table second column head &lt;chdeschd></indexterm>Use the
+         &lt;chdeschd> element to specify the heading for the second column of a choice table. </dd>
+       </dlentry>
+      </dl></dd>
+    </dlentry>
+    <dlentry>
+     <dt>&lt;chrow> choice row</dt>
+     <dd><indexterm>choice table row &lt;chrow></indexterm>Use the &lt;chrow> element to create a
+            row in a choice table. The &lt;chrow> element contains the &lt;choption> and &lt;chdesc>
+            elements: <dl>
+              <dlentry>
+                <dt>&lt;choption> choice option<sup>*</sup></dt>
+                <dd><indexterm>choice table option &lt;choption></indexterm>Use the &lt;choption>
+                  element to describe an option that the user can choose to accomplish the step. You
+                  can use only one &lt;choption> element in each &lt;chrow> element.</dd>
+              </dlentry>
+              <dlentry>
+                <dt>&lt;chdesc> choice description<sup>*</sup></dt>
+                <dd><indexterm>choice table description &lt;chdesc></indexterm>Use the &lt;chdesc>
+                  element to provide a description for the option in the corresponding &lt;choption>
+                  element. The description explains why the user would choose that option or the
+                  result of making that choice. You can use only one &lt;chdesc> element in each
+                  &lt;chrow> element. </dd>
+              </dlentry>
+            </dl><codeblock>Placeholder for choicetable example.</codeblock></dd>
+    </dlentry>
+   </dl>
+  </section>
+ </conbody>
+</concept>

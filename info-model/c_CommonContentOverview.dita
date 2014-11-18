@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN" "concept.dtd">
+<concept id="CommonContentOverview">
+	<title>Reusing Topics and Maps</title>
+	<conbody>
+		<p>The simplest form of reuse is simply using maps or topics exactly as they were created
+			the first time in a new map or publication. For example:<ul id="ul_rml_gyf_yh">
+				<li>Publishing the same map for more than one output type, such as PDF and help
+					files. The content itself does not change, only the output format.</li>
+				<li>Including corporate legal notices, trademarks, safety information, and standard front
+					matter. These topics have frequently gone through a rigorous corporate approval
+					process and should not be changed. You will simply reference them from each
+					publication map that you create.</li>
+				<li>Including topics that apply to multiple audiences, products, or versions in different manual types.
+					For example, although specific requirements do differ across various products,
+					all users might require background information on the same conceptual
+					information before they begin learning the specific details of their product.
+					Such concept topics can be written once and referenced from different
+					publication maps.</li>
+			</ul></p>
+		<p>When reusing topics or maps, make sure to update metadata to include information about
+			the new contexts. Your CMS will track all locations where a topic is reused; however,
+			you should still update information such as audience, platform, and product if you are
+			extending the use of the topic.</p>
+		<p>If a topic cannot be reused exactly as is, it's possible you might be able to make revisions to
+			extend its use. Be sure to check where else the topic is used and consider the
+			implications of your change in these other contexts. If the changes do not apply in all
+			situations, consider how you might use the other reuse mechanisms to accommodate every
+			situation.</p>
+		
+		
+	</conbody>
+</concept> <?Pub *0000000370 0?>

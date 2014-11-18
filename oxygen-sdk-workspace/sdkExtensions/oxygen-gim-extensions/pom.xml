@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.oxygenxml.gim</groupId>
+    <artifactId>sdkExtensions</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+  </parent>
+  <artifactId>oxygen-gim-extensions</artifactId>
+  <name>Generic Information Model Extensions</name>
+  <url>http://maven.apache.org</url>
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+  
+  <dependencies>
+    <dependency>
+      <groupId>com.oxygenxml</groupId>
+      <artifactId>oxygen</artifactId>
+      <classifier>javadoc</classifier>
+      <version>16.1.0</version>
+    </dependency>
+    <dependency>
+      <groupId>com.oxygenxml</groupId>
+      <artifactId>oxygen</artifactId>
+      <classifier>authorSDKGuide</classifier>
+      <type>zip</type>
+      <version>16.1.0</version>
+    </dependency>
+    <dependency>
+      <groupId>com.oxygenxml</groupId>
+      <artifactId>oxygen</artifactId>
+      <classifier>defaultFrameworksSources</classifier>
+      <type>jar</type>
+      <version>16.1.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.mockito</groupId>
+	  <artifactId>mockito-all</artifactId>
+	  <version>1.9.5</version>
+	</dependency>
+    
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-clean-plugin</artifactId>
+        <version>2.5</version>
+        <configuration>
+          <filesets>
+            <fileset>
+              <directory>${basedir}/samples/</directory>
+            </fileset>
+            <fileset>
+              <directory>${basedir}/doc/</directory>
+            </fileset>
+          </filesets>
+        </configuration>
+      </plugin>
+      
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <version>2.8</version>
+        <executions>
+          <!-- Expand the Javadoc inside the project for quicker access. -->
+          <execution>
+            <id>copy-docs</id>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>unpack</goal>
+            </goals>
+            <configuration>
+              <artifactItems>
+                <artifactItem>
+                  <groupId>com.oxygenxml</groupId>
+                  <artifactId>oxygen</artifactId>
+                  <classifier>javadoc</classifier>
+                </artifactItem>
+              </artifactItems>
+              <outputDirectory>${basedir}/doc/api</outputDirectory>
+              <overWriteReleases>false</overWriteReleases>
+              <overWriteSnapshots>true</overWriteSnapshots>
+              <stripVersion>true</stripVersion>
+            </configuration>
+          </execution>
+          
+          <!-- Copy the PDF version of the Author Developer Guide. -->
+          <execution>
+            <id>copy-pdf</id>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>unpack</goal>
+            </goals>
+            <configuration>
+              <artifactItems>
+                <artifactItem>
+                  <groupId>com.oxygenxml</groupId>
+                  <artifactId>oxygen</artifactId>
+                  <classifier>authorSDKGuide</classifier>
+                  <type>zip</type>
+                </artifactItem>
+              </artifactItems>
+              <outputDirectory>${basedir}/doc</outputDirectory>
+              <overWriteReleases>false</overWriteReleases>
+              <overWriteSnapshots>true</overWriteSnapshots>
+              <stripVersion>true</stripVersion>
+            </configuration>
+          </execution>
+          
+          <!-- Expand the source files for the built-in frameworks. -->
+          <execution>
+            <id>copy-default-frameworks-samples</id>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>unpack</goal>
+            </goals>
+            <configuration>
+              <artifactItems>
+                <artifactItem>
+                  <groupId>com.oxygenxml</groupId>
+                  <artifactId>oxygen</artifactId>
+                  <classifier>defaultFrameworksSources</classifier>
+                </artifactItem>
+              </artifactItems>
+              <outputDirectory>${basedir}/samples/Oxygen Default Frameworks/src</outputDirectory>
+              <overWriteReleases>false</overWriteReleases>
+              <overWriteSnapshots>true</overWriteSnapshots>
+              <stripVersion>true</stripVersion>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      
+      <!-- Copy the resulting JAR into the DIM framework. -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <version>2.9</version>
+        <executions>
+          <execution>
+            <id>copy-installed</id>
+            <phase>install</phase>
+            <goals>
+              <goal>copy</goal>
+            </goals>
+            <configuration>
+              <artifactItems>
+                <artifactItem>
+                  <groupId>${project.groupId}</groupId>
+                  <artifactId>${project.artifactId}</artifactId>
+                  <version>${project.version}</version>
+                  <type>${project.packaging}</type>
+                  <destFileName>${project.artifactId}.${project.packaging}</destFileName>
+                </artifactItem>
+              </artifactItems>
+              <outputDirectory>${basedir}/../../../frameworks/dim</outputDirectory>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+    <pluginManagement>
+    	<plugins>
+    		<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+    		<plugin>
+    			<groupId>org.eclipse.m2e</groupId>
+    			<artifactId>lifecycle-mapping</artifactId>
+    			<version>1.0.0</version>
+    			<configuration>
+    				<lifecycleMappingMetadata>
+    					<pluginExecutions>
+    						<pluginExecution>
+    							<pluginExecutionFilter>
+    								<groupId>org.apache.maven.plugins</groupId>
+    								<artifactId>maven-dependency-plugin</artifactId>
+    								<versionRange>[2.8,)</versionRange>
+    								<goals>
+    									<goal>copy</goal>
+    									<goal>unpack</goal>
+    								</goals>
+    							</pluginExecutionFilter>
+    							<action>
+    								<ignore></ignore>
+    							</action>
+    						</pluginExecution>
+    					</pluginExecutions>
+    				</lifecycleMappingMetadata>
+    			</configuration>
+    		</plugin>
+    	</plugins>
+    </pluginManagement>
+  </build>    
+  
+</project>

@@ -1,0 +1,271 @@
+
+<!DOCTYPE html
+  SYSTEM "about:legacy-compat">
+<html xml:lang="en-us" lang="en-us">
+<head><meta name="description" content="Lists can assist users in scanning for and locating information quickly. When written correctly, they present information in a logical order, in small, easily understood pieces. When writing lists, ..."></meta><meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta><meta name="copyright" content="(C) Copyright 2005"></meta><meta name="DC.rights.owner" content="(C) Copyright 2005"></meta><meta name="DC.Type" content="concept"></meta><meta name="DC.Title" content="Creating Lists"></meta><meta name="DC.Relation" scheme="URI" content="c_BlockElements.html"></meta><meta name="DC.Format" content="XHTML"></meta><meta name="DC.Identifier" content="Lists"></meta><link rel="stylesheet" type="text/css" href="oxygen-webhelp/resources/css/commonltr.css"><!----></link><title>Creating Lists</title><meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta><link rel="stylesheet" type="text/css" href="oxygen-webhelp/resources/css/webhelp_topic.css"><!----></link><link rel="stylesheet" type="text/css" href="oxygen-webhelp/resources/skins/skin.css"><!----></link><script type="text/javascript"><!--
+          
+          var prefix = "index.html";
+          
+          --></script><script type="text/javascript" src="oxygen-webhelp/resources/js/jquery-1.8.2.min.js"><!----></script><script type="text/javascript" src="oxygen-webhelp/resources/js/jquery.cookie.js"><!----></script><script type="text/javascript" src="oxygen-webhelp/resources/js/jquery-ui.custom.min.js"><!----></script><script type="text/javascript" src="oxygen-webhelp/resources/js/jquery.highlight-3.js"><!----></script><script type="text/javascript" charset="utf-8" src="oxygen-webhelp/resources/js/webhelp_topic.js"><!----></script></head>
+<body onload="highlightSearchTerm()" class="frmBody" id="Lists">
+<table class="nav"><tbody><tr><td colspan="2"><div id="printlink"><a href="javascript:window.print();" title="Print this page"></a></div><div id="permalink"><a href="#" title="Link to this page"></a></div></td></tr><tr><td width="75%"><a class="navheader_parent_path" href="c_BlockElements.html" title="Block Elements">Block Elements</a></td><td><div class="navheader">
+<span class="navparent"><a class="link" href="c_BlockElements.html" title="Block Elements"><span class="navheader_label">Parent topic</span><span class="navheader_separator">: </span><span class="navheader_linktext">Block Elements</span></a></span>  </div></td></tr></tbody></table>
+
+  <h1 class="title topictitle1">Creating Lists</h1>
+
+  <div class="body conbody">
+    <p class="p">Lists can assist users in scanning for and locating information quickly. When written
+      correctly, they present information in a logical order, in small, easily understood pieces.
+      When writing lists, keep in mind the following guidelines:</p>
+
+    <ul class="ul" id="Lists__ul_ecg_tfs_j4">
+      <li class="li">Write lists in a parallel structure. For example, if one list item starts with a verb,
+        make all list items do so; if one list item is a complete sentence, make all items complete
+        sentences.</li>
+
+      <li class="li">Include all common information from the list items in the introductory sentence to avoid
+        repetition.</li>
+
+      <li class="li">If the introductory sentence ends with a colon in anticipation of the list to come, do not
+        close the paragraph element before starting the list. In this case, the list is part of the
+        preceding paragraph.</li>
+
+      <li class="li">If the list is not logically part of the preceding paragraph, close the paragraph element
+        before beginning the list. The paragraph should end with a period, and all list items should
+        also be complete sentences.</li>
+
+      <li class="li">Use complete sentences to introduce the list. Do not make the sentence grammatically
+        dependent on the list items by completing the sentence with them.<div class="note note"><span class="notetitle">Note:</span> Do not introduce
+          lists within prerequisite sections at all. The headings are enough for the user to
+          understand the purpose of the list.</div>
+</li>
+
+      <li class="li">Do not create single-item lists, except in prerequisite sections. See <a class="xref" href="c_TaskAuthoringGuidelines.html#AuthoringGuidelines__section_l1k_222_q4">Writing Prerequisite Sections</a>.</li>
+
+      <li class="li">Unless the list appears in a reference topic, try to limit the number of items to fewer
+        than nine.</li>
+
+    </ul>
+
+    <div class="section"><h2 class="title sectiontitle">Choosing the Appropriate List Type</h2>
+      
+      <div class="p"><span class="keyword">Company Name</span> uses three list types. Choose the list type based on the type of content
+        it contains, not the way that you think it will be formatted:<ul class="ul" id="Lists__ul_pk5_dy2_yg">
+          <li class="li">Use an <dfn class="term">unordered list</dfn> when the sequence of items in the list is not
+            relevant. The items will be formatted with bullets.</li>
+
+          <li class="li">Use an <dfn class="term">ordered list</dfn> when the sequence of items is important. The items
+            will be formatted with numbers.</li>
+
+          <li class="li">Use a <dfn class="term">definition list </dfn>when defining or comparing a series of items.
+            Although you might also choose to use a two-column table, use a definition list when you
+            have a two-part structure made up of a term or short phrase followed by a longer
+            explanation of the term or phrase. </li>
+
+        </ul>
+</div>
+<div class="p">You do not need to use any list element if you have a list of three or less, single-word
+        items.<pre class="pre codeblock">&lt;p&gt;<span class="keyword">Company Name</span> uses three list types: unordered, ordered, and definition.&lt;/p&gt;</pre>
+</div>
+
+    </div>
+
+
+    <div class="section"><h2 class="title sectiontitle">Writing Unordered Lists</h2>
+      
+      <div class="p">An unordered list begins with a &lt;ul&gt; element and contains any number of nested &lt;li&gt; elements:<dl class="dl">
+          
+            <dt class="dt dlterm">&lt;ul&gt; unordered list</dt>
+
+            <dd class="dd">Start an unordered list with the
+              &lt;ul&gt; element. This element is the container for all unordered list items; it
+              does not contain any text itself.</dd>
+
+          
+          
+            <dt class="dt dlterm">&lt;li&gt; list item</dt>
+
+            <dd class="dd">Use an &lt;li&gt; element for each item in
+              the list; there is no limit to the number of list items you can include. You can nest
+              other block elements, such as paragraphs and notes within the &lt;li&gt; element, but
+              their use should be limited.</dd>
+
+          
+        </dl>
+</div>
+
+      <div class="p">When writing unordered lists, follow these guidelines:<ul class="ul" id="Lists__ul_wlq_w1l_yg">
+          <li class="li">In general, list items in an unordered list should be short so that the list is
+            scannable. If you find that you are including more than two sentences in your list
+            items, consider if the information would be better included in another way.</li>
+
+          <li class="li">Arrange the list items in a logical way, such as alphabetically. If necessary, provide
+            an introductory explanation about how the list is organized. </li>
+
+          <li class="li">Indicate how the list items relate to each other; for example, are they mutually
+            exclusive items, where only one can be true at a time, or can more than one or all apply
+            to the situation.</li>
+
+          <li class="li">Ensure that it is clear whether the list is comprehensive, showing all available
+            options, or only a subset of the possibilities. For example, the words "including" or
+            "such as" imply the list is not complete, while the words "if applicable" imply the list
+            may contain more items than apply to the user's specific situation.</li>
+
+        </ul>
+</div>
+
+      
+        <pre class="pre codeblock"></pre>
+
+    </div>
+
+    <div class="section"><h2 class="title sectiontitle">Writing Ordered Lists</h2>
+      
+      <div class="p">An ordered list begins with an &lt;ol&gt; element and contains any number of nested &lt;li&gt;
+        elements:<dl class="dl">
+          
+            <dt class="dt dlterm">&lt;ol&gt; ordered list</dt>
+
+            <dd class="dd">Start an ordered list with the &lt;ol&gt;
+              element. This element is the container for all ordered list items; it does not contain
+              any text itself.</dd>
+
+          
+          
+            <dt class="dt dlterm">&lt;li&gt; list item</dt>
+
+            <dd class="dd">Use an &lt;li&gt; element for each item in the
+              list; there is no limit to the number of list items you can include. You can nest other
+              block elements, such as paragraphs and notes within the &lt;li&gt; element, but their
+              use should be limited.</dd>
+
+          
+        </dl>
+</div>
+
+      <div class="p">When writing ordered lists, follow these guidelines:<ul class="ul" id="Lists__ul_whx_2bl_yg">
+          <li class="li">Do not use an ordered list to document task steps within a concept or reference topic.
+            Instead, use a task topic and &lt;step&gt; elements.</li>
+
+          <li class="li">Avoid using imperative verbs in ordered lists. The use of an imperative verb implies
+            you are documenting a task, and you should be using a task topic instead of an ordered
+            list.</li>
+
+          <li class="li">Use ordered lists to document processes; make sure it is clear who the actor is in
+            each step.</li>
+
+          <li class="li">Do not use an ordered list when the stem sentence refers to the specific number of
+            items in the list. Only use the ordered list if the sequence or priority is
+            important.</li>
+
+        </ul>
+</div>
+
+      <pre class="pre codeblock"></pre>
+
+    </div>
+
+    <div class="section"><h2 class="title sectiontitle">Writing Definition Lists</h2>
+      
+      <div class="p">A definition list begins with a &lt;dl&gt; element and contains any number of nested
+        &lt;dlentry&gt; pairs, consisting of a &lt;dt&gt; element and a &lt;dd&gt;
+          element:<dl class="dl">
+          
+            <dt class="dt dlterm">&lt;dl&gt; definition list</dt>
+
+            <dd class="dd">Start a definition list with a
+              &lt;dl&gt; element. This element is the container for all elements in a definition list;
+              it does not contain any text itself.</dd>
+
+          
+          
+          
+            <dt class="dt dlterm">&lt;dlentry&gt; definition list entry</dt>
+
+            <dd class="dd">Use the &lt;dlentry&gt;
+              element in the &lt;dl&gt; element as a container for each term and definition pair.
+              Insert a separate &lt;dlentry&gt; element each time you introduce a new pair. </dd>
+
+          
+          
+            <dt class="dt dlterm">&lt;dt&gt; definition term</dt>
+
+            <dd class="dd">Nest a &lt;dt&gt; element within
+              a &lt;dlentry&gt; to identify the word or phrase to be defined. If multiple terms share
+              the same definition, you can add multiple &lt;dt&gt; elements within a single
+              &lt;dlentry&gt; element. The &lt;dt&gt; element must precede the &lt;dd&gt; element within
+              each &lt;dlentry&gt;.</dd>
+
+          
+          
+            <dt class="dt dlterm">&lt;dd&gt; definition description</dt>
+
+            <dd class="dd">Nest a &lt;dd&gt; element
+              within a &lt;dlentry&gt; to provide the definition for the corresponding term. If a term
+              has multiple definitions, you can add multiple &lt;dd&gt; elements within a single
+              &lt;dlentry&gt; element. You can include any common block elements, such as paragraphs
+              or other list types, within the &lt;dd&gt; element.</dd>
+
+          
+        </dl>
+</div>
+
+    
+      <div class="p">When writing definition lists, following these guidelines:<ul class="ul" id="Lists__ul_yc5_pvm_yg">
+          <li class="li">Do not use a &lt;dl&gt; as a way of nesting "sections" in &lt;section&gt; elements. If you
+            require more than two heading levels within the topic (the topic heading and section
+            title), you should split the topic into multiple subtopics.</li>
+
+          <li class="li">Do not use a definition list to create a glossary. Glossary entries are created with a
+            special information type.</li>
+
+        </ul>
+</div>
+
+      <pre class="pre codeblock"></pre>
+</div>
+
+    <div class="section"><h2 class="title sectiontitle">Nesting Lists</h2>
+      
+      <p class="p">To create sub-lists, nest list elements in other list elements. <span class="keyword">Company Name</span> allows you to nest up to two levels of lists, and you can nest any
+        type list in any other type list. Be aware, however, that nesting more than one level of
+        list elements can make the list more difficult for users to understand. </p>
+
+      <pre class="pre codeblock"></pre>
+
+    </div>
+
+    <div class="section"><h2 class="title sectiontitle">Reusing List Items</h2>
+      
+      <div class="p">To allow for the possibility of reusing list items in other locations, follow these guidelines:<ul class="ul">
+          <li class="li">Do not insert a list in the middle of a sentence.</li>
+
+          <li class="li">Do not write list items to complete an introductory sentence. </li>
+
+          <li class="li">Include closing punctuation on list items only if all items in the list are complete
+            sentences. This maximizes reuse potential when the context of a list item is not
+            known.</li>
+
+          <li class="li">You can nest block elements, such as paragraphs and notes in list items, but limit
+            their use to keep the list as simple, reusable, and scannable as possible.</li>
+
+          <li class="li">Capitalize the first word in each list item, unless the word should never be
+            capitalized such as a list of commands.</li>
+
+          <li class="li">When including a list in a collection file, give each list item a unique ID so that
+            each can be referenced separately as needed. See <a class="xref" href="c_CollectionFiles.html#concept_vtz_r2q_xh">Reusing Elements Through Collection Files</a> for more information on using
+            collection files.</li>
+
+        </ul>
+
+      </div>
+
+    </div>
+
+  </div>
+
+<div class="related-links"></div>
+<div class="navfooter"><!---->
+<span class="navparent"><a class="link" href="c_BlockElements.html" title="Block Elements"><span class="navheader_label">Parent topic</span><span class="navheader_separator">: </span><span class="navheader_linktext">Block Elements</span></a></span>  </div><div class="footer">WebHelp output generated by<a href="http://www.oxygenxml.com" target="_blank"><span class="oXygenLogo"><img src="oxygen-webhelp/resources/img/LogoOxygen100x22.png" alt="Oxygen"></img></span><span class="xmlauthor">XML Author</span></a></div>
+</body>
+</html>
