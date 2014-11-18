@@ -1,0 +1,4 @@
+dim
+===
+
+Dynamic Information Model
