@@ -11,6 +11,7 @@ import javax.xml.bind.JAXBException;
 import javax.xml.transform.TransformerException;
 
 import org.apache.log4j.Logger;
+import org.eclipse.swt.widgets.Shell;
 
 import ro.sync.ecss.extensions.api.ArgumentDescriptor;
 import ro.sync.ecss.extensions.api.ArgumentsMap;
@@ -28,7 +29,8 @@ import com.oxygenxml.gim.BusinessRule;
 import com.oxygenxml.gim.BusinessRuleLibrary;
 import com.oxygenxml.gim.BusinessRuleParam;
 import com.oxygenxml.gim.BusinessRuleRepository;
-import com.oxygenxml.gim.ui.BusinessRuleSelectDialog;
+import com.oxygenxml.gim.ui.ec.ECBusinessRuleSelectDialog;
+import com.oxygenxml.gim.ui.sa.SABusinessRuleSelectDialog;
 
 /**
  * An operation that adds a new business rule into the document.
@@ -122,6 +124,7 @@ public class AddBusinessRuleOperation implements AuthorOperation {
 	  // arguments to the operation? like insertLocation and wrapper string?
 	  
 	  String libraryLocationArg = (String) args.getArgumentValue(LIBRARY_LOCATION);
+	  System.out.println("libraryLocationArg " + libraryLocationArg);
 	  if (libraryLocationArg != null) {
 	    String expandedLibraryLocation = authorAccess.getUtilAccess().expandEditorVariables(libraryLocationArg, null);
 	    URL library = null;
@@ -140,11 +143,20 @@ public class AddBusinessRuleOperation implements AuthorOperation {
         BusinessRuleLibrary rulesLibrary = BusinessRuleRepository.getInstance().loadLibrary(
             authorAccess.getXMLUtilAccess(), 
             library);
-
-        BusinessRuleSelectDialog dialog = new BusinessRuleSelectDialog(
-            (JFrame) authorAccess.getWorkspaceAccess().getParentFrame());
         
-        BusinessRule selectedRule = dialog.selectRule(rulesLibrary);
+        BusinessRuleSelector businessRuleSelector = null;
+        // TODO make an interface BusinessRuleSelector, selectRule(rulesLibrary)
+        if (authorAccess.getWorkspaceAccess().isStandalone()) {
+          businessRuleSelector = new SABusinessRuleSelectDialog(
+              (JFrame) authorAccess.getWorkspaceAccess().getParentFrame());
+        } else {
+        	//
+          businessRuleSelector = new ECBusinessRuleSelectDialog(
+              (Shell) authorAccess.getWorkspaceAccess().getParentFrame());
+        }
+
+        
+        BusinessRule selectedRule = businessRuleSelector.selectRule(rulesLibrary);
         if (selectedRule != null) {
           Object xpathLocation = args.getArgumentValue(ARGUMENT_XPATH_LOCATION);
           Object relativeLocation = args.getArgumentValue(ARGUMENT_RELATIVE_LOCATION);
@@ -209,8 +221,10 @@ public class AddBusinessRuleOperation implements AuthorOperation {
           }
         }
       } catch (TransformerException e) {
+        e.printStackTrace();
         throw new AuthorOperationException("Loading the library failed.", e);
       } catch (JAXBException e) {
+        e.printStackTrace();
         throw new AuthorOperationException("Loading the library failed.", e);
       }
 	  } else {

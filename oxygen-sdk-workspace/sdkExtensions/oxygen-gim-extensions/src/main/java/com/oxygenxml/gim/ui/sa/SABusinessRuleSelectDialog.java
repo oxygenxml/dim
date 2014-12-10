@@ -1,4 +1,4 @@
-package com.oxygenxml.gim.ui;
+package com.oxygenxml.gim.ui.sa;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -7,23 +7,19 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Insets;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.JEditorPane;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JList;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
@@ -40,11 +36,12 @@ import ro.sync.ui.application.OkCancelAndOtherDialogConstants;
 
 import com.oxygenxml.gim.BusinessRule;
 import com.oxygenxml.gim.BusinessRuleLibrary;
+import com.oxygenxml.gim.operations.BusinessRuleSelector;
 
 /**
  * A dialog for selecting a business rule.
  */
-public class BusinessRuleSelectDialog extends OKCancelDialog {
+public class SABusinessRuleSelectDialog extends OKCancelDialog implements BusinessRuleSelector {
   /**
    * Displays the description of the rule.
    */
@@ -66,7 +63,7 @@ public class BusinessRuleSelectDialog extends OKCancelDialog {
    */
   private static Point lastLocation;
 
-  public BusinessRuleSelectDialog(JFrame parentFrame) {
+  public SABusinessRuleSelectDialog(JFrame parentFrame) {
     super(parentFrame, "Business Rule", true);
     
     setLocationRelativeTo(parentFrame);

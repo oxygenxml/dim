@@ -106,10 +106,10 @@
 													<String>Adds a new business rule.</String>
 												</field>
 												<field name="largeIconPath">
-													<String>/images/AcceptChange20.png</String>
+													<String>${framework}/images/AddRule20.png</String>
 												</field>
 												<field name="smallIconPath">
-													<String></String>
+													<String>${framework}/images/AddRule20.png</String>
 												</field>
 												<field name="accessKey">
 													<String></String>
