@@ -66,13 +66,15 @@ public class SABusinessRuleSelectDialog extends OKCancelDialog implements Busine
   public SABusinessRuleSelectDialog(JFrame parentFrame) {
     super(parentFrame, "Business Rule", true);
     
-    setLocationRelativeTo(parentFrame);
-    
     if (lastLocation != null) {
       setLocation(lastLocation);
     }
     
     initControls();
+    
+    pack();
+    
+    setLocationRelativeTo(parentFrame);
   }
 
   
