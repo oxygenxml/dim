@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqf:fixes xmlns:sqf="http://www.schematron-quickfix.com/validator/process" xmlns="http://purl.oclc.org/dsdl/schematron" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+    <sqf:fix id="avoidAttributeInElement_delete">
+        <sqf:description>
+            <sqf:p>The attribute "<value-of select="'$attribute'"/>" will be deleted.</sqf:p>
+        </sqf:description>
+        <sqf:delete match="@$attribute"/>
+    </sqf:fix>
+    <sqf:fix id="avoidAttributeInElement_rename">
+        <sqf:description>
+            <sqf:p>Rename the attribute "<value-of select="'$attribute'"/>".</sqf:p>
+        </sqf:description>
+        <sqf:user-entry ref="new-attribute">
+            <sqf:description>
+                <sqf:p>Please enter the new name of the attribute.</sqf:p>
+            </sqf:description>
+        </sqf:user-entry>
+        <sqf:param name="new-attribute" required="yes"/>
+        <sqf:replace match="@$attribute" target="{$new-attribute}" node-type="attribute" select="."/>
+    </sqf:fix>
+    <sqf:fix id="avoidWordInElement_deleteWord" use-when=".//text()[tokenize(normalize-space(.), ' ') = '$word']" role="delete">
+        <sqf:description>
+            <sqf:p>The word "<value-of select="'$word'"/>" will be deleted.</sqf:p>
+        </sqf:description>
+        <let name="es:quoted" value="es:quoteRegex('$word')"/>
+        <sqf:stringReplace match=".//text()" regex="(\s|^){$es:quoted}(\s|$)">
+            <value-of select="replace(concat(regex-group(1), regex-group(2)), '  ', ' ')"/>
+        </sqf:stringReplace>
+    </sqf:fix>
+    <sqf:fix id="avoidWordInElement_replaceWord" use-when=".//text()[tokenize(normalize-space(.), ' ') = '$word']">
+        <sqf:description>
+            <sqf:p>The word "<value-of select="'$word'"/>" will be replaced by another word.</sqf:p>
+        </sqf:description>
+        <sqf:user-entry ref="replace">
+            <sqf:description>
+                <sqf:p>Please enter the word to replace.</sqf:p>
+            </sqf:description>
+        </sqf:user-entry>
+        <sqf:param name="replace" required="yes"/>
+        <let name="es:quoted" value="es:quoteRegex('$word')"/>
+        <sqf:stringReplace match=".//text()" regex="{$es:quoted}">
+            <value-of select="$replace"/>
+        </sqf:stringReplace>
+    </sqf:fix>
+    <sqf:fix id="avoidEndFragment_deleteFragment" use-when="(node()[last()])[self::text()][ends-with(normalize-space(.), '$fragment')]" role="delete">
+        <sqf:description>
+            <sqf:p>The fragment "<value-of select="'$fragment'"/>" will be deleted.</sqf:p>
+        </sqf:description>
+        <let name="es:quoted" value="es:quoteRegex('$fragment')"/>
+        <sqf:stringReplace match="node()[last()]" regex="{$es:quoted}(\s+$)">
+            <value-of select="regex-group(1)"/>
+        </sqf:stringReplace>
+    </sqf:fix>
+    <sqf:fix id="avoidEndFragment_replaceFragment" use-when="(node()[last()])[self::text()][ends-with(normalize-space(.), '$fragment')]">
+        <sqf:description>
+            <sqf:p>The fragment "<value-of select="'$fragment'"/>" will be replaced by another end fragment.</sqf:p>
+        </sqf:description>
+        <sqf:user-entry ref="replace">
+            <sqf:description>
+                <sqf:p>Please enter the new end fragment.</sqf:p>
+            </sqf:description>
+        </sqf:user-entry>
+        <sqf:param name="replace" required="yes"/>
+        <let name="es:quoted" value="es:quoteRegex('$fragment')"/>
+        <sqf:stringReplace match="node()[last()]" regex="{$es:quoted}(\s+$)">
+            <value-of select="concat($replace, regex-group(1))"/>
+        </sqf:stringReplace>
+    </sqf:fix>
+    <sqf:fix id="recommendElementInParent_createFirstChild">
+        <sqf:description>
+            <sqf:p>The element "<value-of select="'$element'"/>" will be created as first child.</sqf:p>
+        </sqf:description>
+        <sqf:add target="$element" node-type="element" axis="child"/>
+    </sqf:fix>
+    <sqf:fix id="recommendElementInParent_createLastChild" use-when="*">
+        <sqf:description>
+            <sqf:p>The element "<value-of select="'$element'"/>" will be created as last child.</sqf:p>
+        </sqf:description>
+        <sqf:add match="node()[last()]" target="$element" node-type="element" axis="following"/>
+    </sqf:fix>
+    <sqf:fix id="recommendElementInParent_createAfterAnchor" use-when="not(contains('$anchor', '$')) and '$anchor' != '' and *[name() = '$anchor']">
+        <sqf:description>
+            <sqf:p>The element "<value-of select="'$element'"/>" will be created after the element "<value-of select="'$anchor'"/>"</sqf:p>
+        </sqf:description>
+        <sqf:add match="$anchor[1]" target="$element" node-type="element" axis="following"/>
+    </sqf:fix>
+    <sqf:fix id="restrictWords_setNew">
+        <sqf:description>
+            <sqf:p>The content of the element "<value-of select="'$parentElement'"/>" will be setted by an user entry.</sqf:p>
+        </sqf:description>
+        <sqf:user-entry ref="new-content">
+            <sqf:description>
+                <sqf:p>Please enter the new content of the element "<value-of select="'$parentElement'"/>".</sqf:p>
+            </sqf:description>
+        </sqf:user-entry>
+        <sqf:param name="new-content" required="yes"/>
+        <sqf:replace target="$parentElement">
+            <value-of select="$new-content"/>
+        </sqf:replace>
+    </sqf:fix>
+
+</sqf:fixes>

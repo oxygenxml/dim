@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<schema xmlns="http://purl.oclc.org/dsdl/schematron"
+<schema xmlns="http://purl.oclc.org/dsdl/schematron" xmlns:sqf="http://www.schematron-quickfix.com/validator/process"
   queryBinding="xslt2">
   
   <pattern abstract="true" id="avoidWordInElement">
@@ -29,7 +29,7 @@
     </parameters> 
     <rule context="$element">
       <assert test="not(tokenize(normalize-space(.), ' ') = '$word')"
-        role="warn">
+        role="warn" sqf:fix="avoidWordInElement_deleteWord avoidWordInElement_replaceWord">
         <value-of select="'$message'"/>
       </assert>
     </rule>
@@ -62,7 +62,7 @@
     </parameters> 
     <rule context="$element">
       <assert test="not(ends-with(normalize-space(.), '$fragment'))"
-        role="warn">
+        role="warn" sqf:fix="avoidEndFragment_deleteFragment avoidEndFragment_replaceFragment">
         <value-of select="'$message'"/>
       </assert>
     </rule>
@@ -94,7 +94,8 @@
       </parameter>
     </parameters> 
     <rule context="$element">
-      <assert test="not(@$attribute)" role="warn">
+      <assert test="not(@$attribute)" role="warn" 
+        sqf:fix="avoidAttributeInElement_delete avoidAttributeInElement_rename">
         <value-of select="'$message'"/>
       </assert>
     </rule>
@@ -125,7 +126,8 @@
       </parameter>
     </parameters> 
     <rule context="$parent">
-      <assert test="$element" role="warn">
+      <assert test="$element" role="warn"
+        sqf:fix="recommendElementInParent_createFirstChild recommendElementInParent_createLastChild recommendElementInParent_createAfterAnchor">
         <value-of select="'$message'"/>
       </assert>
     </rule>
@@ -156,11 +158,13 @@
     </parameters> 
     <rule context="$parentElement">
       <let name="words" value="count(tokenize(normalize-space(.), ' '))"/>
-      <assert test="$words &lt;= $maxWords" role="warn"> It is
+      <assert test="$words &lt;= $maxWords" role="warn"
+        sqf:fix="restrictWords_setNew"> It is
         recommended to not exceed <value-of select="'$maxWords '"/>
         words! You have <value-of select="$words"/>
         <value-of select="if ($words=1) then ' word' else ' words'"/>. </assert>
-      <assert test="$words &gt;= $minWords" role="warn"> It is
+      <assert test="$words &gt;= $minWords" role="warn"
+        sqf:fix="restrictWords_setNew"> It is
         recommended to have at least <value-of select="'$minWords '"/>
         words! You have <value-of select="$words"/>
         <value-of select="if ($words=1) then ' word' else ' words'"/>.

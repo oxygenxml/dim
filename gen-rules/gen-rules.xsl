@@ -20,6 +20,7 @@
       </xsl:comment>
       <schema queryBinding="xslt2">
         <xsl:apply-templates select="document($library)" mode="generateIncludes"/>
+        <include href="quickFix-libary.xml"/>
         <xsl:apply-templates mode="rules"/>
       </schema>
     </xsl:result-document>
