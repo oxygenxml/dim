@@ -9,9 +9,9 @@ oxy|comment {
 data[audience~='styleguide']:before {
     content :
         oxy_label(text, "Link to this topic from: ")
-        oxy_textfield(edit, '@value', width, 10em)
+        oxy_textfield(edit, '@name', width, 10em)
         oxy_label(text, " Link text: ")
-        oxy_textfield(edit, '@name', width, 30em)
+        oxy_textfield(edit, '@value', width, 30em)
     ;
 }
 

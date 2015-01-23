@@ -35,11 +35,11 @@
     <xsl:variable name="target" select="replace($origin, '.dita', '.html')">
     </xsl:variable>
     <xsl:choose>
-      <xsl:when test="starts-with(@value, '@')">
-        <mapping attributeName="{substring-after(@value, '@')}" path="{$target}" type="link" linkText="{@name}"/>
+      <xsl:when test="starts-with(@name, '@')">
+        <mapping attributeName="{substring-after(@name, '@')}" path="{$target}" type="link" linkText="{@value}"/>
       </xsl:when>
       <xsl:otherwise>
-        <mapping elementName="{@value}" path="{$target}" type="link" linkText="{@name}"/>
+        <mapping elementName="{@name}" path="{$target}" type="link" linkText="{@value}"/>
       </xsl:otherwise>
     </xsl:choose>
     
