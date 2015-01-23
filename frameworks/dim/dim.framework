@@ -493,24 +493,7 @@
 											<String>authorExtensionDescriptor/toolbarDescriptor/toolbarEntriesDescriptorList</String>
 										</field>
 										<field name="index">
-											<Integer>9</Integer>
-										</field>
-										<field name="value">
-											<toolbarSeparator/>
-										</field>
-										<field name="patchHandling">
-											<String>addIndex</String>
-										</field>
-										<field name="anchor">
-											<null/>
-										</field>
-									</poPatch>
-									<poPatch>
-										<field name="fieldPath">
-											<String>authorExtensionDescriptor/toolbarDescriptor/toolbarEntriesDescriptorList</String>
-										</field>
-										<field name="index">
-											<Integer>8</Integer>
+											<Integer>0</Integer>
 										</field>
 										<field name="value">
 											<toolbarItem>
@@ -531,7 +514,7 @@
 											<String>authorExtensionDescriptor/toolbarDescriptor/toolbarEntriesDescriptorList</String>
 										</field>
 										<field name="index">
-											<Integer>9</Integer>
+											<Integer>1</Integer>
 										</field>
 										<field name="value">
 											<toolbarItem>
@@ -539,6 +522,23 @@
 													<String>add.link</String>
 												</field>
 											</toolbarItem>
+										</field>
+										<field name="patchHandling">
+											<String>addIndex</String>
+										</field>
+										<field name="anchor">
+											<null/>
+										</field>
+									</poPatch>
+									<poPatch>
+										<field name="fieldPath">
+											<String>authorExtensionDescriptor/toolbarDescriptor/toolbarEntriesDescriptorList</String>
+										</field>
+										<field name="index">
+											<Integer>2</Integer>
+										</field>
+										<field name="value">
+											<toolbarSeparator/>
 										</field>
 										<field name="patchHandling">
 											<String>addIndex</String>
