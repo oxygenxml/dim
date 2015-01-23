@@ -92,7 +92,7 @@
 											<String>authorExtensionDescriptor/actionDescriptors</String>
 										</field>
 										<field name="index">
-											<Integer>65</Integer>
+											<Integer>61</Integer>
 										</field>
 										<field name="value">
 											<action>
@@ -100,16 +100,16 @@
 													<String>add.rule</String>
 												</field>
 												<field name="name">
-													<String>add.rule</String>
+													<String>Add business rule</String>
 												</field>
 												<field name="description">
 													<String>Adds a new business rule.</String>
 												</field>
 												<field name="largeIconPath">
-													<String>${framework}/images/AddRule20.png</String>
+													<String>${framework}/images/AddBusinessRule24.png</String>
 												</field>
 												<field name="smallIconPath">
-													<String>${framework}/images/AddRule20.png</String>
+													<String>${framework}/images/AddBusinessRule24.png</String>
 												</field>
 												<field name="accessKey">
 													<String></String>
@@ -245,7 +245,7 @@
 											<String>authorExtensionDescriptor/actionDescriptors</String>
 										</field>
 										<field name="index">
-											<Integer>66</Integer>
+											<Integer>62</Integer>
 										</field>
 										<field name="value">
 											<action>
@@ -253,16 +253,16 @@
 													<String>add.link</String>
 												</field>
 												<field name="name">
-													<String>Add Style Guide Link</String>
+													<String>Add style guide link</String>
 												</field>
 												<field name="description">
 													<String>Add link to style guide</String>
 												</field>
 												<field name="largeIconPath">
-													<String>/images/DockableFrameEntities16.gif</String>
+													<String>${framework}/images/LinkStyleGuide24.png</String>
 												</field>
 												<field name="smallIconPath">
-													<String>/images/DockableFrameEntities16.gif</String>
+													<String>${framework}/images/LinkStyleGuide24.png</String>
 												</field>
 												<field name="accessKey">
 													<String></String>
@@ -439,7 +439,7 @@
 											<String>authorExtensionDescriptor/actionDescriptors</String>
 										</field>
 										<field name="index">
-											<Integer>67</Integer>
+											<Integer>63</Integer>
 										</field>
 										<field name="value">
 											<action>
@@ -447,7 +447,7 @@
 													<String>delete.element</String>
 												</field>
 												<field name="name">
-													<String>Delete</String>
+													<String>Delete element</String>
 												</field>
 												<field name="description">
 													<String>Delete the current element</String>
@@ -493,7 +493,24 @@
 											<String>authorExtensionDescriptor/toolbarDescriptor/toolbarEntriesDescriptorList</String>
 										</field>
 										<field name="index">
-											<Integer>0</Integer>
+											<Integer>9</Integer>
+										</field>
+										<field name="value">
+											<toolbarSeparator/>
+										</field>
+										<field name="patchHandling">
+											<String>addIndex</String>
+										</field>
+										<field name="anchor">
+											<null/>
+										</field>
+									</poPatch>
+									<poPatch>
+										<field name="fieldPath">
+											<String>authorExtensionDescriptor/toolbarDescriptor/toolbarEntriesDescriptorList</String>
+										</field>
+										<field name="index">
+											<Integer>8</Integer>
 										</field>
 										<field name="value">
 											<toolbarItem>
@@ -514,7 +531,7 @@
 											<String>authorExtensionDescriptor/toolbarDescriptor/toolbarEntriesDescriptorList</String>
 										</field>
 										<field name="index">
-											<Integer>0</Integer>
+											<Integer>9</Integer>
 										</field>
 										<field name="value">
 											<toolbarItem>
@@ -522,23 +539,6 @@
 													<String>add.link</String>
 												</field>
 											</toolbarItem>
-										</field>
-										<field name="patchHandling">
-											<String>addIndex</String>
-										</field>
-										<field name="anchor">
-											<null/>
-										</field>
-									</poPatch>
-									<poPatch>
-										<field name="fieldPath">
-											<String>authorExtensionDescriptor/toolbarDescriptor/toolbarEntriesDescriptorList</String>
-										</field>
-										<field name="index">
-											<Integer>0</Integer>
-										</field>
-										<field name="value">
-											<toolbarSeparator/>
 										</field>
 										<field name="patchHandling">
 											<String>addIndex</String>
