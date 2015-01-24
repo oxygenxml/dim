@@ -171,5 +171,42 @@
       </assert>
     </rule>
   </pattern>
+    
+  
+  <pattern id="restrictNesting" abstract="true">
+    <title>Restrict nesting levels for an element</title>
+    <p>Check the number of nesting levels of an element. 
+      This may be used for example to enforce
+      that an element should not be nested more than 3 levels.</p>
+    <p>As parameters we have <emph>element</emph> that specifies
+      the element to be checked,
+      <emph>maxNestingLevel</emph> that specifies the maximum number of 
+      ancestors with the same name as the element are allowed and 
+      <emph>message</emph> that specify the message that we will show to the
+      user if the nesting level is greater than the maximum value.</p>
+    <parameters xmlns="http://oxygenxml.com/ns/schematron/params">
+      <parameter>
+        <name>element</name>
+        <desc>Specifies the element that we shoukld check for nesting.</desc>
+      </parameter>
+      <parameter>
+        <name>maxNestingLevel</name>
+        <desc>Specifies the maximum nesting level allowed for the specified element.
+          In case the number of ancestors of the same type is larger than this a
+          warning will be displayed to the user.</desc>
+      </parameter>
+      <parameter>
+        <name>message</name>
+        <desc>The message that should be presented to the user if the maximum 
+          nesting level is exceeded.</desc>
+      </parameter>
+    </parameters>
+    <rule context="$element">
+      <assert test="count(ancestor::$element) &lt;= $maxNestingLevel">
+        <value-of select="'$message'"/>
+      </assert>
+    </rule>
+  </pattern>
+  
   
 </schema>

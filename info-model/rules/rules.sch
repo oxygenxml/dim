@@ -12,5 +12,6 @@
    <include href="library.sch#avoidAttributeInElement"/>
    <include href="library.sch#recommendElementInParent"/>
    <include href="library.sch#restrictWords"/>
+   <include href="library.sch#restrictNesting"/>
    <include href="quickFix-library.xml"/>
 </schema>
