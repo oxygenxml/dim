@@ -140,7 +140,7 @@
       user to stay within thse limits.</p>
     <p>As parameters we have <emph>parentElement</emph> that specifies
       the element containing the text to be checked,
-      <emph>minWords</emph> and <emph>maxWords</emph> that specify the
+      <emph>minWords</emph> and <emph>maxWords</emph> that specifies the
       minimum and maximum number of words, respectively.</p>
     <parameters xmlns="http://oxygenxml.com/ns/schematron/params">
       <parameter>
@@ -182,12 +182,12 @@
       the element to be checked,
       <emph>maxNestingLevel</emph> that specifies the maximum number of 
       ancestors with the same name as the element are allowed and 
-      <emph>message</emph> that specify the message that we will show to the
+      <emph>message</emph> that specifies the message that we will show to the
       user if the nesting level is greater than the maximum value.</p>
     <parameters xmlns="http://oxygenxml.com/ns/schematron/params">
       <parameter>
         <name>element</name>
-        <desc>Specifies the element that we shoukld check for nesting.</desc>
+        <desc>Specifies the element that we should check for nesting.</desc>
       </parameter>
       <parameter>
         <name>maxNestingLevel</name>
@@ -208,5 +208,46 @@
     </rule>
   </pattern>
   
+  
+  
+  <pattern id="restrictNumberOfChildren" abstract="true">
+    <title>Restrict the number of children elements in a parent element</title>
+    <p>Check the number of children of an element in a parent element to 
+      be between specified limits.</p>
+    <p>As parameters we have <emph>parentElement</emph> that specifies
+      the element to be checked,
+      <emph>element</emph> that specifies the element we will look for as child of
+      the parentElement 
+      <emph>min</emph> that specifies the minimum number of element children and
+      <emph>max</emph> that specifies the maximum number of element children.</p>
+    <parameters xmlns="http://oxygenxml.com/ns/schematron/params">
+      <parameter>
+        <name>parentElement</name>
+        <desc>Specifies the element that we should check for nesting.</desc>
+      </parameter>
+      <parameter>
+        <name>element</name>
+        <desc>Specifies the element we will look for as child element.</desc>
+      </parameter>
+      <parameter>
+        <name>min</name>
+        <desc>The minimum number of occurrences allowed.</desc>
+      </parameter>
+      <parameter>
+        <name>max</name>
+        <desc>The maximum number of occurrences allowed.</desc>
+      </parameter>
+    </parameters>
+    <rule context="$parentElement">
+      <let name="children" value="count($element)"/>
+      <assert test="$children &lt;= $max" role="warn"> It is
+        recommended to not exceed <value-of select="'$max $element'"/>
+        elements! You have <value-of select="$children"/> elements. </assert>
+      <assert test="$children &gt;= $min" role="warn"> It is
+        recommended to have at least <value-of select="'$min $element'"/>
+        elements! You have <value-of select="$children"/> elements.
+      </assert>
+    </rule>
+  </pattern>
   
 </schema>

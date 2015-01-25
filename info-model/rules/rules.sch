@@ -13,5 +13,6 @@
    <include href="library.sch#recommendElementInParent"/>
    <include href="library.sch#restrictWords"/>
    <include href="library.sch#restrictNesting"/>
+   <include href="library.sch#restrictNumberOfChildren"/>
    <include href="quickFix-library.xml"/>
 </schema>
