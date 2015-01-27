@@ -45,10 +45,27 @@
 									</poPatch>
 									<poPatch>
 										<field name="fieldPath">
+											<String>authorExtensionDescriptor/cssDescriptors/[0]/title</String>
+										</field>
+										<field name="index">
+											<Integer>-1</Integer>
+										</field>
+										<field name="value">
+											<String>DIM</String>
+										</field>
+										<field name="patchHandling">
+											<String>set</String>
+										</field>
+										<field name="anchor">
+											<null/>
+										</field>
+									</poPatch>
+									<poPatch>
+										<field name="fieldPath">
 											<String>authorExtensionDescriptor/cssDescriptors</String>
 										</field>
 										<field name="index">
-											<Integer>5</Integer>
+											<Integer>1</Integer>
 										</field>
 										<field name="value">
 											<cssFile>
@@ -56,10 +73,37 @@
 													<String>${framework}/css/rules.css</String>
 												</field>
 												<field name="title">
-													<String>Default</String>
+													<String>DIM</String>
 												</field>
 												<field name="alternate">
 													<Boolean>false</Boolean>
+												</field>
+											</cssFile>
+										</field>
+										<field name="patchHandling">
+											<String>addIndex</String>
+										</field>
+										<field name="anchor">
+											<null/>
+										</field>
+									</poPatch>
+									<poPatch>
+										<field name="fieldPath">
+											<String>authorExtensionDescriptor/cssDescriptors</String>
+										</field>
+										<field name="index">
+											<Integer>2</Integer>
+										</field>
+										<field name="value">
+											<cssFile>
+												<field name="href">
+													<String>${baseFramework}/css_classed/dita.css</String>
+												</field>
+												<field name="title">
+													<String>Default</String>
+												</field>
+												<field name="alternate">
+													<Boolean>true</Boolean>
 												</field>
 											</cssFile>
 										</field>
