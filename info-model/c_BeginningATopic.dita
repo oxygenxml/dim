@@ -6,14 +6,95 @@
 <concept id="AuthoringGuidelines">
  <title>Beginning a Topic</title>
  <conbody>
-  <p>With the exception of glossary topics, you must include a title and prolog section before you
-   begin the body of the topic. In addition, you can optionally include a short description of the
-   topic. The following sections provide guidelines for these common elements.</p>
+  <p><?oxy_comment_start author="george" timestamp="20150127T210519+0200" comment="Implemented as business rules."?>With
+   the exception of glossary topics, you must include a
+   <?oxy_comment_start author="george" timestamp="20150127T210702+0200" comment="Titles are required by the schema, so there is not necessary to include them also as business rules."?>title<?oxy_comment_end?>
+   and prolog section before you begin the body of the topic.<?oxy_comment_end?> In addition, you
+   can optionally include a short description of the topic. The following sections provide
+   guidelines for these common elements.</p>
   <note>
    <p>When creating a new topic, always start with the <keyword keyref="companyname"/> template for
     the corresponding information type, if one is available. If you copy another topic, you could
     inadvertently duplicate element IDs and you risk overlooking elements that you might need for
     the new topic that were removed from the topic you copied.</p>
   </note>
+  <section audience="rules">
+   <title>Business Rules</title>
+   <p>We will recommend adding a prolog to different topic types, except for the glossary
+    topics.</p>
+   <dl>
+    <dlhead>
+     <dthd>Rule</dthd>
+     <ddhd>recommendElementInParent</ddhd>
+    </dlhead>
+    <dlentry>
+     <dt>parent</dt>
+     <dd>task</dd>
+    </dlentry>
+    <dlentry>
+     <dt>element</dt>
+     <dd>prolog</dd>
+    </dlentry>
+    <dlentry>
+     <dt>message</dt>
+     <dd>A prolog is required for each task. Add this just before the task body.</dd>
+    </dlentry>
+   </dl>
+   <dl>
+    <dlhead>
+     <dthd>Rule</dthd>
+     <ddhd>recommendElementInParent</ddhd>
+    </dlhead>
+    <dlentry>
+     <dt>parent</dt>
+     <dd>concept</dd>
+    </dlentry>
+    <dlentry>
+     <dt>element</dt>
+     <dd>prolog</dd>
+    </dlentry>
+    <dlentry>
+     <dt>message</dt>
+     <dd>A prolog is required for each concept. Add this just before the concept body.</dd>
+    </dlentry>
+   </dl>
+   <dl>
+    <dlhead>
+     <dthd>Rule</dthd>
+     <ddhd>recommendElementInParent</ddhd>
+    </dlhead>
+    <dlentry>
+     <dt>parent</dt>
+     <dd>reference</dd>
+    </dlentry>
+    <dlentry>
+     <dt>element</dt>
+     <dd>prolog</dd>
+    </dlentry>
+    <dlentry>
+     <dt>message</dt>
+     <dd>A prolog is required for each reference. Add this just before the reference body.</dd>
+    </dlentry>
+   </dl>
+   <dl>
+    <dlhead>
+     <dthd>Rule</dthd>
+     <ddhd>recommendElementInParent</ddhd>
+    </dlhead>
+    <dlentry>
+     <dt>parent</dt>
+     <dd>troubleshooting</dd>
+    </dlentry>
+    <dlentry>
+     <dt>element</dt>
+     <dd>prolog</dd>
+    </dlentry>
+    <dlentry>
+     <dt>message</dt>
+     <dd>A prolog is required for each troubleshooting topic. Add this just before the
+      troubleshooting body.</dd>
+    </dlentry>
+   </dl>
+  </section>
  </conbody>
 </concept>
