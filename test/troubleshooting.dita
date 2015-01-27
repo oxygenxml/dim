@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE troubleshooting PUBLIC "-//OASIS//DTD DITA 1.3 Troubleshooting//EN" "troubleshooting.dtd">
+<?xml-model href="../info-model/rules/rules.sch" type="application/xml" schematypens="http://purl.oclc.org/dsdl/schematron"?>
+<troubleshooting id="trouble_pmh_4xp_wq">
+  <title></title>
+  <troublebody>
+    <condition>
+      <p></p>
+    </condition>
+    <troubleSolution>
+      <cause>
+        <title></title>
+        <p></p>
+      </cause>
+      <remedy>
+        <responsibleParty></responsibleParty>
+        <steps-unordered>
+          <step>
+            <cmd></cmd>
+          </step>
+        </steps-unordered>
+      </remedy>
+    </troubleSolution>
+  </troublebody>
+</troubleshooting>
