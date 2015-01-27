@@ -47,8 +47,37 @@
           <dd>Provide questions that help instructors evaluate whether or not students have met the
             objectives of a training course</dd>
         </dlentry>-->
-      </dl>All content must be placed into topics that are based on one of these basic information
-      types. As you work, take care not to mix information types within a single topic file. You can
+      </dl><?oxy_comment_start author="george" timestamp="20150127T205644+0200" comment="This is implemented as a business rule."?>All
+      content must be placed into topics that are based on one of these basic information
+      types.<?oxy_comment_end?> As you work,
+      <?oxy_comment_start author="george" timestamp="20150127T205802+0200" comment="No need to enforce this as a business rule, the DTDs/schemas already enforce this."?>take
+      care not to mix information types within a single topic file<?oxy_comment_end?>. You can
       always combine topics by placing them in relation to each other in a DITA map.</p>
+    <section audience="rules">
+      <title>Business rules</title>
+      <p>We can check automatically that any topic element name belongs to the list of allowed topic
+        types. For this we can use a generic rule that matches elements by their class value and
+        checks to make sure that the element name is only one from a given list of element
+        names:</p>
+      <dl>
+        <dlhead>
+          <dthd>Rule</dthd>
+          <ddhd>dita-allowedElementsForClass</ddhd>
+        </dlhead>
+        <dlentry>
+          <dt>elementClass</dt>
+          <dd>topic/topic</dd>
+        </dlentry>
+        <dlentry>
+          <dt>allowedElementNames</dt>
+          <dd>task, reference, concept, glossentry, troubleshooting</dd>
+        </dlentry>
+        <dlentry>
+          <dt>message</dt>
+          <dd>This is not an allowed topic type.</dd>
+        </dlentry>
+      </dl>
+      <p/>
+    </section>
  </conbody>
 </concept>
