@@ -14,5 +14,51 @@
    <include href="library.sch#restrictWords"/>
    <include href="library.sch#restrictNesting"/>
    <include href="library.sch#restrictNumberOfChildren"/>
+   <include href="library.sch#dita-allowedElementsForClass"/>
    <include href="quickFix-library.xml"/>
+   <!--Generated from c_InformationTypes.dita.
+    -->
+   <pattern is-a="dita-allowedElementsForClass"
+            see="http://example.com/styleguide/webhelp/c_InformationTypes.html">
+      <param name="elementClass" value="topic/topic"/>
+      <param name="allowedElementNames"
+             value="task, reference, concept, glossentry, troubleshooting"/>
+      <param name="message" value="This is not an allowed topic type."/>
+   </pattern>
+   <!--Generated from c_BeginningATopic.dita.
+    -->
+   <pattern is-a="recommendElementInParent"
+            see="http://example.com/styleguide/webhelp/c_BeginningATopic.html">
+      <param name="parent" value="task"/>
+      <param name="element" value="prolog"/>
+      <param name="message"
+             value="A prolog is required for each task. Add this just before the task body."/>
+   </pattern>
+   <!--Generated from c_BeginningATopic.dita.
+    -->
+   <pattern is-a="recommendElementInParent"
+            see="http://example.com/styleguide/webhelp/c_BeginningATopic.html">
+      <param name="parent" value="concept"/>
+      <param name="element" value="prolog"/>
+      <param name="message"
+             value="A prolog is required for each concept. Add this just before the concept body."/>
+   </pattern>
+   <!--Generated from c_BeginningATopic.dita.
+    -->
+   <pattern is-a="recommendElementInParent"
+            see="http://example.com/styleguide/webhelp/c_BeginningATopic.html">
+      <param name="parent" value="reference"/>
+      <param name="element" value="prolog"/>
+      <param name="message"
+             value="A prolog is required for each reference. Add this just before the reference body."/>
+   </pattern>
+   <!--Generated from c_BeginningATopic.dita.
+    -->
+   <pattern is-a="recommendElementInParent"
+            see="http://example.com/styleguide/webhelp/c_BeginningATopic.html">
+      <param name="parent" value="troubleshooting"/>
+      <param name="element" value="prolog"/>
+      <param name="message"
+             value="A prolog is required for each troubleshooting topic. Add this just before the&#xA;      troubleshooting body."/>
+   </pattern>
 </schema>
