@@ -250,4 +250,41 @@
     </rule>
   </pattern>
   
+  <!-- DITA specific patterns start with 'dita-' prefix -->
+  
+  <pattern id="dita-allowedElementsForClass" abstract="true">
+    <title></title>
+    <p></p>
+    <p>As parameters we have <emph>elementClass</emph> that specifies
+      the DITA class value of the element to be checked,
+      <emph>allowedElementNames</emph> that specifies the comma separated 
+      list of allowed element names and
+      <emph>message</emph> that specifies an additional message we should output in 
+      case the matched element is not in the allowed list of elements.</p>
+    <parameters xmlns="http://oxygenxml.com/ns/schematron/params">
+      <parameter>
+        <name>elementClass</name>
+        <desc>Specifies the DITA class value of the element that we should check.</desc>
+      </parameter>
+      <parameter>
+        <name>allowedElementNames</name>
+        <desc>Specifies a comma separated list of element local names.</desc>
+      </parameter>
+      <parameter>
+        <name>message</name>
+        <desc>An additional message we should display to the user in case the 
+          matched element is not found in the list of allowed elements.</desc>
+      </parameter>
+    </parameters>
+    <rule context="*[contains(@class, ' $elementClass ')]">
+      <let name="elements" 
+        value="tokenize(translate(normalize-space('$allowedElementNames'), ' ', ''), ',')"/>
+      <assert test="local-name() = $elements" role="warn"> 
+        <value-of select="'$message'"/>
+        The element '<value-of select="local-name()"/>' is not in the list 
+        of allowed elements: ($allowedElementNames).
+      </assert>
+    </rule>
+  </pattern>
+  
 </schema>
