@@ -14,6 +14,7 @@
    <include href="library.sch#restrictWords"/>
    <include href="library.sch#restrictNesting"/>
    <include href="library.sch#restrictNumberOfChildren"/>
+   <include href="library.sch#restrictChildrenElements"/>
    <include href="library.sch#dita-allowedElementsForClass"/>
    <include href="quickFix-library.xml"/>
    <!--Generated from c_InformationTypes.dita.
@@ -60,5 +61,21 @@
       <param name="element" value="prolog"/>
       <param name="message"
              value="A prolog is required for each troubleshooting topic. Add this just before the&#xA;      troubleshooting body."/>
+   </pattern>
+   <!--Generated from c_TitlingTopics.dita.
+    -->
+   <pattern is-a="restrictChildrenElements"
+            see="http://example.com/styleguide/webhelp/c_TitlingTopics.html">
+      <param name="parentElement" value="title"/>
+      <param name="allowedChildren" value="ph"/>
+      <param name="message" value="Only &#34;ph&#34; is allowed within a title element."/>
+   </pattern>
+   <!--Generated from c_TitlingTopics.dita.
+    -->
+   <pattern is-a="restrictWords"
+            see="http://example.com/styleguide/webhelp/c_TitlingTopics.html">
+      <param name="parentElement" value="title"/>
+      <param name="minWords" value="1"/>
+      <param name="maxWords" value="8"/>
    </pattern>
 </schema>

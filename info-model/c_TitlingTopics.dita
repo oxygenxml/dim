@@ -11,12 +11,14 @@
       the first element within the topic root element (such as &lt;task> or &lt;reference>). Type
       your text directly into the &lt;title> element, keeping in mind the following coding
         constraints:<ul id="ul_r5v_crv_nl">
-        <li>You cannot nest block elements or most inline elements within &lt;title>. Even when they
-          are allowed, avoid using inline elements that might override the format of the heading
-          style.</li>
-        <li>Titles cannot be conditionalized. If you are writing a topic for reuse that will require
-          a change in title, use the &lt;ph> element within the &lt;title> element and apply
-          conditional or key attributes to that element. The following examples show how both
+        <li><?oxy_comment_start author="george" timestamp="20150127T222736+0200" comment="We will allow only text() and ph within a title."?>You
+          cannot nest block elements or most inline elements within &lt;title>. Even when they are
+          allowed, avoid using inline elements that might override the format of the heading
+          style.<?oxy_comment_end?></li>
+        <li><?oxy_comment_start author="george" timestamp="20150127T222544+0200" comment="This is enforced by the DTD/schema."?>Titles
+          cannot be conditionalized.<?oxy_comment_end?> If you are writing a topic for reuse that
+          will require a change in title, use the &lt;ph> element within the &lt;title> element and
+          apply conditional or key attributes to that element. The following examples show how both
           approaches might be used to change the name of a product within a
           title.<codeblock>&lt;title>... &lt;ph product="...">...&lt;/ph>
 &lt;ph product="...">...&lt;/ph>&lt;/title></codeblock><codeblock>&lt;title>... 
@@ -41,8 +43,9 @@
           product.</li>
         <li>Use industry standard and commonly used words.</li>
         <li>Use the same terms consistently in topics that cover the same subject.</li>
-        <li>Although it will not always be possible, try to limit the length of the title to no more
-          than eight words.</li>
+        <li><?oxy_comment_start author="george" timestamp="20150128T073804+0200" comment="We will check that titles do not exceed 8 words."?>Although
+          it will not always be possible, try to limit the length of the title to no more than eight
+          words.<?oxy_comment_end?></li>
         <li>Use plural forms of nouns unless the subject makes sense only in the singular.</li>
         <li>Avoid using acronyms and abbreviations in a title, unless they are industry
           standards.</li>
@@ -107,6 +110,47 @@
   &lt;title>...&lt;/title>
   ...
 &lt;/reference></codeblock>
+    </section>
+    <section audience="rules">
+      <title>Business Rules</title>
+      <p>We restrict the title to contain only 'ph' elements and text:</p>
+      <dl>
+        <dlhead>
+          <dthd>Rule</dthd>
+          <ddhd>restrictChildrenElements</ddhd>
+        </dlhead>
+        <dlentry>
+          <dt>parentElement</dt>
+          <dd>title</dd>
+        </dlentry>
+        <dlentry>
+          <dt>allowedChildren</dt>
+          <dd>ph</dd>
+        </dlentry>
+        <dlentry>
+          <dt>message</dt>
+          <dd>Only "ph" is allowed within a title element.</dd>
+        </dlentry>
+      </dl>
+      <p>We will make sure that titles do not exceed 8 words and they are not left empty:</p>
+      <dl>
+        <dlhead>
+          <dthd>Rule</dthd>
+          <ddhd>restrictWords</ddhd>
+        </dlhead>
+        <dlentry>
+          <dt>parentElement</dt>
+          <dd>title</dd>
+        </dlentry>
+        <dlentry>
+          <dt>minWords</dt>
+          <dd>1</dd>
+        </dlentry>
+        <dlentry>
+          <dt>maxWords</dt>
+          <dd>8</dd>
+        </dlentry>
+      </dl>
     </section>
   </conbody>
 </concept>
