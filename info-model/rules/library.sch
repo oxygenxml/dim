@@ -286,6 +286,68 @@
   </pattern>
   
   
+  <pattern id="avoidDuplicateContent" abstract="true">
+    <title></title>
+    <p></p>
+    <p>As parameters we have 
+      <emph>matchElement</emph> that specifies the element to be checked,
+      <emph>targetElement</emph> that specifies a sibling element to check against and
+      <emph>message</emph> that specifies an additional message we should output in 
+      case the matched element contains the same content as the target element.</p>
+    <parameters xmlns="http://oxygenxml.com/ns/schematron/params">
+      <parameter>
+        <name>matchElement</name>
+        <desc>Specifies the element to check.</desc>
+      </parameter>
+      <parameter>
+        <name>targetElement</name>
+        <desc>Specifies a sibling element name to check against.</desc>
+      </parameter>
+      <parameter>
+        <name>message</name>
+        <desc>A message we should display to the user in case the 
+          matched element contains the same content as the target.</desc>
+      </parameter>
+    </parameters>
+    <rule context="$matchElement">
+      <assert test="not(
+          normalize-space((preceding-sibling::$targetElement, following-sibling::$targetElement)[1]) 
+          = normalize-space(.)
+        )" role="warn"> 
+        <value-of select="'$message'"/>
+      </assert>
+    </rule>
+  </pattern>
+  
+  
+  
+  <pattern id="requireContentAfterElement" abstract="true">
+    <title></title>
+    <p></p>
+    <p>As parameters we have 
+      <emph>element</emph> that specifies the element to be checked and
+      <emph>message</emph> that specifies an additional message we should output in 
+      case there is no content after the specified element.</p>
+    <parameters xmlns="http://oxygenxml.com/ns/schematron/params">
+      <parameter>
+        <name>element</name>
+        <desc>Specifies the element to check.</desc>
+      </parameter>
+      <parameter>
+        <name>message</name>
+        <desc>A message we should display to the user in case there is no 
+          content after the reference element.</desc>
+      </parameter>
+    </parameters>
+    <rule context="$element">
+      <assert test="following::text()[normalize-space()!='']" role="warn"> 
+        <value-of select="'$message'"/>
+      </assert>
+    </rule>
+  </pattern>
+  
+  
+  
   <!-- DITA specific patterns start with 'dita-' prefix -->
   
   <pattern id="dita-allowedElementsForClass" abstract="true">
