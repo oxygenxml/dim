@@ -250,6 +250,42 @@
     </rule>
   </pattern>
   
+  <pattern id="restrictChildrenElements" abstract="true">
+    <title></title>
+    <p></p>
+    <p>As parameters we have <emph>parentElement</emph> that specifies
+      the the element to be checked,
+      <emph>allowedChildren</emph> that specifies the comma separated 
+      list of allowed child element names and
+      <emph>message</emph> that specifies an additional message we should output in 
+      case the matched element contains elements that are not in the list of allowed elements.</p>
+    <parameters xmlns="http://oxygenxml.com/ns/schematron/params">
+      <parameter>
+        <name>parentElement</name>
+        <desc>Specifies the parent element.</desc>
+      </parameter>
+      <parameter>
+        <name>allowedChildren</name>
+        <desc>Specifies a comma separated list of element local names.</desc>
+      </parameter>
+      <parameter>
+        <name>message</name>
+        <desc>An additional message we should display to the user in case the 
+          matched element contains children that are not in the list of allowed elements.</desc>
+      </parameter>
+    </parameters>
+    <rule context="$parentElement/*">
+      <let name="elements" 
+        value="tokenize(translate(normalize-space('$allowedChildren'), ' ', ''), ',')"/>
+      <assert test="local-name() = $elements" role="warn"> 
+        <value-of select="'$message'"/>
+        The element '<value-of select="local-name()"/>' is not in the list 
+        of allowed elements: ($allowedChildren).
+      </assert>
+    </rule>
+  </pattern>
+  
+  
   <!-- DITA specific patterns start with 'dita-' prefix -->
   
   <pattern id="dita-allowedElementsForClass" abstract="true">
@@ -286,5 +322,8 @@
       </assert>
     </rule>
   </pattern>
+  
+  
+  
   
 </schema>
