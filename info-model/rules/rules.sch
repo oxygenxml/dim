@@ -15,6 +15,8 @@
    <include href="library.sch#restrictNesting"/>
    <include href="library.sch#restrictNumberOfChildren"/>
    <include href="library.sch#restrictChildrenElements"/>
+   <include href="library.sch#avoidDuplicateContent"/>
+   <include href="library.sch#requireContentAfterElement"/>
    <include href="library.sch#dita-allowedElementsForClass"/>
    <include href="quickFix-library.xml"/>
    <!--Generated from c_InformationTypes.dita.
@@ -77,5 +79,48 @@
       <param name="parentElement" value="title"/>
       <param name="minWords" value="1"/>
       <param name="maxWords" value="8"/>
+   </pattern>
+   <!--Generated from c_WritingShortDescriptions.dita.
+    -->
+   <pattern is-a="avoidDuplicateContent"
+            see="http://example.com/styleguide/webhelp/c_WritingShortDescriptions.html">
+      <param name="matchElement" value="shortdesc"/>
+      <param name="targetElement" value="title"/>
+      <param name="message"
+             value="Do not just restate the title in the short description."/>
+   </pattern>
+   <!--Generated from c_WritingShortDescriptions.dita.
+    -->
+   <pattern is-a="restrictWords"
+            see="http://example.com/styleguide/webhelp/c_WritingShortDescriptions.html">
+      <param name="parentElement" value="shortdesc"/>
+      <param name="minWords" value="1"/>
+      <param name="maxWords" value="50"/>
+   </pattern>
+   <!--Generated from c_WritingShortDescriptions.dita.
+    -->
+   <pattern is-a="avoidAttributeInElement"
+            see="http://example.com/styleguide/webhelp/c_WritingShortDescriptions.html">
+      <param name="element" value="shortdesc"/>
+      <param name="attribute" value="conref"/>
+      <param name="message"
+             value="Short descriptions content should not be referred though content references."/>
+   </pattern>
+   <!--Generated from c_WritingShortDescriptions.dita.
+    -->
+   <pattern is-a="avoidAttributeInElement"
+            see="http://example.com/styleguide/webhelp/c_WritingShortDescriptions.html">
+      <param name="element" value="shortdesc"/>
+      <param name="attribute" value="conkeyref"/>
+      <param name="message"
+             value="Short descriptions content should not be referred though content references."/>
+   </pattern>
+   <!--Generated from c_WritingShortDescriptions.dita.
+    -->
+   <pattern is-a="requireContentAfterElement"
+            see="http://example.com/styleguide/webhelp/c_WritingShortDescriptions.html">
+      <param name="element" value="shortdesc"/>
+      <param name="message"
+             value="Avoid topics that contain nothing but a short description."/>
    </pattern>
 </schema>
