@@ -18,6 +18,7 @@
    <include href="library.sch#avoidDuplicateContent"/>
    <include href="library.sch#requireContentAfterElement"/>
    <include href="library.sch#dita-allowedElementsForClass"/>
+   <include href="library.sch#dita-allowOnlyBlockElements"/>
    <include href="quickFix-library.xml"/>
    <!--Generated from c_InformationTypes.dita.
     -->
@@ -146,5 +147,21 @@
       <param name="parent" value="taskbody"/>
       <param name="element" value="steps"/>
       <param name="message" value="A set of ordered steps is required for tasks."/>
+   </pattern>
+   <!--Generated from c_TaskElements.dita.
+    -->
+   <pattern is-a="avoidEndFragment"
+            see="http://example.com/styleguide/webhelp/c_TaskElements.html">
+      <param name="element" value="choice"/>
+      <param name="fragment" value=" or"/>
+      <param name="message" value="Do not insert the word &#34;or&#34; between choices"/>
+   </pattern>
+   <!--Generated from c_TaskAuthoringGuidelines.dita.
+    -->
+   <pattern is-a="dita-allowOnlyBlockElements"
+            see="http://example.com/styleguide/webhelp/c_TaskAuthoringGuidelines.html">
+      <param name="element" value="context"/>
+      <param name="message"
+             value="Do not include content directly in a &#34;context&#34; element. Instead, surround it with the&#xA;            appropriate block element, such as a &#34;p&#34;."/>
    </pattern>
 </schema>

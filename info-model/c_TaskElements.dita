@@ -171,9 +171,11 @@
             user may select to complete the task. Use &lt;choicetable> when the user has many
             options that lead to different results. The &lt;choices> element is a container for
             individual &lt;choice> elements. Nest a &lt;choice&gt; element within &lt;choices> for
-            each option that the user can select. Do not insert the word "or" between the choices.
-            If necessary, you can add additional elements such as &lt;p>, &lt;ul>, or &lt;ol> to a
-            &lt;choice> element.</dd>
+            each option that the user can
+            select.<?oxy_comment_start author="george" timestamp="20150128T163917+0200" comment="We will try to check to see if a choice does not end with &quot; or&quot;."?>
+            Do not insert the word "or" between the choices<?oxy_comment_end?>. If necessary, you
+            can add additional elements such as &lt;p>, &lt;ul>, or &lt;ol> to a &lt;choice>
+            element.</dd>
         </dlentry>
         <dlentry>
           <dt>&lt;choicetable> choice table</dt>
@@ -311,5 +313,25 @@
     </dlentry>
    </dl>
   </section>
+    <section audience="rules">
+      <dl>
+        <dlhead>
+          <dthd>Rule</dthd>
+          <ddhd>avoidEndFragment</ddhd>
+        </dlhead>
+        <dlentry>
+          <dt>element</dt>
+          <dd>choice</dd>
+        </dlentry>
+        <dlentry>
+          <dt>fragment</dt>
+          <dd> or</dd>
+        </dlentry>
+        <dlentry>
+          <dt>message</dt>
+          <dd>Do not insert the word "or" between choices</dd>
+        </dlentry>
+      </dl>
+    </section>
  </conbody>
 </concept>
