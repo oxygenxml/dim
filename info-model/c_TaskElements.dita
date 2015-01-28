@@ -107,7 +107,7 @@
             in the given circumstances. </dd>
     </dlentry>
     <dlentry>
-     <dt>&lt;postreq> post requiremen<sup>*</sup>t</dt>
+     <dt>&lt;postreq> post requirement<sup>*</sup></dt>
      <dd><indexterm>post requirement &lt;postreq></indexterm>Use the &lt;postreq> element to specify
             anything that the user needs to know or do after completing the task. This information
             might include recommended next steps, such as clean up, testing, and adjusting.</dd>
