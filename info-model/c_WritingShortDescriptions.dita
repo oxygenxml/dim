@@ -11,9 +11,12 @@
       &lt;shortdesc> element is rendered as the first paragraph of the topic. As a result, it should
       always be composed of complete sentences and form a comprehensive thought. However, as its
       name implies, the short description should be concise and to the point. Because it is meant to
-      be short, the &lt;shortdesc> element cannot contain block elements, such as paragraphs or
-      lists, nor most inline elements.<draft-comment>Discuss with the company how they intend to use
-          shortdesc:<ul id="ul_uwn_xhl_j3">
+      be short, the
+      <?oxy_comment_start author="george" timestamp="20150128T094810+0200" comment="This is already enforced by the DTD/schema"?>&lt;shortdesc>
+      element cannot contain block elements, such as paragraphs or lists<?oxy_comment_end?>,
+      <?oxy_comment_start author="george" timestamp="20150128T094840+0200" comment="If needed, we can constrain this to only a list of allowed element names."?>nor
+      most inline elements<?oxy_comment_end?>.<draft-comment>Discuss with the company how they
+        intend to use shortdesc:<ul id="ul_uwn_xhl_j3">
           <li>Rendered as first paragraph</li>
           <li>Rollover for links </li>
           <li>Information displayed with topic titles in searches</li>
@@ -30,22 +33,27 @@
 If you have nothing more to add, do not include a short description"?>
       <ul id="ul_dx1_kf1_5g">
         <?oxy_comment_end?>
-        <li>Do not simply restate the title. </li>
-        <li>Limit the description to no more than 50 words in two or three sentences.</li>
+        <li><?oxy_comment_start author="george" timestamp="20150128T095746+0200" comment="We will check this automatically."?>Do
+          not simply restate the title. <?oxy_comment_end?></li>
+        <li><?oxy_comment_start author="george" timestamp="20150128T100545+0200" comment="Enforced as a business rule."?>Limit
+          the description to no more than 50 words<?oxy_comment_end?> in two or three
+          sentences.</li>
         <li>Avoid starting the sentence with "This topic ..." or a similar structure.</li>
         <li>Do not use the short description as a lead-in sentence (for example, "To remove and
           replace the board, follow these steps:").</li>
-        <li>Do not conref short descriptions. If the description of the content of a topic is the
-          same as another one, consider whether the topics should be merged into one normalized
-          and/or conditionalized topic.</li>
-        <li>Avoid topics that contain nothing but a short description. Typically, these types of
-          topics serve only as transitions between topics and are of little value to the user who is
+        <li><?oxy_comment_start author="george" timestamp="20150128T101205+0200" comment="Enforced as business rule."?>Do
+          not conref short descriptions<?oxy_comment_end?>. If the description of the content of a
+          topic is the same as another one, consider whether the topics should be merged into one
+          normalized and/or conditionalized topic.</li>
+        <li><?oxy_comment_start author="george" timestamp="20150128T103009+0200" comment="Enforced as business rule."?>Avoid
+          topics that contain nothing but a short description. Typically, these types of topics
+          serve only as transitions between topics and are of little value to the user who is
           searching for an answer to a specific question, not reading the manual, or even a chapter,
-          from cover to cover.<note>For navigation purposes, you might want to group several topics
-            together under a heading; instead of creating a container topic for that heading and a
-            short description, use the &lt;topichead> element in your map. See <xref
-              href="c_mapelements.dita#Maps"/> for more information.<draft-comment>Rephrase this
-              note if they aren't requiring a shortdesc--instead of creating an empty container
+          from cover to cover.<?oxy_comment_end?><note>For navigation purposes, you might want to
+            group several topics together under a heading; instead of creating a container topic for
+            that heading and a short description, use the &lt;topichead> element in your map. See
+              <xref href="c_mapelements.dita#Maps"/> for more information.<draft-comment>Rephrase
+              this note if they aren't requiring a shortdesc--instead of creating an empty container
               topic for that heading </draft-comment></note></li>
       </ul>
       <draft-comment>Find shortdesc examples within company content.</draft-comment>
@@ -107,5 +115,99 @@ If you have nothing more to add, do not include a short description"?>
   &lt;/shortdesc>
 &lt;/concept></codeblock>
   </section>
+    <section audience="rules">
+      <title>Business Rules</title>
+      <p>We can check to see that the content of the short description does not repeat the
+        title:</p>
+      <dl>
+        <dlhead>
+          <dthd>Rule</dthd>
+          <ddhd>avoidDuplicateContent</ddhd>
+        </dlhead>
+        <dlentry>
+          <dt>matchElement</dt>
+          <dd>shortdesc</dd>
+        </dlentry>
+        <dlentry>
+          <dt>targetElement</dt>
+          <dd>title</dd>
+        </dlentry>
+        <dlentry>
+          <dt>message</dt>
+          <dd>Do not just restate the title in the short description.</dd>
+        </dlentry>
+      </dl>
+      <p>We will check to have no more that 50 words in a short description:</p>
+      <dl>
+        <dlhead>
+          <dthd>Rule</dthd>
+          <ddhd>restrictWords</ddhd>
+        </dlhead>
+        <dlentry>
+          <dt>parentElement</dt>
+          <dd>shortdesc</dd>
+        </dlentry>
+        <dlentry>
+          <dt>minWords</dt>
+          <dd>1</dd>
+        </dlentry>
+        <dlentry>
+          <dt>maxWords</dt>
+          <dd>50</dd>
+        </dlentry>
+      </dl>
+      <p>We will check to make sure we do not conref short descriptions:</p>
+      <dl>
+        <dlhead>
+          <dthd>Rule</dthd>
+          <ddhd>avoidAttributeInElement</ddhd>
+        </dlhead>
+        <dlentry>
+          <dt>element</dt>
+          <dd>shortdesc</dd>
+        </dlentry>
+        <dlentry>
+          <dt>attribute</dt>
+          <dd>conref</dd>
+        </dlentry>
+        <dlentry>
+          <dt>message</dt>
+          <dd>Short descriptions content should not be referred though content references.</dd>
+        </dlentry>
+      </dl>
+      <dl>
+        <dlhead>
+          <dthd>Rule</dthd>
+          <ddhd>avoidAttributeInElement</ddhd>
+        </dlhead>
+        <dlentry>
+          <dt>element</dt>
+          <dd>shortdesc</dd>
+        </dlentry>
+        <dlentry>
+          <dt>attribute</dt>
+          <dd>conkeyref</dd>
+        </dlentry>
+        <dlentry>
+          <dt>message</dt>
+          <dd>Short descriptions content should not be referred though content references.</dd>
+        </dlentry>
+      </dl>
+      <p>We can check to see that there is more content after short description.</p>
+      <dl>
+        <dlhead>
+          <dthd>Rule</dthd>
+          <ddhd>requireContentAfterElement</ddhd>
+        </dlhead>
+        <dlentry>
+          <dt>element</dt>
+          <dd>shortdesc</dd>
+        </dlentry>
+        <dlentry>
+          <dt>message</dt>
+          <dd>Avoid topics that contain nothing but a short description.</dd>
+        </dlentry>
+      </dl>
+    </section>
  </conbody>
 </concept>
