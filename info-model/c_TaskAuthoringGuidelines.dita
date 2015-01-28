@@ -98,8 +98,10 @@
             too granular. If two simple actions are logically combined, keep them together in one
             command; for example,<codeblock>&lt;cmd>....&lt;/cmd>  </codeblock></li>
           <li>Write commands in the imperative voice.</li>
-          <li>Try to keep the number of steps in a procedure at a minimum. Consider breaking long
-            procedures into smaller tasks, especially if the steps consist of many substeps. </li>
+          <li><?oxy_comment_start author="george" timestamp="20150128T174324+0200" comment="Maybe it will make sense to restrict the number of steps to a maximum number, for example 10 steps."?>Try
+            to keep the number of steps in a procedure at a minimum. Consider breaking long
+            procedures into smaller tasks, especially if the steps consist of many substeps.
+            <?oxy_comment_end?></li>
           <li>If you need to orient the user to the location where the action is performed or
             qualify the step in any way, put that information first before describing the
             action.</li>
@@ -177,8 +179,10 @@
             useful to your users.</li>
           <li>Set up the scenario for the example clearly at the beginning of the example.</li>
           <li>Do not include multiple scenarios in one example; instead, use multiple example
-            elements, and include a &lt;title> element within each example to differentiate between
-            them.</li>
+            elements, and
+            <?oxy_comment_start author="george" timestamp="20150128T175159+0200" comment="This may be implemented as a business rule."?>include
+            a &lt;title> element within each example to differentiate between
+            them.<?oxy_comment_end?></li>
         </ul><codeblock>Placeholder for example</codeblock></p>
     </section>
     <section>
@@ -207,8 +211,8 @@
         </dlentry>
         <dlentry>
           <dt>message</dt>
-          <dd>Do not include content directly in a "context" element or in an inline element.
-            Instead, surround it with the appropriate block element, such as a "p".</dd>
+          <dd>Do not include content directly in a "context" element or an inline element. Instead,
+            surround it with the appropriate block element, such as a "p".</dd>
         </dlentry>
       </dl>
     </section>
