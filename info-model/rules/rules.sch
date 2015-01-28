@@ -123,4 +123,28 @@
       <param name="message"
              value="Avoid topics that contain nothing but a short description."/>
    </pattern>
+   <!--Generated from c_TaskStructure.dita.
+    -->
+   <pattern is-a="recommendElementInParent"
+            see="http://example.com/styleguide/webhelp/c_TaskStructure.html">
+      <param name="parent" value="task"/>
+      <param name="element" value="shortdesc"/>
+      <param name="message" value="Short description is required for tasks."/>
+   </pattern>
+   <!--Generated from c_TaskStructure.dita.
+    -->
+   <pattern is-a="recommendElementInParent"
+            see="http://example.com/styleguide/webhelp/c_TaskStructure.html">
+      <param name="parent" value="task"/>
+      <param name="element" value="taskbody"/>
+      <param name="message" value="Task body is required."/>
+   </pattern>
+   <!--Generated from c_TaskStructure.dita.
+    -->
+   <pattern is-a="recommendElementInParent"
+            see="http://example.com/styleguide/webhelp/c_TaskStructure.html">
+      <param name="parent" value="taskbody"/>
+      <param name="element" value="steps"/>
+      <param name="message" value="A set of ordered steps is required for tasks."/>
+   </pattern>
 </schema>

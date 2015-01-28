@@ -11,16 +11,19 @@
     (required) and (optional) indications as necessary.</draft-comment><ul id="ul_wwj_oaz_kd">
     <li>&lt;task> (required)</li>
     <li>&lt;title> (required)</li>
-    <li>&lt;shortdesc> (required)</li>
+    <li><?oxy_comment_start author="george" timestamp="20150128T104546+0200" comment="Short descriptions are optional in the DTD/schema so we can require them though business rules."?>&lt;shortdesc>
+          (required)<?oxy_comment_end?></li>
     <li>&lt;prolog> (required)</li>
-    <li>&lt;taskbody> (required) <ul>
-      <li>&lt;prereq> (optional)</li>
-      <li>&lt;context> (optional)</li>
-      <li>&lt;steps> (required)</li>
-      <li>&lt;result> (optional)</li>
-      <li>&lt;example> (optional)</li>
-      <li>&lt;postreq> (optional)</li>
-     </ul></li>
+    <li><?oxy_comment_start author="george" timestamp="20150128T112234+0200" comment="Task body is optional in the DTD/schema, so we can enforce it as a business rule."?>&lt;taskbody>
+          (required) <?oxy_comment_end?><ul>
+            <li>&lt;prereq> (optional)</li>
+            <li>&lt;context> (optional)</li>
+            <li><?oxy_comment_start author="george" timestamp="20150128T112448+0200" comment="The schema allows a choice of steps and unorderedsteps - we can enforce the presence of steps though a business rule."?>&lt;steps>
+              (required)<?oxy_comment_end?></li>
+            <li>&lt;result> (optional)</li>
+            <li>&lt;example> (optional)</li>
+            <li>&lt;postreq> (optional)</li>
+          </ul></li>
    </ul></p>
   <p>This structure applies to all categories of task topics. </p>
   <!--<p>All <keyword keyref="companyname"/> task topics use one of three task templates:</p>
@@ -114,5 +117,63 @@
    choose to omit an optional element, go to the next element in the structure. Do not include more
    than one of each element, unless shown otherwise in the structure. Each element is described in
    the following section. Writing guidelines follow the element descriptions.</p>-->
+    <section audience="rules">
+      <title>Business rules</title>
+      <p>Require different elements that are optional in the DTD:</p>
+      <dl>
+        <dlhead>
+          <dthd>Rule</dthd>
+          <ddhd>recommendElementInParent</ddhd>
+        </dlhead>
+        <dlentry>
+          <dt>parent</dt>
+          <dd>task</dd>
+        </dlentry>
+        <dlentry>
+          <dt>element</dt>
+          <dd>shortdesc</dd>
+        </dlentry>
+        <dlentry>
+          <dt>message</dt>
+          <dd>Short description is required for tasks.</dd>
+        </dlentry>
+      </dl>
+      <dl>
+        <dlhead>
+          <dthd>Rule</dthd>
+          <ddhd>recommendElementInParent</ddhd>
+        </dlhead>
+        <dlentry>
+          <dt>parent</dt>
+          <dd>task</dd>
+        </dlentry>
+        <dlentry>
+          <dt>element</dt>
+          <dd>taskbody</dd>
+        </dlentry>
+        <dlentry>
+          <dt>message</dt>
+          <dd>Task body is required.</dd>
+        </dlentry>
+      </dl>
+      <dl>
+        <dlhead>
+          <dthd>Rule</dthd>
+          <ddhd>recommendElementInParent</ddhd>
+        </dlhead>
+        <dlentry>
+          <dt>parent</dt>
+          <dd>taskbody</dd>
+        </dlentry>
+        <dlentry>
+          <dt>element</dt>
+          <dd>steps</dd>
+        </dlentry>
+        <dlentry>
+          <dt>message</dt>
+          <dd>A set of ordered steps is required for tasks.</dd>
+        </dlentry>
+      </dl>
+    </section>
  </conbody>
 </concept>
