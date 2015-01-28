@@ -251,8 +251,9 @@
   </pattern>
   
   <pattern id="restrictChildrenElements" abstract="true">
-    <title></title>
-    <p></p>
+    <title>Restrict the elements that can appear inside a parent element</title>
+    <p>You can use this to constrain the elements that can appear inside a parent element 
+      to a set of allowed elements.</p>
     <p>As parameters we have <emph>parentElement</emph> that specifies
       the the element to be checked,
       <emph>allowedChildren</emph> that specifies the comma separated 
@@ -287,8 +288,9 @@
   
   
   <pattern id="avoidDuplicateContent" abstract="true">
-    <title></title>
-    <p></p>
+    <title>Avoid having two elements with the same content</title>
+    <p>Use this to identify an element that has the same content as one of its sibling elements
+      and notify the user if that is not what you want.</p>
     <p>As parameters we have 
       <emph>matchElement</emph> that specifies the element to be checked,
       <emph>targetElement</emph> that specifies a sibling element to check against and
@@ -322,7 +324,7 @@
   
   
   <pattern id="requireContentAfterElement" abstract="true">
-    <title></title>
+    <title>Check that we still have some text content following a specified element.</title>
     <p></p>
     <p>As parameters we have 
       <emph>element</emph> that specifies the element to be checked and
@@ -346,13 +348,11 @@
     </rule>
   </pattern>
   
-  
-  
   <!-- DITA specific patterns start with 'dita-' prefix -->
   
   <pattern id="dita-allowedElementsForClass" abstract="true">
-    <title></title>
-    <p></p>
+    <title>Check element names for a DITA element that has a specified class value</title>
+    <p>Check that the element name matched by a specified class value is in a list of allowed element names.</p>
     <p>As parameters we have <emph>elementClass</emph> that specifies
       the DITA class value of the element to be checked,
       <emph>allowedElementNames</emph> that specifies the comma separated 
