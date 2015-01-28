@@ -385,7 +385,34 @@
     </rule>
   </pattern>
   
-  
+  <pattern id="dita-allowOnlyBlockElements" abstract="true">
+    <title>Allow only DITA block elements inside an element</title>
+    <p>Check that a specified element contains only DITA block elements and no inlines or text content.</p>
+    <p>As parameters we have 
+      <emph>element</emph> that specifies
+      the DITA element to be checked.</p>
+    <parameters xmlns="http://oxygenxml.com/ns/schematron/params">
+      <parameter>
+        <name>element</name>
+        <desc>Specifies the DITA element that we should check to contain only block elements.</desc>
+      </parameter>
+      <parameter>
+        <name>message</name>
+        <desc>The message we should display to the user in case the 
+          specified element contains text or inline elements.</desc>
+      </parameter>
+    </parameters>
+    <rule context="$element[text()/normalize-space(.)!='']" role="warn">
+      <assert test="false()">
+        <value-of select="'$message'"/>
+      </assert>
+    </rule>
+    <rule context="$element/*">
+      <assert test="substring-before(substring-after(@class, ' '), ' ')=document('blockElements.xml')//*:class">
+        <value-of select="'$message'"/>
+      </assert>
+    </rule>
+  </pattern>
   
   
 </schema>

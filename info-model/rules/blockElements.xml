@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blockElements xmlns="http://oxygenxml.com/dita/blockElements">
+  <class>topic/p</class>
+  <class>topic/pre</class>
+  <name>topic/ul</name>
+  <name>topic/ol</name>
+  <name>topic/table</name>
+  <name>topic/dl</name>
+  <name>topic/example</name>
+  <name>topic/dl</name>
+  <name>topic/fig</name>
+  <name>topic/image</name>
+  <name>topic/imagemap</name>
+  <name>topic/lines</name>
+  <name>topic/lq</name>
+  <name>topic/msgblock</name>
+  <name>topic/note</name>
+  <name>topic/object</name>
+  <name>topic/foreign</name>
+  <name>topic/hazardstatement</name>
+  <name>topic/paraml</name>
+  <name>topic/screen</name>
+  <name>topic/section</name>
+  <name>topic/simpletable</name>
+  <name>topic/sl</name>
+  <name>topic/syntaxdiagram</name>
+  <name>topic/unknown</name>
+  <name>topic/required-cleanup</name>
+  <name>topic/draft-comment</name>
+  <!-- add all block elements here -->
+</blockElements>
+
