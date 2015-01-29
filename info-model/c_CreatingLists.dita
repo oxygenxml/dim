@@ -13,9 +13,10 @@
         sentences.</li>
       <li>Include all common information from the list items in the introductory sentence to avoid
         repetition.</li>
-      <li>If the introductory sentence ends with a colon in anticipation of the list to come, do not
-        close the paragraph element before starting the list. In this case, the list is part of the
-        preceding paragraph.</li>
+      <li><?oxy_custom_start type="oxy_content_highlight" color="255,255,0"?>If the introductory
+        sentence ends with a colon in anticipation of the list to come, do not close the paragraph
+        element before starting the list. In this case, the list is part of the preceding
+        paragraph.<?oxy_custom_end?></li>
       <li>If the list is not logically part of the preceding paragraph, close the paragraph element
         before beginning the list. The paragraph should end with a period, and all list items should
         also be complete sentences.</li>
@@ -23,10 +24,12 @@
         dependent on the list items by completing the sentence with them.<note>Do not introduce
           lists within prerequisite sections at all. The headings are enough for the user to
           understand the purpose of the list.</note></li>
-      <li>Do not create single-item lists, except in prerequisite sections. See <xref
+      <li><?oxy_custom_start type="oxy_content_highlight" color="255,255,0"?>Do not create
+        single-item lists, except in prerequisite sections.<?oxy_custom_end?> See <xref
           href="c_TaskAuthoringGuidelines.dita#AuthoringGuidelines/section_l1k_222_q4"/>.</li>
-      <li>Unless the list appears in a reference topic, try to limit the number of items to fewer
-        than nine.</li>
+      <li><?oxy_custom_start type="oxy_content_highlight" color="255,255,0"?>Unless the list appears
+        in a reference topic, try to limit the number of items to fewer than
+        nine.<?oxy_custom_end?></li>
     </ul>
     <section>
       <title>Choosing the Appropriate List Type</title>
@@ -42,8 +45,9 @@
             explanation of the term or phrase. </li>
         </ul><draft-comment>IF company allows simple list (outside of figure callouts) or parml,
           include them in this list as well and add corresponding sections to this
-          document.</draft-comment></p><p>You do not need to use any list element if you have a list of three or less, single-word
-        items.<codeblock>&lt;p><keyword keyref="companyname"/> uses three list types: unordered, ordered, and definition.&lt;/p></codeblock></p>
+          document.</draft-comment></p><p><?oxy_custom_start type="oxy_content_highlight" color="255,255,0"?>You do not need to use any
+        list element if you have a list of three or less, single-word
+        items.<?oxy_custom_end?><codeblock>&lt;p><keyword keyref="companyname"/> uses three list types: unordered, ordered, and definition.&lt;/p></codeblock></p>
     </section>
 
     <section>
@@ -64,9 +68,10 @@
           </dlentry>
         </dl></p>
       <p>When writing unordered lists, follow these guidelines:<ul id="ul_wlq_w1l_yg">
-          <li>In general, list items in an unordered list should be short so that the list is
-            scannable. If you find that you are including more than two sentences in your list
-            items, consider if the information would be better included in another way.</li>
+          <li><?oxy_custom_start type="oxy_content_highlight" color="255,255,0"?>In general, list
+            items in an unordered list should be short so that the list is scannable. If you find
+            that you are including more than two sentences in your list items, consider if the
+            information would be better included in another way.<?oxy_custom_end?></li>
           <li>Arrange the list items in a logical way, such as alphabetically. If necessary, provide
             an introductory explanation about how the list is organized. </li>
           <li>Indicate how the list items relate to each other; for example, are they mutually
@@ -181,23 +186,29 @@
     <section>
       <title>Nesting Lists</title>
       <p>To create sub-lists, nest list elements in other list elements. <keyword
-          keyref="companyname"/> allows you to nest up to two levels of lists, and you can nest any
-        type list in any other type list. Be aware, however, that nesting more than one level of
-        list elements can make the list more difficult for users to understand. </p>
+          keyref="companyname"/> allows you to
+        <?oxy_custom_start type="oxy_content_highlight" color="255,255,0"?>nest up to two levels of
+        lists, and you can nest any type list in any other type list<?oxy_custom_end?>. Be aware,
+        however, that nesting more than one level of list elements can make the list more difficult
+        for users to understand. </p>
       <codeblock scale="80"><draft-comment>Include example from company content</draft-comment></codeblock>
     </section>
     <section>
       <title>Reusing List Items</title>
       <p>To allow for the possibility of reusing list items in other locations, follow these guidelines:<ul>
-          <li>Do not insert a list in the middle of a sentence.</li>
+          <li><?oxy_custom_start type="oxy_content_highlight" color="255,255,0"?>Do not insert a
+            list in the middle of a sentence.<?oxy_custom_end?></li>
           <li>Do not write list items to complete an introductory sentence. </li>
-          <li>Include closing punctuation on list items only if all items in the list are complete
-            sentences. This maximizes reuse potential when the context of a list item is not
-            known.</li>
-          <li>You can nest block elements, such as paragraphs and notes in list items, but limit
-            their use to keep the list as simple, reusable, and scannable as possible.</li>
-          <li>Capitalize the first word in each list item, unless the word should never be
-            capitalized such as a list of commands.</li>
+          <li><?oxy_custom_start type="oxy_content_highlight" color="255,255,0"?>Include closing
+            punctuation on list items only if all items in the list are complete
+            sentences.<?oxy_custom_end?> This maximizes reuse potential when the context of a list
+            item is not known.</li>
+          <li><?oxy_custom_start type="oxy_content_highlight" color="255,255,0"?>You can nest block
+            elements, such as paragraphs and notes in list items, but limit their use to keep the
+            list as simple, reusable, and scannable as possible.<?oxy_custom_end?></li>
+          <li><?oxy_custom_start type="oxy_content_highlight" color="255,255,0"?>Capitalize the
+            first word in each list item, unless the word should never be capitalized such as a list
+            of commands.<?oxy_custom_end?></li>
           <li>When including a list in a collection file, give each list item a unique ID so that
             each can be referenced separately as needed. See <xref
               href="c_CollectionFiles.dita#concept_vtz_r2q_xh"/> for more information on using
