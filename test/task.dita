@@ -2,7 +2,8 @@
 <!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN" "task.dtd">
 <?xml-model href="../info-model/rules/rules.sch" type="application/xml" schematypens="http://purl.oclc.org/dsdl/schematron"?>
 <task id="task_lnm_wyz_yp">
-    <title></title>
+    <title>Sample</title>
+    <shortdesc>test</shortdesc>
     
     <prolog></prolog>
     <taskbody>
