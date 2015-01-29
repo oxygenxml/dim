@@ -162,6 +162,6 @@
             see="http://example.com/styleguide/webhelp/c_TaskAuthoringGuidelines.html">
       <param name="element" value="context"/>
       <param name="message"
-             value="Do not include content directly in a &#34;context&#34; element. Instead, surround it with the&#xA;            appropriate block element, such as a &#34;p&#34;."/>
+             value="Do not include content directly in a &#34;context&#34; element or an inline element. Instead,&#xA;            surround it with the appropriate block element, such as a &#34;p&#34;."/>
    </pattern>
 </schema>
