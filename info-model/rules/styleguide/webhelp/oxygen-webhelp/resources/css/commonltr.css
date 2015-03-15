@@ -13,9 +13,6 @@
 
 .base { background-color: #ffffff; }
 
-/* Add space for top level topics */
-.nested0 { margin-top : 1em;}
-
 /* div with class=p is used for paragraphs that contain blocks, to keep the XHTML valid */
 .p {margin-top: 1em}
 
@@ -91,7 +88,7 @@ ul.simple { list-style-type: none }
 .boldItalic { font-weight: bold; font-style: italic; }
 .italic { font-style: italic; }
 .underlined { text-decoration: underline; }
-.uicontrol { font-weight: bold; }
+.uicontrol, .wintitle { font-weight: bold; }
 .parmname { font-weight: bold; }
 .kwd { font-weight: bold; }
 .defkwd { font-weight: bold; text-decoration: underline; }

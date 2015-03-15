@@ -61,6 +61,18 @@ $(document).ready(function () {
 });
 
 /**
+ * @description Print iframe content
+ * @param id Iframe id
+ * @return {boolean} Always return false
+ */
+function printFrame(id) {
+    var frm = document.getElementById(id).contentWindow;
+    frm.focus();// focus on contentWindow is needed on some ie versions
+    frm.print();
+    return false;
+}
+
+/**
  * @description If CGI contains the q param will redirect the user to the topic specified in the param value
  */
 if (location.search.indexOf("?q=") == 0) {

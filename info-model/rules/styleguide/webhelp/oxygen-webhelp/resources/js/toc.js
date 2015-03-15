@@ -48,6 +48,24 @@ function warn(msg, obj) {
     log.warn(msg, obj);
 }
 
+function openTopic(anchor) {
+    if ((anchor).attr('target') === undefined) { 
+            /* Remove the old selection and add selection to the clicked item */
+            $('#contentBlock li span').removeClass('menuItemSelected');
+            (anchor).parent('li span').addClass('menuItemSelected');
+
+            /* Calculate index of selected item and write value to cookie */
+            index = (anchor).parents('li').index('li');
+            $.cookie('wh_pn', index);
+
+            /* Redirect to requested page */
+            redirect((anchor).attr('href'));
+    } else {
+        window.open((anchor).attr('href'), (anchor).attr('target'));
+    }
+}
+
+
 $(document).ready(function () {
     $('#preload').hide();
 
@@ -55,25 +73,21 @@ $(document).ready(function () {
      * {Refactored}
      * @description Selects the clicked item
      */
-    $('#contentBlock li a').click(function(){
-        if ($(this).attr('href').indexOf('#!_')==0){
-            // do nothing
+    $('#contentBlock li a').click(function() {
+        if ($(this).attr('href').indexOf('#!_') == 0) {
+            // expand topichead
             toggleItem($(this));
-        }else{
-            if ($(this).attr('target')===undefined) { 
-            /* Remove the old selection and add selection to the clicked item */
-            $('#contentBlock li span').removeClass('menuItemSelected');
-            $(this).parent('li span').addClass('menuItemSelected');
-
-            /* Calculate index of selected item and write value to cookie */
-            index = $(this).parents('li').index('li');
-            $.cookie('wh_pn', index);
-
-            /* Redirect to requested page */
-            redirect($(this).attr('href'));
-            } else {
-                window.open($(this).attr('href'),$(this).attr('target'));
-        	}
+            // find first descendant that is a topicref with href attribute
+            // and open that topicref
+            $(this).parents('li').first().find('li a').each(function() {
+                if ($(this).attr('href').indexOf('#!_') != 0) {
+                     openTopic($(this));
+                     return false;
+                }
+                return true;
+            });
+        } else {
+             openTopic($(this));
         }
         return false;
     });
@@ -132,6 +146,13 @@ $(document).ready(function () {
     $("#searchForm").css("background-color", $("#leftPane").css("background-color"));
     $("#indexForm").css("background-color", $("#leftPane").css("background-color"));
 
+    /**
+     * Keep Collapse / Expand buttons in the right sideof the left pane
+     */
+    $("#bck_toc").bind("scroll", function() {
+        var scrollX = $("#bck_toc").scrollLeft();
+        $("#expnd").css("left", scrollX);
+    });
 });
 
 $(window).resize(function(){
@@ -144,8 +165,8 @@ $(window).resize(function(){
         $("#iList").css("height", hAvailable);
     }
     if ($("#contentBlock").is(":visible")) {
-        var hAvailable = parseInt($("body").height())-parseInt($("#header").height());
-        $("#bck_toc").css("height", hAvailable)
+        var hAvailable = parseInt($("body").height())-parseInt($("#header").height())-parseInt($("#bck_toc").css("padding-top"));
+        $("#bck_toc").css("height", hAvailable);
     }
 });
 
@@ -233,7 +254,7 @@ function showMenu(displayTab) {
     }
     if (displayTab == 'content') {
         searchedWords = "";
-        var hAvailable = parseInt($("body").height())-parseInt($("#header").height());
+        var hAvailable = parseInt($("body").height())-parseInt($("#header").height())-parseInt($("#bck_toc").css("padding-top"));
         $("#bck_toc").css("height", hAvailable).css("overflow", "auto");
         $("#contentBlock").append($("#leftPane .footer"));
     }

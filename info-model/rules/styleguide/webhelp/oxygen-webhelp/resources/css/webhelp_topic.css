@@ -112,7 +112,7 @@ h1.topictitle1 {
   background-color:#C0C0C0;
   font-size: 20px;  
   padding:0.4em 0 0.3em 0.7em;
-  margin:0 0.3em 0 0;
+  margin:0;
 }
 
 .booklibrary, .booktitlealt {
@@ -328,6 +328,7 @@ div.nav_path{
     font-size: xx-small;
     padding: 0 3px 0 3px;
     margin-right: 3px;
+    cursor: pointer;
 }
 
 /* Use the admonitions from the oXygen WebHelp resources. */
@@ -406,6 +407,11 @@ pre {
   max-height: 600px;
   margin: 0.5em;
 } 
+
+
+/*  OXYGEN PATCH  EXM-31508  - window titles and UI controls should be bold. */
+.uicontrol, .wintitle { font-weight: bold; }
+
 
 /* OXYGEN PATCH START - EXM-18138 - Insert space between button image and button name. */
 span.uicontrol > img {

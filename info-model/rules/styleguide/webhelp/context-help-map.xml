@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map>
+   <appContext helpID="InformationTypes" path="c_InformationTypes.html"/>
+   <appContext helpID="AuthoringGuidelines" path="c_BeginningATopic.html"/>
+   <appContext helpID="TitlingTopics" path="c_TitlingTopics.html"/>
+   <appContext helpID="ShortDescriptions" path="c_WritingShortDescriptions.html"/>
+   <appContext helpID="TaskInformationTypes" path="c_TaskInformationType.html"/>
+   <appContext helpID="TaskStructure" path="c_TaskStructure.html"/>
+   <appContext helpID="TaskElements" path="c_TaskElements.html"/>
+   <appContext helpID="AuthoringGuidelines" path="c_TaskAuthoringGuidelines.html"/>
+   <appContext helpID="StructureElements" path="c_BlockElements.html"/>
+   <appContext helpID="Lists" path="c_CreatingLists.html"/>
+   <appContext helpID="InlineElements" path="c_UsingInlineElements.html"/>
+   <appContext helpID="InlineElements" path="c_UserInterface.html"/>
+   <appContext helpID="Maps" path="c_MapsAndBookMaps.html"/>
+   <appContext helpID="Maps" path="c_Maps.html"/>
+   <appContext helpID="MapStructure" path="c_MapStructure.html"/>
+   <appContext helpID="Maps" path="c_MapElements.html"/>
+   <appContext helpID="select-atts" path="c_MapAttributes.html"/>
+   <appContext helpID="concept_qly_bwm_ch" path="c_CreatingMaps.html"/>
+   <appContext helpID="crossreferences" path="c_LinkingStrategies.html"/>
+   <appContext helpID="RelTableOverview" path="c_RelationshipTables.html"/>
+   <appContext helpID="attributes" path="c_Attributes.html"/>
+   <appContext helpID="select-atts" path="c_DisplayAttributes.html"/>
+   <appContext helpID="ReuseStrategy" path="c_ReuseStrategy.html"/>
+   <appContext helpID="WritingForReuse" path="c_NormalizingContent.html"/>
+   <appContext helpID="concept_vtz_r2q_xh" path="c_CollectionFiles.html"/>
+   <appContext helpID="NamingConvention" path="c_NamingConvention.html"/>
+</map>

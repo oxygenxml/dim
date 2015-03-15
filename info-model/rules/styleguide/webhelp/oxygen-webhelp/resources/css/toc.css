@@ -16,6 +16,11 @@ html,body {
     font-size: 10pt;
 }
 
+#oldFrames:hover, #printlink a:hover {
+	opacity: 0.5;
+	filter: alpha(opacity=50); /* For IE8 and earlier */
+}
+
 .tab {
     display: inline-block;
 }
@@ -133,10 +138,6 @@ html,body {
     color: inherit;
     font-family: inherit;
     white-space: inherit;
-}
-#contentBlock a:hover, a.link:hover, a.navheader_parent_path:hover{
-    text-decoration: none;
-    color: #FF4D4D !important;
 }
 .hasSubMenuClosed{
     background: url('../img/book_closed16.png') no-repeat;

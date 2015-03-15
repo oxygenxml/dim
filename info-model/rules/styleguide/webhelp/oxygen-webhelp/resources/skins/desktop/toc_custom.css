@@ -14,6 +14,11 @@ html, body {
     height: 100%;
 }
 
+#expnd {
+    top: -25px;
+    position: relative;
+}
+
 /*Header*/
 #header {                      
   width: 100%;
@@ -191,7 +196,7 @@ div#searchResults a{
 
 #bck_toc{
   background-color:transparent;
-  padding:0;
+  padding:20px 0 0 0;
 }
 #rightPane iframe{
   float: left;

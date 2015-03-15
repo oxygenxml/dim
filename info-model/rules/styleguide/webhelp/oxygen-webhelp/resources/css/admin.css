@@ -108,7 +108,7 @@ available in the base directory of this Oxygen Webhelp plugin.
 	font-style: normal;
 	text-align: center;
 }
-.btn:HOVER,.bt_cancel:hover,#l_bt_submit_nc:hover,#bt_recover:hover,#bt_signUp:hover,#logIn:hover,#l_bt_submit_log:hover,.span_bt:hover,#bt_passwd:hover,#bt_profile:hover, #bt_close:hover
+.btn:HOVER,.bt_cancel:hover,#bt_recover:hover,#bt_signUp:hover,#logIn:hover,#l_bt_submit_log:hover,.span_bt:hover,#bt_passwd:hover,#bt_profile:hover, #bt_close:hover
 	{
 	color:#000;
 	border:1px solid #ccc;

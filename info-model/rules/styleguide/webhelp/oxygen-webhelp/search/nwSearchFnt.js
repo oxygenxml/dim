@@ -387,16 +387,6 @@ function realSearch(expressionInput) {
             linkString += "\n<div class=\"shortdesclink\">" + tempShortdesc + "</div>";
           }
                     
-          // Add rating values for scoring at the list of matches
-          linkString += "<div id=\"rightDiv\">";
-          linkString += "<div id=\"star\">";
-          linkString += "<div id=\"star0\" class=\"star\">";
-          linkString += "<div id=\"starCur0\" class=\"curr\" style=\"width: " + starWidth + "px;\">&nbsp;</div>";
-          linkString += "</div>";
-                  
-          linkString += "<br style=\"clear: both;\">";
-          linkString += "</div>";
-          linkString += "</div>";
           linkString += "</li>";
           linkTab.push(linkString);
           no++;
