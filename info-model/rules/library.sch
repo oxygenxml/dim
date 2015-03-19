@@ -175,7 +175,7 @@
     <pattern id="restrictCharacters" abstract="true">
         <title>Check the number of characters to be within certain limits</title>
         <p>This pattern allows to check that the number of characters in an
-            element fits between a lower and an upper limit and instructs the
+            element is between a lower and an upper limit and instructs the
             user to stay within those limits.</p>
         <p>As parameters we have <emph>parentElement</emph> that specifies
             the element containing the text to be checked,
@@ -212,7 +212,7 @@
                 <value-of select="if ($characters=1) then ' character' else ' characters'"/>. </assert>
             <assert test="$characters &gt;= $minChars" role="warn"> It is
                 recommended to have at least <value-of select="'$minChars '"/>
-                words! You have <value-of select="$characters"/>
+                characters! You have <value-of select="$characters"/>
                 <value-of select="if ($characters=1) then ' character' else ' characters'"/>.
             </assert>
         </rule>
