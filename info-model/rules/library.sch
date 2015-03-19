@@ -137,7 +137,7 @@
     <title>Check the number of words to be within certain limits</title>
     <p>This pattern allows to check that the number of words in an
       element fits between a lower and an upper limit and instructs the
-      user to stay within thse limits.</p>
+      user to stay within those limits.</p>
     <p>As parameters we have <emph>parentElement</emph> that specifies
       the element containing the text to be checked,
       <emph>minWords</emph> and <emph>maxWords</emph> that specifies the
@@ -172,6 +172,52 @@
     </rule>
   </pattern>
     
+    <pattern id="restrictCharacters" abstract="true">
+        <title>Check the number of characters to be within certain limits</title>
+        <p>This pattern allows to check that the number of characters in an
+            element fits between a lower and an upper limit and instructs the
+            user to stay within those limits.</p>
+        <p>As parameters we have <emph>parentElement</emph> that specifies
+            the element containing the text to be checked,
+            <emph>minChars</emph> and <emph>maxChars</emph> that specifies the
+            minimum and maximum number of charactes, respectively and a 
+            <emph>normalize</emph> parameter that controls what happens with 
+            the whitespace - if set to <emph>true</emph> or <emph>yes</emph> then 
+            consecutive whitespace will be normalized and leading and trailing 
+            whitespace will be discarded.</p>
+        <parameters xmlns="http://oxygenxml.com/ns/schematron/params">
+            <parameter>
+                <name>parentElement</name>
+                <desc>Specifies the element who's number of characters should be counted.</desc>
+            </parameter>
+            <parameter>
+                <name>minChars</name>
+                <desc>Specifies the minimum number of characters that is accepted.</desc>
+            </parameter>
+            <parameter>
+                <name>maxChars</name>
+                <desc>Specifies the maximum number of characters that is accepted.</desc>
+            </parameter>
+            <parameter>
+                <name>normalize</name>
+                <desc>Set this to "true" or "yes" if you want the characters to be counted after
+                normalizing the content of the element.</desc>
+            </parameter>
+        </parameters> 
+        <rule context="$parentElement">
+            <let name="characters" value="string-length(if ($normalize = ('true', 'true()', 'yes')) then normalize-space(.) else .)"/>
+            <assert test="$characters &lt;= $maxChars" role="warn"> It is
+                recommended to not exceed <value-of select="'$maxChars '"/>
+                characters! You have <value-of select="$characters"/>
+                <value-of select="if ($characters=1) then ' character' else ' characters'"/>. </assert>
+            <assert test="$characters &gt;= $minChars" role="warn"> It is
+                recommended to have at least <value-of select="'$minChars '"/>
+                words! You have <value-of select="$characters"/>
+                <value-of select="if ($characters=1) then ' character' else ' characters'"/>.
+            </assert>
+        </rule>
+    </pattern>
+  
   
   <pattern id="restrictNesting" abstract="true">
     <title>Restrict nesting levels for an element</title>
