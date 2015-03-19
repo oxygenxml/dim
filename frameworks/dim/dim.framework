@@ -247,7 +247,7 @@
 														</actionMode>
 														<actionMode>
 															<field name="xpathCondition">
-																<String></String>
+																<String>true()</String>
 															</field>
 															<field name="argValues">
 																<serializableOrderedMap>
