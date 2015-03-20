@@ -30,7 +30,7 @@
     <rule context="$element">
       <assert test="not(tokenize(normalize-space(.), ' ') = '$word')"
         role="warn" sqf:fix="avoidWordInElement_deleteWord avoidWordInElement_replaceWord">
-        <value-of select="'$message'"/>
+        $message
       </assert>
     </rule>
   </pattern>
@@ -63,7 +63,7 @@
     <rule context="$element">
       <assert test="not(ends-with(normalize-space(.), '$fragment'))"
         role="warn" sqf:fix="avoidEndFragment_deleteFragment avoidEndFragment_replaceFragment">
-        <value-of select="'$message'"/>
+        $message
       </assert>
     </rule>
   </pattern>
@@ -96,7 +96,7 @@
     <rule context="$element">
       <assert test="not(@$attribute)" role="warn" 
         sqf:fix="avoidAttributeInElement_delete avoidAttributeInElement_rename">
-        <value-of select="'$message'"/>
+        $message
       </assert>
     </rule>
   </pattern>
@@ -128,7 +128,7 @@
     <rule context="$parent">
       <assert test="$element" role="warn"
         sqf:fix="recommendElementInParent_createFirstChild recommendElementInParent_createLastChild recommendElementInParent_createAfterAnchor">
-        <value-of select="'$message'"/>
+        $message
       </assert>
     </rule>
   </pattern>
@@ -249,7 +249,7 @@
     </parameters>
     <rule context="$element">
       <assert test="count(ancestor::$element) &lt;= $maxNestingLevel">
-        <value-of select="'$message'"/>
+        $message
       </assert>
     </rule>
   </pattern>
@@ -325,7 +325,7 @@
       <let name="elements" 
         value="tokenize(translate(normalize-space('$allowedChildren'), ' ', ''), ',')"/>
       <assert test="local-name() = $elements" role="warn"> 
-        <value-of select="'$message'"/>
+        $message
         The element '<value-of select="local-name()"/>' is not in the list 
         of allowed elements: ($allowedChildren).
       </assert>
@@ -362,7 +362,7 @@
           normalize-space((preceding-sibling::$targetElement, following-sibling::$targetElement)[1]) 
           = normalize-space(.)
         )" role="warn"> 
-        <value-of select="'$message'"/>
+        $message
       </assert>
     </rule>
   </pattern>
@@ -389,7 +389,7 @@
     </parameters>
     <rule context="$element">
       <assert test="following::text()[normalize-space()!='']" role="warn"> 
-        <value-of select="'$message'"/>
+        $message
       </assert>
     </rule>
   </pattern>
@@ -424,7 +424,7 @@
       <let name="elements" 
         value="tokenize(translate(normalize-space('$allowedElementNames'), ' ', ''), ',')"/>
       <assert test="local-name() = $elements" role="warn"> 
-        <value-of select="'$message'"/>
+        $message
         The element '<value-of select="local-name()"/>' is not in the list 
         of allowed elements: ($allowedElementNames).
       </assert>
@@ -450,12 +450,12 @@
     </parameters>
     <rule context="$element[text()/normalize-space(.)!='']" role="warn">
       <assert test="false()">
-        <value-of select="'$message'"/>
+        $message
       </assert>
     </rule>
     <rule context="$element/*">
       <assert test="substring-before(substring-after(@class, ' '), ' ')=document('blockElements.xml')//*:class">
-        <value-of select="'$message'"/>
+        $message
       </assert>
     </rule>
   </pattern>
