@@ -4,7 +4,13 @@
         <filters directoryPatterns="" filePatterns="" positiveFilePatterns="" showHiddenFiles="false"/>
         <options>
             <serialized version="16.1" xml:space="preserve">
-                <map>
+                <serializableOrderedMap>
+                    <entry>
+                        <String>catalogs.v5</String>
+                        <String-array>
+                            <String>${pdu}/../../info-model/rules/catalog.xml</String>
+                        </String-array>
+                    </entry>
                     <entry>
                         <String>document.types</String>
                         <documentTypeDescriptor-array>
@@ -6283,7 +6289,11 @@ ancestor-or-self::node()[self::*[contains(@class," topic/simpletable ") or conta
                         <String>key.editor.document.type.association.option.pane</String>
                         <Boolean>true</Boolean>
                     </entry>
-                </map>
+                    <entry>
+                        <String>key.xml.catalog.option.pane</String>
+                        <Boolean>true</Boolean>
+                    </entry>
+                </serializableOrderedMap>
             </serialized>
         </options>
     </meta>
