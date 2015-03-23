@@ -843,6 +843,9 @@
         <folder masterFiles="true" name="Master Files">
             <file name="info-model/bm_InformationModelBookmap.ditamap"/>
         </folder>
+        <folder name="test">
+            <file name="test/project/dimTest.xpr"/>
+        </folder>
         <folder path="."/>
     </projectTree>
 </project>
