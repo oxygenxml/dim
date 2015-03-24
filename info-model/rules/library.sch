@@ -160,13 +160,16 @@
       <let name="words" value="count(tokenize(normalize-space(.), ' '))"/>
       <assert test="$words &lt;= $maxWords" role="warn"
         sqf:fix="restrictWords_setNew"> It is
-        recommended to not exceed <value-of select="'$maxWords '"/>
-        words! You have <value-of select="$words"/>
-        <value-of select="if ($words=1) then ' word' else ' words'"/>. </assert>
+        recommended to not exceed $maxWords 
+        <value-of select="if ($maxWords=1) then ' word' else ' words'"/>!
+        You have <value-of select="$words"/>
+        <value-of select="if ($words=1) then ' word' else ' words'"/>. 
+      </assert>
       <assert test="$words &gt;= $minWords" role="warn"
         sqf:fix="restrictWords_setNew"> It is
-        recommended to have at least <value-of select="'$minWords '"/>
-        words! You have <value-of select="$words"/>
+        recommended to have at least $minWords 
+        <value-of select="if ($minWords=1) then ' word' else ' words'"/>!
+        You have <value-of select="$words"/>
         <value-of select="if ($words=1) then ' word' else ' words'"/>.
       </assert>
     </rule>
@@ -207,12 +210,15 @@
         <rule context="$parentElement">
             <let name="characters" value="string-length(if ($normalize = ('true', 'true()', 'yes')) then normalize-space(.) else .)"/>
             <assert test="$characters &lt;= $maxChars" role="warn"> It is
-                recommended to not exceed <value-of select="'$maxChars '"/>
-                characters! You have <value-of select="$characters"/>
-                <value-of select="if ($characters=1) then ' character' else ' characters'"/>. </assert>
+                recommended to not exceed $maxChars
+                <value-of select="if ($maxChars=1) then ' character' else ' characters'"/>!
+                You have <value-of select="$characters"/>
+                <value-of select="if ($characters=1) then ' character' else ' characters'"/>. 
+            </assert>
             <assert test="$characters &gt;= $minChars" role="warn"> It is
-                recommended to have at least <value-of select="'$minChars '"/>
-                characters! You have <value-of select="$characters"/>
+                recommended to have at least $minChars
+                <value-of select="if ($maxChars=1) then ' character' else ' characters'"/>!
+                You have <value-of select="$characters"/>
                 <value-of select="if ($characters=1) then ' character' else ' characters'"/>.
             </assert>
         </rule>
@@ -287,11 +293,14 @@
     <rule context="$parentElement">
       <let name="children" value="count($element)"/>
       <assert test="$children &lt;= $max" role="warn"> It is
-        recommended to not exceed <value-of select="'$max $element'"/>
-        elements! You have <value-of select="$children"/> elements. </assert>
+        recommended to not exceed $max $element
+        elements! You have <value-of select="$children"/> 
+        <value-of select="if ($children=1) then ' element' else ' elements'"/>. 
+      </assert>
       <assert test="$children &gt;= $min" role="warn"> It is
-        recommended to have at least <value-of select="'$min $element'"/>
-        elements! You have <value-of select="$children"/> elements.
+        recommended to have at least $min $element
+        elements! You have <value-of select="$children"/> 
+        <value-of select="if ($children=1) then ' element' else ' elements'"/>.
       </assert>
     </rule>
   </pattern>
