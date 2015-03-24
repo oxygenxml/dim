@@ -12,6 +12,7 @@
    <include href="library.sch#avoidAttributeInElement"/>
    <include href="library.sch#recommendElementInParent"/>
    <include href="library.sch#restrictWords"/>
+   <include href="library.sch#restrictCharacters"/>
    <include href="library.sch#restrictNesting"/>
    <include href="library.sch#restrictNumberOfChildren"/>
    <include href="library.sch#restrictChildrenElements"/>
@@ -80,6 +81,7 @@
       <param name="parentElement" value="title"/>
       <param name="minWords" value="1"/>
       <param name="maxWords" value="8"/>
+      <param name="message" value="Keep titles between 1 and 8 words."/>
    </pattern>
    <!--Generated from c_WritingShortDescriptions.dita.
     -->
@@ -97,6 +99,7 @@
       <param name="parentElement" value="shortdesc"/>
       <param name="minWords" value="1"/>
       <param name="maxWords" value="50"/>
+      <param name="message" value="Keep short descriptions between 1 and 50 words!"/>
    </pattern>
    <!--Generated from c_WritingShortDescriptions.dita.
     -->

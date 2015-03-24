@@ -150,6 +150,10 @@
           <dt>maxWords</dt>
           <dd>8</dd>
         </dlentry>
+        <dlentry>
+          <dt>message</dt>
+          <dd>Keep titles between 1 and 8 words.</dd>
+        </dlentry>
       </dl>
     </section>
   </conbody>

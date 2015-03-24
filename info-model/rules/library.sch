@@ -141,7 +141,9 @@
     <p>As parameters we have <emph>parentElement</emph> that specifies
       the element containing the text to be checked,
       <emph>minWords</emph> and <emph>maxWords</emph> that specifies the
-      minimum and maximum number of words, respectively.</p>
+      minimum and maximum number of words, respectively, and 
+      <emph>message</emph> that specifies the message that we will show to the
+      user if the number of words is outside the specified limits.</p>
     <parameters xmlns="http://oxygenxml.com/ns/schematron/params">
       <parameter>
         <name>parentElement</name>
@@ -155,74 +157,87 @@
         <name>maxWords</name>
         <desc>Specifies the maximum number of words that is accepted.</desc>
       </parameter>
+      <parameter>
+        <name>message</name>
+        <desc>An additional message we should display to the user in case the
+          number of words is not within the specified limits.</desc>
+      </parameter>
     </parameters> 
     <rule context="$parentElement">
       <let name="words" value="count(tokenize(normalize-space(.), ' '))"/>
       <assert test="$words &lt;= $maxWords" role="warn"
-        sqf:fix="restrictWords_setNew"> It is
-        recommended to not exceed $maxWords 
-        <value-of select="if ($maxWords=1) then ' word' else ' words'"/>!
+        sqf:fix="restrictWords_setNew">
+        $message
         You have <value-of select="$words"/>
         <value-of select="if ($words=1) then ' word' else ' words'"/>. 
       </assert>
       <assert test="$words &gt;= $minWords" role="warn"
-        sqf:fix="restrictWords_setNew"> It is
-        recommended to have at least $minWords 
-        <value-of select="if ($minWords=1) then ' word' else ' words'"/>!
+        sqf:fix="restrictWords_setNew">
+        $message
         You have <value-of select="$words"/>
         <value-of select="if ($words=1) then ' word' else ' words'"/>.
       </assert>
     </rule>
   </pattern>
-    
-    <pattern id="restrictCharacters" abstract="true">
-        <title>Check the number of characters to be within certain limits</title>
-        <p>This pattern allows to check that the number of characters in an
-            element is between a lower and an upper limit and instructs the
-            user to stay within those limits.</p>
-        <p>As parameters we have <emph>parentElement</emph> that specifies
-            the element containing the text to be checked,
-            <emph>minChars</emph> and <emph>maxChars</emph> that specifies the
-            minimum and maximum number of charactes, respectively and a 
-            <emph>normalize</emph> parameter that controls what happens with 
-            the whitespace - if set to <emph>true</emph> or <emph>yes</emph> then 
-            consecutive whitespace will be normalized and leading and trailing 
-            whitespace will be discarded.</p>
-        <parameters xmlns="http://oxygenxml.com/ns/schematron/params">
-            <parameter>
-                <name>parentElement</name>
-                <desc>Specifies the element who's number of characters should be counted.</desc>
-            </parameter>
-            <parameter>
-                <name>minChars</name>
-                <desc>Specifies the minimum number of characters that is accepted.</desc>
-            </parameter>
-            <parameter>
-                <name>maxChars</name>
-                <desc>Specifies the maximum number of characters that is accepted.</desc>
-            </parameter>
-            <parameter>
-                <name>normalize</name>
-                <desc>Set this to "true" or "yes" if you want the characters to be counted after
-                normalizing the content of the element.</desc>
-            </parameter>
-        </parameters> 
-        <rule context="$parentElement">
-            <let name="characters" value="string-length(if ($normalize = ('true', 'true()', 'yes')) then normalize-space(.) else .)"/>
-            <assert test="$characters &lt;= $maxChars" role="warn"> It is
-                recommended to not exceed $maxChars
-                <value-of select="if ($maxChars=1) then ' character' else ' characters'"/>!
-                You have <value-of select="$characters"/>
-                <value-of select="if ($characters=1) then ' character' else ' characters'"/>. 
-            </assert>
-            <assert test="$characters &gt;= $minChars" role="warn"> It is
-                recommended to have at least $minChars
-                <value-of select="if ($maxChars=1) then ' character' else ' characters'"/>!
-                You have <value-of select="$characters"/>
-                <value-of select="if ($characters=1) then ' character' else ' characters'"/>.
-            </assert>
-        </rule>
-    </pattern>
+  
+  <pattern id="restrictCharacters" abstract="true">
+    <title>Check the number of characters to be within certain limits</title>
+    <p>This pattern allows to check that the number of characters in an
+      element is between a lower and an upper limit and instructs the
+      user to stay within those limits.</p>
+    <p>As parameters we have <emph>parentElement</emph> that specifies
+      the element containing the text to be checked,
+      <emph>minChars</emph> and <emph>maxChars</emph> that specifies the
+      minimum and maximum number of charactes, respectively, a 
+      <emph>normalize</emph> parameter that controls what happens with 
+      the whitespace - if set to <emph>true</emph> or <emph>yes</emph> then 
+      consecutive whitespace will be normalized and leading and trailing 
+      whitespace will be discarded and 
+      <emph>message</emph> that specifies the message that we will show to the
+      user if the number of characters is outside the specified limits.</p>
+    <parameters xmlns="http://oxygenxml.com/ns/schematron/params">
+      <parameter>
+        <name>parentElement</name>
+        <desc>Specifies the element who's number of characters should be counted.</desc>
+      </parameter>
+      <parameter>
+        <name>minChars</name>
+        <desc>Specifies the minimum number of characters that is accepted.</desc>
+      </parameter>
+      <parameter>
+        <name>maxChars</name>
+        <desc>Specifies the maximum number of characters that is accepted.</desc>
+      </parameter>
+      <parameter>
+        <name>normalize</name>
+        <desc>Set this to "true" or "yes" if you want the characters to be counted after
+          normalizing the content of the element.</desc>
+      </parameter>
+      <parameter>
+        <name>message</name>
+        <desc>An additional message we should display to the user in case the
+          number of characters is not within the specified limits.</desc>
+      </parameter>
+    </parameters> 
+    <rule context="$parentElement">
+      <let name="characters" value="string-length(if ($normalize = ('true', 'true()', 'yes')) then normalize-space(.) else .)"/>
+      <assert test="$characters &lt;= $maxChars" role="warn">
+        $message
+        It is recommended to not exceed $maxChars
+        <value-of select="if ($maxChars=1) then ' character' else ' characters'"/>!
+        You have <value-of select="$characters"/>
+        <value-of select="if ($characters=1) then ' character' else ' characters'"/>. 
+      </assert>
+      <assert test="$characters &gt;= $minChars" role="warn"> 
+        $message
+        It is
+        recommended to have at least $minChars
+        <value-of select="if ($maxChars=1) then ' character' else ' characters'"/>!
+        You have <value-of select="$characters"/>
+        <value-of select="if ($characters=1) then ' character' else ' characters'"/>.
+      </assert>
+    </rule>
+  </pattern>
   
   
   <pattern id="restrictNesting" abstract="true">
@@ -270,8 +285,11 @@
       the element to be checked,
       <emph>element</emph> that specifies the element we will look for as child of
       the parentElement 
-      <emph>min</emph> that specifies the minimum number of element children and
-      <emph>max</emph> that specifies the maximum number of element children.</p>
+      <emph>min</emph> that specifies the minimum number of element children,
+      <emph>max</emph> that specifies the maximum number of element children and
+      <emph>message</emph> which points to an additional message that should be 
+      diplayed to the user in case the number of children elements is not within
+      the specified limits.</p>
     <parameters xmlns="http://oxygenxml.com/ns/schematron/params">
       <parameter>
         <name>parentElement</name>
@@ -289,18 +307,22 @@
         <name>max</name>
         <desc>The maximum number of occurrences allowed.</desc>
       </parameter>
+      <parameter>
+        <name>message</name>
+        <desc>A message we should present to the user in case the number of 
+          children elements is not within the specified limits.</desc>
+      </parameter>
     </parameters>
     <rule context="$parentElement">
       <let name="children" value="count($element)"/>
-      <assert test="$children &lt;= $max" role="warn"> It is
-        recommended to not exceed $max $element
-        elements! You have <value-of select="$children"/> 
-        <value-of select="if ($children=1) then ' element' else ' elements'"/>. 
+      <assert test="$children &lt;= $max" role="warn">
+        $message 
+        You have <value-of select="$children"/> 
+        <value-of select="if ($children=1) then ' child element' else ' children elements'"/>. 
       </assert>
-      <assert test="$children &gt;= $min" role="warn"> It is
-        recommended to have at least $min $element
-        elements! You have <value-of select="$children"/> 
-        <value-of select="if ($children=1) then ' element' else ' elements'"/>.
+      <assert test="$children &gt;= $min" role="warn">$message 
+        You have <value-of select="$children"/> 
+        <value-of select="if ($children=1) then ' child element' else ' children elements'"/>.
       </assert>
     </rule>
   </pattern>

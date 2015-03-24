@@ -155,6 +155,10 @@ If you have nothing more to add, do not include a short description"?>
           <dt>maxWords</dt>
           <dd>50</dd>
         </dlentry>
+        <dlentry>
+          <dt>message</dt>
+          <dd>Keep short descriptions between 1 and 50 words!</dd>
+        </dlentry>
       </dl>
       <p>We will check to make sure we do not conref short descriptions:</p>
       <dl>
