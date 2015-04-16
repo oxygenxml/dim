@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN"
  "concept.dtd">
-<?Pub UDT _bookmark _target?>
-<?Pub Inc?>
 <concept id="ShortDescriptions">
  <title>Writing Short Descriptions</title>
+  <prolog>
+    <metadata>
+      <data name="shortdesc" value="How to write short descriptions" audience="styleguide"/>
+    </metadata>
+  </prolog>
  <conbody>
    <p>The &lt;shortdesc> element immediately following the &lt;title> element of a topic expands on
       the title to provide additional information about the content of the topic. The content of the

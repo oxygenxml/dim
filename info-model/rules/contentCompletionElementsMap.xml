@@ -7,5 +7,10 @@
         elements marked with name="styleguide" in the corresponding topic files.
       -->
 <contentCompletionElementsMap htmlContentFilterStylesheet="contentFilter.xsl">
-   <mappingGroup xml:base="http://example.com/styleguide/webhelp/"/>
+   <mappingGroup xml:base="http://example.com/styleguide/webhelp/">
+      <mapping elementName="shortdesc"
+               path="c_WritingShortDescriptions.html"
+               type="link"
+               linkText="How to write short descriptions"/>
+   </mappingGroup>
 </contentCompletionElementsMap>

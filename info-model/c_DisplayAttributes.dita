@@ -9,7 +9,6 @@
    <desc>Display attributes affect the way in which an element is rendered in your final
     output.</desc>
    <tgroup cols="4">
-    <?PubTbl tgroup dispwid="806.00px"?>
     <colspec colname="col1" colwidth="1*"/>
     <colspec colname="col2" colwidth="4*"/>
     <colspec colname="col4" colwidth="1*"/>
