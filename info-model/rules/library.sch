@@ -127,7 +127,7 @@
     </parameters> 
     <rule context="$parent">
       <assert test="$element" role="warn"
-        sqf:fix="recommendElementInParent_createFirstChild recommendElementInParent_createLastChild recommendElementInParent_createAfterAnchor">
+        sqf:fix="recommendElementInParent_createAfterAnchor">
         $message
       </assert>
     </rule>
@@ -355,7 +355,7 @@
     <rule context="$parentElement/*">
       <let name="elements" 
         value="tokenize(translate(normalize-space('$allowedChildren'), ' ', ''), ',')"/>
-      <assert test="local-name() = $elements" role="warn"> 
+      <assert test="local-name() = $elements" role="warn" sqf:fix="unwrapElement removeCurrentElement"> 
         $message
         The element '<value-of select="local-name()"/>' is not in the list 
         of allowed elements: ($allowedChildren).
@@ -454,7 +454,7 @@
     <rule context="*[contains(@class, ' $elementClass ')]">
       <let name="elements" 
         value="tokenize(translate(normalize-space('$allowedElementNames'), ' ', ''), ',')"/>
-      <assert test="local-name() = $elements" role="warn"> 
+      <assert test="local-name() = $elements" role="warn" sqf:fix="removeCurrentElement"> 
         $message
         The element '<value-of select="local-name()"/>' is not in the list 
         of allowed elements: ($allowedElementNames).

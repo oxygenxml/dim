@@ -118,4 +118,10 @@
         </sqf:description>
         <sqf:delete match="@class"/>
     </sqf:fix>
+    <sqf:fix id="unwrapElement" role="replace">
+        <sqf:description>
+            <sqf:title>Replace element '<value-of select="local-name()"/>' with its content</sqf:title>
+        </sqf:description>
+        <sqf:replace select="child::node()"/>
+    </sqf:fix>
 </sqf:fixes>
