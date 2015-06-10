@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project version="16.1">
+<project version="17.0">
     <meta>
         <filters directoryPatterns="" filePatterns="" positiveFilePatterns="" showHiddenFiles="false"/>
         <options>
-            <serialized version="16.1" xml:space="preserve">
+            <serialized version="17.0" xml:space="preserve">
                 <serializableOrderedMap>
                     <entry>
                         <String>additional.frameworks.directories</String>
@@ -155,9 +155,6 @@
                                             </field>
                                             <field name="type">
                                                 <Integer>4</Integer>
-                                            </field>
-                                            <field name="isPredefined">
-                                                <Boolean>true</Boolean>
                                             </field>
                                             <field name="possibleValues">
                                                 <String-array>
@@ -349,9 +346,6 @@
                                             <field name="type">
                                                 <Integer>4</Integer>
                                             </field>
-                                            <field name="isPredefined">
-                                                <Boolean>true</Boolean>
-                                            </field>
                                             <field name="possibleValues">
                                                 <String-array>
                                                     <null/>
@@ -542,9 +536,6 @@
                                             <field name="type">
                                                 <Integer>4</Integer>
                                             </field>
-                                            <field name="isPredefined">
-                                                <Boolean>true</Boolean>
-                                            </field>
                                             <field name="possibleValues">
                                                 <String-array>
                                                     <null/>
@@ -666,7 +657,7 @@
                                     <null/>
                                 </field>
                                 <field name="name">
-                                    <String>gen-rules</String>
+                                    <String>gen-mappings</String>
                                 </field>
                                 <field name="baseURL">
                                     <String></String>
@@ -684,7 +675,7 @@
                                     <String></String>
                                 </field>
                                 <field name="inputXSLURL">
-                                    <String>${pdu}/gen-rules/gen-rules.xsl</String>
+                                    <String>${pdu}/gen-rules/gen-mappings.xsl</String>
                                 </field>
                                 <field name="inputXMLURL">
                                     <String>${pdu}/info-model/bm_InformationModelBookmap.ditamap</String>
@@ -752,7 +743,7 @@
                                     <null/>
                                 </field>
                                 <field name="name">
-                                    <String>gen-mappings</String>
+                                    <String>gen-rules</String>
                                 </field>
                                 <field name="baseURL">
                                     <String></String>
@@ -770,7 +761,7 @@
                                     <String></String>
                                 </field>
                                 <field name="inputXSLURL">
-                                    <String>${pdu}/gen-rules/gen-mappings.xsl</String>
+                                    <String>${pdu}/gen-rules/gen-rules.xsl</String>
                                 </field>
                                 <field name="inputXMLURL">
                                     <String>${pdu}/info-model/bm_InformationModelBookmap.ditamap</String>
