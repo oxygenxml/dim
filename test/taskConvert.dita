@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN" "task.dtd">
+<?xml-model href="dim2sch:/urn:info-model/bm_InformationModelBookmap.ditamap" type="application/xml" schematypens="http://purl.oclc.org/dsdl/schematron"?>
+<task id="task_lnm_wyz_yp">
+    <title>Sample</title>
+    <shortdesc>test</shortdesc>
+    
+    <prolog></prolog>
+    <taskbody>
+        <steps id="steps_rts_klv_bq">
+            <step>
+                <cmd/>
+            </step>
+        </steps>
+    </taskbody>
+</task>
