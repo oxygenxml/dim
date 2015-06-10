@@ -10,6 +10,7 @@ $(document).ready(function () {
     /**
      * @description Split page in leftPane and rightPane
      */
+    if ( $("html").attr("dir") != "rtl") {
     $("#splitterContainer").splitter({
         minAsize: 0,
         maxAsize: 600,
@@ -19,6 +20,17 @@ $(document).ready(function () {
         closeableto: 0,
         animSpeed: 100
     });
+    } else {
+        $("#splitterContainer").splitter({
+            minBsize: 0,
+            maxBsize: 600,
+            splitVertical: true,
+            A: $('#rightPane'),
+            B: $('#leftPane'),
+            closeableto: 100,
+            animSpeed: 100
+        });
+    }
 
     /**
      * @description Action to take on iframe unload
@@ -31,12 +43,6 @@ $(document).ready(function () {
 
     showMenu('content');
 
-
-    $('#iList a').each(function () {
-        var old = $(this).attr('href');
-        $(this).attr('href', '#' + normalizeLink(old));
-        $(this).removeAttr('target');
-    });
     if (!notLocalChrome) {
         var warningMsg = 'Chrome limits JavaScript functionality when a page is loaded from the local disk. This prevents the normal help viewer from loading.\nYou will be redirected to the frameset version of the help.';
         if (confirm(warningMsg)) {
@@ -57,8 +63,78 @@ $(document).ready(function () {
         };
     }
 
-//    toggleLeft();
+    $('#textToSearch').on('focus', function(){
+        try {
+        loadSearchResources();
+        } catch (e) {
+            if ( $('#loadingError').length < 1 ) {
+                $('#searchResults').prepend('<span id="loadingError">' + e + '</span>');
+            }
+            $('#search').trigger( 'click' );
+        }
+    });
+    
 });
+
+/**
+ * @description Dyncamically load scripts using cache
+ * @param url URL of the script to be loaded
+ * @param options A set of key/value pairs that configure the Ajax request. All settings are optional.
+ * @return {*} Returns the XMLHttpRequest object that $.ajax() creates.
+ */
+jQuery.cachedScript = function( url, options ) {
+
+    // Allow user to set any option except for dataType, cache, and url
+    options = $.extend( options || {}, {
+        dataType: "script",
+        cache: true,
+        url: url,
+        contentType: "application/x-www-form-urlencoded; charset=UTF-8"
+    });
+
+    // Use $.ajax() since it is more flexible than $.getScript
+    // Return the jqXHR object so we can chain callbacks
+    return jQuery.ajax( options );
+};
+
+/**
+ * @description Dynamically load resources needed when search function is called.
+ */
+function loadSearchResources() {
+    if (typeof window.indexerLanguage == 'undefined') {
+        $.cachedScript("oxygen-webhelp/search/htmlFileList.js")
+            .done(function (script, textStatus) {
+                $.cachedScript("oxygen-webhelp/search/htmlFileInfoList.js")
+                    .done(function (script, textStatus) {
+                        $.cachedScript("oxygen-webhelp/search/index-1.js")
+                            .done(function (script, textStatus) {
+                                $.cachedScript("oxygen-webhelp/search/index-2.js")
+                                    .done(function (script, textStatus) {
+                                        $.cachedScript("oxygen-webhelp/search/index-3.js")
+                                            .done(function (script, textStatus) {
+                                                searchLoaded = true;
+        })
+                                            .fail(function (jqxhr, settings, exception) {
+                                                throw exception;
+        });
+        })
+                                    .fail(function (jqxhr, settings, exception) {
+                                        throw exception;
+        });
+        })
+                            .fail(function (jqxhr, settings, exception) {
+                                throw exception;
+        });
+        })
+                    .fail(function (jqxhr, settings, exception) {
+                        throw exception;
+        });
+        })
+            .fail(function (jqxhr, settings, exception) {
+                throw exception;
+        });
+}
+}
 
 /**
  * @description Print iframe content
@@ -75,7 +151,7 @@ function printFrame(id) {
 /**
  * @description If CGI contains the q param will redirect the user to the topic specified in the param value
  */
-if (location.search.indexOf("?q=") == 0) {
+if (location.search.indexOf("q=") != -1) {
     debug('search:' + location.search + ' hwDir:' + wh.directory);
     var pos = 0;
     var newLink = whUrl + pageName;
@@ -149,7 +225,6 @@ function loadIframe(dynamicURL) {
             tocWidth = parseInt($('#tocMenu').css('width'));
             navLinksWidth = parseInt($('#navigationLinks').css('width'));
             breadCrumbWidth = parseInt($('#breadcrumbLinks').css('width'));
-            var withFrames = window.parent.frames.length>1?true:false;
             var navLinks = withFrames?$(top.frames[ "contentwin"].document).find(".navparent a,.navprev a,.navnext a"):$(".navparent a,.navprev a,.navnext a");
             navLinks.hide();
             navLinksWidthMin = parseInt($('#navigationLinks').css('width'));
@@ -163,6 +238,9 @@ function loadIframe(dynamicURL) {
             var currentLocation = $('#frm').attr('src');
             if(currentLocation.indexOf('#')>0) {
                 currentLocation = currentLocation.substring(0, currentLocation.indexOf('#'));
+            }
+            while (currentLocation.indexOf("/")!=-1) {
+                currentLocation = currentLocation.substring(currentLocation.indexOf("/")+1);
             }
             $.each(links, function(){
                 var link = $(this).attr('href');
@@ -268,6 +346,9 @@ function loadIframe(dynamicURL) {
 	    $('.navparent,.navprev,.navnext').unbind('click').bind('click', function(){
 	        $(this).find('a').trigger('click');
 	    });
+
+
+        scrollToVisibleItem();
     });
 }
 
@@ -312,7 +393,8 @@ function markSelectItem(hrl, startWithMatch) {
                 $('#contentBlock li span').removeClass('menuItemSelected');
                 var item = $(loc).first();
                 item.parent('li span').addClass('menuItemSelected');
-                $.cookie("wh_pn", $(loc).first().parents('li').index('li'));
+                var findIndexOf = $(loc).first().closest('li');
+                $.cookie("wh_pn", $('#contentBlock li').index(findIndexOf));
             }
             toReturn = true;
         } else {
@@ -333,7 +415,8 @@ function markSelectItem(hrl, startWithMatch) {
                     $('#contentBlock li span').removeClass('menuItemSelected');
                     var item = $(loc).first();
                     item.parent('li span').addClass('menuItemSelected');
-                    $.cookie("wh_pn", $(loc).first().parents('li').index('li'));
+                    var findIndexOf = $(loc).first().closest('li');
+                    $.cookie("wh_pn", $('#contentBlock li').index(findIndexOf));
                 }
                 toReturn = true;
             }
@@ -509,7 +592,6 @@ $(function () {
             } else {
                 window.location.href = currentHref;
             }
-
         } else {
             currentHref = window.location.href;
             load(window.location.href);

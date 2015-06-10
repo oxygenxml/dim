@@ -1,7 +1,7 @@
 /*
 
 Oxygen Webhelp plugin
-Copyright (c) 1998-2014 Syncro Soft SRL, Romania.  All rights reserved.
+Copyright (c) 1998-2015 Syncro Soft SRL, Romania.  All rights reserved.
 Licensed under the terms stated in the license file EULA_Webhelp.txt
 available in the base directory of this Oxygen Webhelp plugin.
 
@@ -26,8 +26,40 @@ var navLinksWidth;
 var breadCrumbWidth;
 var navLinksWidthMin;
 
+var searchLoaded = false;
+
+if ( top != self) {
+    searchLoaded = true;
+}
+
 // If page is local and is viewed in Chrome
 var notLocalChrome = verifyBrowser();
+
+/**
+ * @description Returns all available parameters or empty object if no parameters in URL
+ * @return {Object} Object containing {key: value} pairs where key is the parameter name and value is the value of parameter
+ */
+function getParameter(parameter) {
+    var whLocation = "";
+
+    try {
+        whLocation = parent.location;
+        var p = parseUri(whLocation);
+    } catch (e) {
+        debug(e);
+        whLocation = window.location;
+        var p = parseUri(whLocation);
+    }
+
+    return p.queryKey[parameter];
+}
+
+// Used to inject search form where we need it
+var searchForm = '<form name="searchForm" id="searchForm" action="javascript:void(0)"' +
+    'onsubmit="searchRequest(this);">' +
+    '<input type="text" id="textToSearch" name="textToSearch" class="textToSearch"' +
+    'size="30" placeholder="Search"/>' +
+    '</form>';
 
 /**
  * Debug functions 
@@ -49,25 +81,35 @@ function warn(msg, obj) {
 }
 
 function openTopic(anchor) {
-    if ((anchor).attr('target') === undefined) { 
+    if ($(anchor).attr('target') === undefined) {
             /* Remove the old selection and add selection to the clicked item */
             $('#contentBlock li span').removeClass('menuItemSelected');
-            (anchor).parent('li span').addClass('menuItemSelected');
+            $(anchor).parent('li span').addClass('menuItemSelected');
 
             /* Calculate index of selected item and write value to cookie */
-            index = (anchor).parents('li').index('li');
+            var findIndexOf = $(anchor).closest('li');
+            var index = $('#contentBlock li').index(findIndexOf);
             $.cookie('wh_pn', index);
 
             /* Redirect to requested page */
-            redirect((anchor).attr('href'));
+            redirect($(anchor).attr('href'));
     } else {
-        window.open((anchor).attr('href'), (anchor).attr('target'));
+        window.open($(anchor).attr('href'), $(anchor).attr('target'));
     }
 }
 
 
 $(document).ready(function () {
     $('#preload').hide();
+
+    if ( !withFrames ) {
+        $('.framesLink').after(searchForm);
+    } else {
+        $('#searchBlock').prepend(searchForm);
+        $('#searchForm').addClass('frameset');
+        $('#textToSearch').addClass('frameset');
+        $('search').trigger('click');
+    }
 
     /**
      * {Refactored}
@@ -91,10 +133,70 @@ $(document).ready(function () {
         }
         return false;
     });
+    
+    var contextId = getParameter('contextId');
+    var q = getParameter('q');
+
+    if (((location.href.indexOf("#")==-1 && !withFrames ) || (q==undefined && withFrames)) 
+      && (contextId == undefined || contextId == "")) {
+          contextId = $('#tree a[data-id]:eq(0)').attr('data-id');
+    }
+
+    if (contextId !== undefined && contextId != "") {
+        var found = false;
+        $.each($('#tree a[data-id*="' + contextId + '"]'), function () {
+            var idArray = $(this).attr('data-id').split(" ");
+            if ($.inArray(contextId, idArray) >= 0) {
+                try {
+                    var p = parseUri(parent.location);
+                } catch (e) {
+                    debug(e);
+                    var p = parseUri(window.location);
+                }
+    
+                if (!withFrames) {
+                    var newLocation = "";
+                    if (p.host != '') {
+                        newLocation = p.protocol + '://' + p.host + ':' + p.port + p.path + '#' + $(this).attr('href');
+                } else {
+                        newLocation = p.protocol + '://' + p.port + p.path + '#' + $(this).attr('href');
+                }
+                    parent.location = newLocation;
+                } else {
+                    $(this).trigger('click');
+                }
+                found = true;
+
+                return false;
+            }
+        });
+
+        if (!found && withFrames) {
+            $('#tree a[data-id]').first().trigger('click');
+        }
+    } else {
+        if (withFrames) {
+            if (q != undefined) {
+                try {
+                    var p = parseUri(parent.location);
+                } catch (e) {
+                    debug(e);
+                    var p = parseUri(window.location);
+                }
+                var link = p.protocol + '://' + p.host + ':' + p.port + q;
+                window.parent.contentwin.location.href = link;
+            } else {
+                $('#tree a').first().trigger('click');
+            }
+        }
+    }
 
     // Show clicked TAB
     $('.tab').click(function () {
         showMenu($(this).attr('id'));
+        if ( !withFrames ) {
+            toggleLeft();
+        }
     });
 
     // Normalize TOC HREFs and add '#' for no-frames webhelp
@@ -108,7 +210,7 @@ $(document).ready(function () {
             newHref = '#' + normalizeLink(old);
         }
         /* If with frames */
-        if (top != self) {
+        if ( withFrames ) {
             newHref = normalizeLink(old);
         }
         if (old == 'javascript:void(0)') {
@@ -143,21 +245,28 @@ $(document).ready(function () {
     $('#expandAllLink').attr('title', getLocalization("ExpandAll"));
     $('#collapseAllLink').attr('title', getLocalization("CollapseAll"));
 
-    $("#searchForm").css("background-color", $("#leftPane").css("background-color"));
     $("#indexForm").css("background-color", $("#leftPane").css("background-color"));
 
     /**
      * Keep Collapse / Expand buttons in the right sideof the left pane
      */
     $("#bck_toc").bind("scroll", function() {
+        if ( $('#contentBlock').is(':visible') ) {
         var scrollX = $("#bck_toc").scrollLeft();
         $("#expnd").css("left", scrollX);
+        } else {
+            $("#bck_toc").scrollLeft(0);
+        }
     });
 });
 
 $(window).resize(function(){
     if ($("#searchBlock").is(":visible")) {
-        var hAvailable = parseInt($("body").height())-parseInt($("#header").height())-parseInt($("#searchForm").height())-parseInt($("#searchForm").css("padding-top"))-parseInt($("#searchForm").css("padding-bottom"));
+        if ( !withFrames ) {
+            var hAvailable = parseInt($("body").height()) - parseInt($("#header").height());
+        } else {
+            var hAvailable = parseInt($("body").height())-parseInt($("#header").height())-parseInt($("#searchForm").height())-parseInt($("#searchForm").css("padding-top"))-parseInt($("#searchForm").css("padding-bottom"));
+        }
         $("#searchResults").css("height", hAvailable);
     }
     if ($("#indexBlock").is(":visible")) {
@@ -184,7 +293,7 @@ $(window.parent).resize(function () {
 function redirect(link) {
     debug ('redirect(' + link + ');');
     // Determine the webhelp type: no-frames or frames
-    if (self == top) {
+    if ( !withFrames ) {
         // no-frames
         window.location.href = link;
     } else {
@@ -200,11 +309,15 @@ function redirect(link) {
 function initTabs() {
     if (! tabsInitialized) {
         // Get the tabs internationalization text
-        var contentLinkText = getLocalization("Content");
-        var searchLinkText = getLocalization("Search");
-        var indexLinkText = getLocalization("Index");
+        var contentLinkText = getLocalization("webhelp.content");
+        if ( !withFrames ) {
+        var searchLinkText = getLocalization("SearchResults");
+        } else {
+            var searchLinkText = getLocalization("webhelp.search");
+        }
+        var indexLinkText = getLocalization("webhelp.index");
         var IndexPlaceholderText = getLocalization("IndexFilterPlaceholder");
-        var SearchPlaceholderText = getLocalization("Keywords");
+        var SearchPlaceholderText = getLocalization("webhelp.search");
 
         var tabs = new Array("content", "search", "index");
         for (var i = 0; i < tabs.length; i++) {
@@ -213,6 +326,7 @@ function initTabs() {
             if ($("#"+currentTabId).length > 0) {
                 debug('Init tab with name: ' + currentTabId);
                 $("#"+currentTabId).html(eval(currentTabId + "LinkText"));
+                $("#"+currentTabId).attr("title", eval(currentTabId + "LinkText"));
             } else {
                 info('init no tab found with name: ' + currentTabId);
             }
@@ -224,6 +338,35 @@ function initTabs() {
     }
 }
 
+
+/*
+ * Lazy loading of indexterms on Index tab.
+ */
+function loadIndexterms() {
+    try {
+        $('#loadingError').remove();
+        if (typeof window.indextermsLoaded == 'undefined') {
+            $("#indexBlock #iList").load("./oxygen-webhelp/indexterms.html", 
+                function() {
+                    $('#indexList li a').each(function() {
+                         var old = $(this).attr('href');
+                         if (withFrames) {
+                            $(this).attr('href', normalizeLink(old));
+                         } else {
+                            $(this).attr('href', '#' + normalizeLink(old));
+                            $(this).removeAttr("target");
+                         }
+                    })
+                });
+        }
+    } catch (e) {
+        if ( $("#indexList").length < 1 ) {
+            $("#index").html('<span id="loadingError">Index loading error: ' + e + '</span>');
+        }
+    }
+}
+
+
 /**
  * {Refactored}
  * @description Hide and show left side section elements
@@ -232,7 +375,11 @@ function initTabs() {
 function showMenu(displayTab) {
     debug('showMenu(' + displayTab + ');');
     if(notLocalChrome){
-        parent.termsToHighlight = Array();
+        try {
+        	parent.termsToHighlight = Array();
+        } catch (e) {
+            debug(e);
+	    }
     }
 
     initTabs();
@@ -253,21 +400,36 @@ function showMenu(displayTab) {
         }
     }
     if (displayTab == 'content') {
+        if ( $('#searchResults').text() == '' && !withFrames ) {
+            $('#search').hide();
+        }
         searchedWords = "";
         var hAvailable = parseInt($("body").height())-parseInt($("#header").height())-parseInt($("#bck_toc").css("padding-top"));
         $("#bck_toc").css("height", hAvailable).css("overflow", "auto");
         $("#contentBlock").append($("#leftPane .footer"));
     }
     if (displayTab == 'search') {
+        $('#search').show();
         $('.textToSearch').focus();
         searchedWords = $('#textToSearch').text();
         $("#bck_toc").css("overflow", "hidden")
         $("#bck_toc,#bck_toc #indexBlock").css("height", "100%");
-        var hAvailable = parseInt($("body").height())-parseInt($("#header").height())-parseInt($("#searchForm").height())-parseInt($("#searchForm").css("padding-top"))-parseInt($("#searchForm").css("padding-bottom"));
+        if ( !withFrames ) {
+            var hAvailable = parseInt($("body").height()) - parseInt($("#header").height());
+        } else {
+            var hAvailable = parseInt($("body").height())-parseInt($("#header").height())-parseInt($("#searchForm").height())-parseInt($("#searchForm").css("padding-top"))-parseInt($("#searchForm").css("padding-bottom"));
+        }
         $("#searchResults").css("height", hAvailable);
         $("#searchResults").append($("#leftPane .footer"));
     }
     if (displayTab == 'index') {
+        if ( $('#searchResults').text() == '' && !withFrames ) {
+            $('#search').hide();
+        }
+        if ( !withFrames ) {
+            loadIndexterms();
+        }
+        
         $('#id_search').focus();
         searchedWords = "";
         $("#bck_toc").css("overflow", "hidden")
@@ -275,10 +437,6 @@ function showMenu(displayTab) {
         var hAvailable = parseInt($("body").height())-parseInt($("#header").height())-parseInt($("#indexForm").height())-parseInt($("#indexForm").css("padding-top"))-parseInt($("#indexForm").css("padding-bottom"));
         $("#iList").css("height", hAvailable);
         $("#iList").append($("#leftPane .footer"));
-    }
-    // Without Frames: Show left side(toc, search, index) if hidden
-    if ($("#frm").length > 0) {
-        toggleLeft();
     }
 }
 /**
@@ -356,7 +514,6 @@ function resizeContent() {
     var need = tocWidth + navLinksWidth + breadCrumbWidth;
     var needMin = tocWidth + navLinksWidthMin + breadCrumbWidth;
     debug('NEED: '+need+' | NEED-MIN: '+needMin);
-    var withFrames = window.parent.frames.length>1?true:false;
 
     var heightScreen = $(window).height();
     var hh = $('#header').height();
@@ -479,6 +636,32 @@ function collapseAll() {
 }
 
 /**
+ * @description Scroll TOC to make currently selected item visible.
+ */
+function scrollToVisibleItem() {
+    var tocSelectedItemPos = $(".menuItemSelected").offset();
+    var tocContentPos = $(".menuItemSelected").parents("#contentBlock").offset();
+    var tocSelectedItemOffset = {
+        top: tocSelectedItemPos.top - tocContentPos.top,
+        left: tocSelectedItemPos.left - tocContentPos.left
+    }
+
+    var contentToc = $("#contentBlock").offset();
+    var toc = $("#contentBlock").parents("#bck_toc").offset();
+    var contentTocOffset = {
+        top: contentToc.top - toc.top,
+        left: contentToc.left - toc.left
+    }
+    var contentTocHeight = $("#bck_toc").height();
+    var maxLimit = contentTocHeight - contentTocOffset.top;
+    var minLimit = 0 - contentTocOffset.top;
+
+    if (tocSelectedItemOffset.top < minLimit || tocSelectedItemOffset.top > maxLimit) {
+        $("#bck_toc").scrollTop(tocSelectedItemOffset.top);
+    }
+}
+
+/**
  * {Refactored}
  * @description Toggle the selected item
  * @param loc (Object) - Which list item to expand
@@ -547,13 +730,13 @@ function showParents() {
             }
 
             // Get the element that contains navigation links and hide irrelevant links
-            if (self==top) {
+            if ( !withFrames ) {
                 var navLinks = $('#navigationLinks');
             } else {
-                var navLinks = $(top.frames[ "contentwin"].document).find('.nav');
+                var navLinks = $(parent.frames[ "contentwin"].document).find('.nav');
                 navLinks = $(navLinks).find('.navheader');
 
-                var footerLinks = $(top.frames[ "contentwin"].document).find('.navfooter');
+                var footerLinks = $(parent.frames[ "contentwin"].document).find('.navfooter');
                 $(footerLinks).find('.navparent').hide();
                 $(footerLinks).find('.navparent').find('a[href*="' + parentTOCSelection + '"]').first().parent().show();
                 
@@ -615,7 +798,7 @@ function normalizeLink(originalHref) {
 function openAndHighlight(page, words) {
     searchedWords = words;
     debug('openAndHighlight(' + page + ',' + words.join(':') + ');');
-    if(top != self){
+    if( withFrames ){
         // with frames
         parent.termsToHighlight = words;
         parent.frames['contentwin'].location = page;
@@ -672,7 +855,7 @@ function stripUri(uri) {
 /*
  * Set log level to 0 if we have param log=true in CGI
  */
-if (location.search.indexOf('?log=true') >= 0) {
+if (location.search.indexOf('log=true') != -1) {
     log.setLevel(0);
 }
 

@@ -1,5 +1,6 @@
 
 // Auto generated index for searching.
+w["exclude"]="10*1";
 w["excluded"]="10*0";
 w["exclusive"]="3*0,5*0";
 w["executing"]="21*0";
@@ -363,6 +364,7 @@ w["notices"]="4*0";
 w["notify"]="20*0";
 w["noun"]="23*1";
 w["nouns"]="23*0";
+w["ntent"]="19*0";
 w["number"]="5*6,7*0,12*0,15*0,16*0,17*2,19*0,20*0";
 w["numbered"]="20*0";
 w["numbers"]="5*0,15*0,20*0";
@@ -444,7 +446,8 @@ w["personal"]="16*0";
 w["perspective"]="16*0";
 w["pertains"]="20*0";
 w["ph"]="23*5";
-w["phrase"]="3*0,5*2,18*0,25*26";
+w["phr"]="3*0";
+w["phrase"]="5*2,18*0,25*26";
 w["phrase-level"]="18*0";
 w["phrases"]="16*1,23*1,25*26";
 w["pieces"]="3*0,5*26";
@@ -487,6 +490,4 @@ w["previous"]="6*0,15*0,17*0";
 w["primarily"]="7*0";
 w["primary"]="6*0,17*1,19*0";
 w["principles"]="6*0";
-w["print"]="6*3,7*0,10*5";
-w["prior"]="19*5,20*0";
 

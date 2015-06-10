@@ -1,5 +1,7 @@
 
 // Auto generated index for searching.
+w["print"]="6*3,7*0,10*5";
+w["prior"]="19*5,20*0";
 w["priority"]="5*0";
 w["probably"]="3*0";
 w["problem"]="7*1,19*0,23*1,26*1";

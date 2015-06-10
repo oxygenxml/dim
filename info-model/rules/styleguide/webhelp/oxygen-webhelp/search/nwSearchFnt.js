@@ -79,7 +79,7 @@ function logLocal(msg){
 
 if (typeof debug !== 'function') {
   function debug(msg,obj){
-    if (top !== self){
+    if ( withFrames ){
       if (typeof parent.debug !== 'function') {
         logLocal(msg);
       }else{
@@ -119,11 +119,32 @@ warningMsg+='<li>Try using another web browser.</li>';
 warningMsg+='<li>Deploy the WebHelp files on a web server.</li>';
 warningMsg+='</div>';
 var txt_filesfound = 'Results';
-var txt_enter_at_least_1_char = "You must enter at least one character.";
+var txt_enter_at_least_1_char = "Search string can't be void";
+var txt_enter_at_least_2_char = "Search string must have at least two characters";
 var txt_enter_more_than_10_words = "Only first 10 words will be processed.";
 var txt_browser_not_supported = "Your browser is not supported. Use of Mozilla Firefox is recommended.";
 var txt_please_wait = "Please wait. Search in progress...";
 var txt_results_for = "Results for:";
+
+/**
+ * @description This function make a search request. If all necessary resources are loaded search occurs
+ *              otherwise search will be delayed until all resources are loaded.
+ * @param ditaSearch_Form HTML form which requested the search.
+ */
+function searchRequest( ditaSearch_Form ) {
+    $('#search').trigger('click');
+    var ready = setInterval(function(){
+        if( searchLoaded ) {
+            $('#loadingError').remove();
+            SearchToc( ditaSearch_Form );
+            clearInterval(ready);
+        } else {
+            if ($('#loadingError').length < 1) {
+                $('#searchResults').prepend('<span id="loadingError">' + getLocalization('Loading, please wait ...') + '</span>');
+            }
+        }
+    }, 100);
+}
 
 /**
  * This function find the all matches using the search term
@@ -139,8 +160,7 @@ function SearchToc(ditaSearch_Form) {
     return;
   }
 
-  searchTextField = trim(document.searchForm.textToSearch.value);
-  
+  searchTextField = trim(ditaSearch_Form.textToSearch.value);
   // Eliminate the cross site scripting possibility.
   searchTextField = searchTextField.replace(/</g, " ");
   searchTextField = searchTextField.replace(/>/g, " ");
@@ -157,10 +177,12 @@ function SearchToc(ditaSearch_Form) {
   debug('Search for: '+expressionInput);
 
   if (expressionInput.length < 1) {
-    // expression is invalid
     alert(getLocalization(txt_enter_at_least_1_char));
     document.searchForm.textToSearch.focus();
-  }else {
+  } else if ((expressionInput.length == 1) && (!expressionInput.toString().match(/[\u3000-\u9FFF]/))) {
+    alert(getLocalization(txt_enter_at_least_2_char));
+    document.searchForm.textToSearch.focus();
+  } else {
     var splitSpace = searchTextField.split(" ");
     noWords = splitSpace;
     if (noWords.length > 9) {
@@ -182,17 +204,18 @@ function SearchToc(ditaSearch_Form) {
       // END - EXM-20996
              
       realSearch(expressionInput);
-      document.searchForm.textToSearch.focus();
+      $(ditaSearch_Form).find('#textToSearch').focus();
     }
   }
   debug('End SearchToc(..)');
 
   // START - EXM-29420
+    if (typeof normalizeLink == 'function') {
   $('.searchresult li a').each(function () {
       var old = $(this).attr('href');
       var newHref = '#' + normalizeLink(old);
       /* If with frames */
-      if (top != self) {
+      if ( withFrames ) {
           newHref = normalizeLink(old);
       }
       if (old == 'javascript:void(0)') {
@@ -202,10 +225,13 @@ function SearchToc(ditaSearch_Form) {
           info('alter link:' + $(this).attr('href') + ' from ' + old);
       }
   });
+    }
   //END - EXM-29420
   //START - EXM-30790
   $("#searchResults").append(footer);
+  $("#searchResults").scrollTop(0);
   //END - EXM-30790
+  $('#search').trigger('click');
 }
 
 var stemQueryMap = new Array();  // A hashtable which maps stems to query words
@@ -241,7 +267,7 @@ function realSearch(expressionInput) {
   wordsList.sort();
   debug('words from search:',wordsList);
   //set the tokenizing method
-  if(typeof indexerLanguage != "undefined" && (indexerLanguage=="zh" || indexerLanguage=="ja" ||indexerLanguage=="ko")){
+  if(typeof indexerLanguage != "undefined" && (indexerLanguage=="zh" || indexerLanguage=="ko")){
     useCJKTokenizing=true;
   } else {
     useCJKTokenizing=false;
@@ -365,7 +391,7 @@ function realSearch(expressionInput) {
           var split = fileAndWordList[i][t].motsliste.split(",");
           arrayString = 'Array(';
           for(var x in finalArray){
-            if (finalArray[x].length > 2 || useCJKTokenizing){
+            if (finalArray[x].length > 2 || useCJKTokenizing || indexerLanguage == "ja"){
               arrayString+= "'" + finalArray[x] + "',";
             }
           }
@@ -386,7 +412,23 @@ function realSearch(expressionInput) {
           if ((tempShortdesc != "null" && tempShortdesc != '...')) {
             linkString += "\n<div class=\"shortdesclink\">" + tempShortdesc + "</div>";
           }
-                    
+          
+          try {
+          if (webhelpSearchRanking) {
+            // Add rating values for scoring at the list of matches
+            linkString += "<div id=\"rightDiv\">";
+            linkString += "<div id=\"star\">";
+            linkString += "<div id=\"star0\" class=\"star\">";
+            linkString += "<div id=\"starCur0\" class=\"curr\" style=\"width: " + starWidth + "px;\">&nbsp;</div>";
+            linkString += "</div>";
+            linkString += "<br style=\"clear: both;\">";
+            linkString += "</div>";
+            linkString += "</div>";
+          }
+          } catch (e) {
+            debug(e);
+          }
+          
           linkString += "</li>";
           linkTab.push(linkString);
           no++;
@@ -421,7 +463,7 @@ function realSearch(expressionInput) {
 // Return true if "word" value is an element of "arrayOfWords"  
 function contains(arrayOfWords, word) {
     var found = true;
-    if (word.length > 2) {
+    if (word.length > 2 || indexerLanguage == "ja") {
         found = false;
         for (var w in arrayOfWords) {
             if (arrayOfWords[w] === word) {
@@ -485,14 +527,18 @@ function cjkTokenize(wordsList){
   var allTokens= new Array();
   var notCJKTokens= new Array();
   var j=0;
+  debug('in cjkTokenize(), wordsList: ', wordsList);
   for(j=0;j<wordsList.length;j++){
     var word = wordsList[j];
+    debug('in cjkTokenize(), next word: ', word);
     if(getAvgAsciiValue(word) < 127){
       notCJKTokens.push(word);
     } else {
+      debug('in cjkTokenize(), use CJKTokenizer');
       var tokenizer = new CJKTokenizer(word);
       var tokensTmp = tokenizer.getAllTokens();
       allTokens = allTokens.concat(tokensTmp);
+      debug('in cjkTokenize(), found new tokens: ', allTokens);
     }
   }
   allTokens = allTokens.concat(tokenize(notCJKTokens));
