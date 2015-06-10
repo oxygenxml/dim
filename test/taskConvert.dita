@@ -3,7 +3,7 @@
 <?xml-model href="dim2sch:/urn:info-model/bm_InformationModelBookmap.ditamap" type="application/xml" schematypens="http://purl.oclc.org/dsdl/schematron"?>
 <task id="task_lnm_wyz_yp">
     <title>Sample</title>
-    <shortdesc>test</shortdesc>
+    <shortdesc>Sample</shortdesc>
     
     <prolog></prolog>
     <taskbody>
