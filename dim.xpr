@@ -836,6 +836,7 @@
         </folder>
         <folder name="test">
             <file name="test/project/dimTest.xpr"/>
+            <file name="convert:/processor=xhtml/processor=js;js=urn:processors:pagedown%2FMarkdown.Converter.js;fn=convertExternal!/urn:dim/README.md"/>
         </folder>
         <folder path="."/>
     </projectTree>
