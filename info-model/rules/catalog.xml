@@ -15,6 +15,7 @@
 	<rewriteURI uriStartString="urn:rules:" rewritePrefix="./"/>
 	<rewriteURI uriStartString="urn:processors:" rewritePrefix="../../gen-rules/"/>
     <rewriteURI uriStartString="urn:info-model/" rewritePrefix="../"/>
+    <rewriteURI uriStartString="urn:dim/" rewritePrefix="../../"/>
     
     <!-- aliases for conversion protocols -->	
     <rewriteURI uriStartString="dim2sch:/" rewritePrefix="convert:/processor=xslt;ss=urn:processors:dim2sch.xsl!/"/>
@@ -25,4 +26,6 @@
     <!-- convert:/processor=xslt;ss=urn:processors:dim2sch.xsl!/urn:info-model/bm_InformationModelBookmap.ditamap -->
     <!-- urn:info-model/c_InformationTypes.dita -->
     
+    <rewriteURI uriStartString="md2html:/" rewritePrefix="convert:/processor=xhtml/processor=js;js=urn:processors:pagedown%2FMarkdown.Converter.js;fn=convertExternal!/"/>
+    <!--  md2html:/urn:dim/README.md -->
 </catalog>
