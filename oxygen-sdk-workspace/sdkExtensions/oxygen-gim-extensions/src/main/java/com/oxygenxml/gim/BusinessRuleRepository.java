@@ -15,6 +15,7 @@ import javax.xml.bind.Unmarshaller;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.sax.SAXSource;
 import javax.xml.transform.stream.StreamResult;
 
@@ -107,11 +108,25 @@ public class BusinessRuleRepository {
    * @throws JAXBException
    */
   BusinessRuleLibrary parseRules(InputSource source) throws JAXBException {
-    JAXBContext jc = JAXBContext.newInstance(BusinessRuleLibrary.class);
-    
-    Unmarshaller unmarshaller = jc.createUnmarshaller();
-    BusinessRuleLibrary library = (BusinessRuleLibrary) unmarshaller.unmarshal(source);
-    
-    return library;
+    String propname = TransformerFactory.class.getName();
+    String propertyVal = System.getProperty(propname);
+    try {
+      // The JAXP engine tries to set a property (a security mode) not supported by Saxon 6. 
+      // So we make sure it will use a transformer that supports that property.
+      System.setProperty(propname, "net.sf.saxon.TransformerFactoryImpl");
+      JAXBContext jc = JAXBContext.newInstance(BusinessRuleLibrary.class);
+
+      Unmarshaller unmarshaller = jc.createUnmarshaller();
+      BusinessRuleLibrary library = (BusinessRuleLibrary) unmarshaller.unmarshal(source);
+
+      return library;
+    } finally {
+      // Restore the initial property.
+      if (propertyVal != null) {
+        System.setProperty(propname, propertyVal);
+      } else {
+        System.getProperties().remove(propname);
+      }
+    }
   }
 }
