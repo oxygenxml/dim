@@ -13,7 +13,7 @@
     
     <!-- resource collections -->
 	<rewriteURI uriStartString="urn:rules:" rewritePrefix="./"/>
-	<rewriteURI uriStartString="urn:processors:" rewritePrefix="../../gen-rules/"/>
+	<rewriteURI uriStartString="urn:processors:" rewritePrefix="../../frameworks/dim/"/>
     <rewriteURI uriStartString="urn:info-model/" rewritePrefix="../"/>
     <rewriteURI uriStartString="urn:dim/" rewritePrefix="../../"/>
     
