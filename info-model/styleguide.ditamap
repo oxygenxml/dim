@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE bookmap PUBLIC "-//OASIS//DTD DITA BookMap//EN" "C:\Program Files (x86)\XMetaL 6.0\Author\DITA\XACs\bookmap\bookmap_bookmap.dtd">
+<bookmap id="bookmap_1CB2ED7D67FD44EB84B62DE72FE3DD01">
+	<booktitle>
+		<mainbooktitle><keyword keyref="companyname"/> Style Guide</mainbooktitle>
+	</booktitle>
+	<bookmeta>
+		<bookrights>
+			<copyrfirst>
+				<year>2016</year>
+			</copyrfirst>
+			<bookowner>
+				<organization><keyword keyref="companyname"/></organization>
+			</bookowner>
+		</bookrights>
+	</bookmeta>
+	<frontmatter>
+		<keydef keys="companyname">
+			<topicmeta>
+				<keywords>
+					<keyword>Company Name</keyword>
+				</keywords>
+			</topicmeta>
+		</keydef>
+		<booklists>
+			<toc/>
+		</booklists>
+	</frontmatter>
+	<chapter format="dita" href="overview.dita">
+		<topicref href="shortdescriptions.dita"/>
+	</chapter>
+</bookmap>
