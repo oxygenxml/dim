@@ -54,7 +54,7 @@
 		<topicref format="dita" href="c_UserInterface.dita" navtitle="User interface elements"
 			type="concept"/>
 	</chapter>
-	<chapter href="c_MapsAndBookMaps.dita" navtitle="Maps and bookmaps" type="concept">
+	<chapter href="c_MapsAndBookmaps.dita" navtitle="Maps and bookmaps">
 		<topicref href="c_Maps.dita" navtitle="Maps" type="concept">
 			<topicref href="c_MapStructure.dita" navtitle="Map structure" type="concept"/>
 			<topicref href="c_MapElements.dita"/>
