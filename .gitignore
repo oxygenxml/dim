@@ -4,3 +4,6 @@ oxygen-sdk-workspace/sdkExtensions/oxygen-gim-extensions/samples/
 runtime-New_configuration/
 oxygen-sdk-workspace/.metadata/
 oxygen-sdk-workspace/RemoteSystemsTempFiles/
+out/
+temp/
+styleguide/
