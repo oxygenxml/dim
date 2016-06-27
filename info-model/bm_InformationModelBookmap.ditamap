@@ -79,6 +79,7 @@
 		type="concept">
 		<topicref format="dita" href="c_NormalizingContent.dita" navtitle="Writing for reuse"
 			scope="local" type="concept"/>
+        <topicref href="c_CommonContentOverview.dita"/>
 		<topicref format="dita" href="c_CollectionFiles.dita"
 			navtitle="Reusing elements through collection files" scope="local" type="concept"/>
 	</chapter>
