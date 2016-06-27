@@ -55,7 +55,7 @@ If you have nothing more to add, do not include a short description"?>
           from cover to cover.<?oxy_comment_end?><note>For navigation purposes, you might want to
             group several topics together under a heading; instead of creating a container topic for
             that heading and a short description, use the &lt;topichead> element in your map. See
-              <xref href="c_mapelements.dita#Maps"/> for more information.<draft-comment>Rephrase
+              <xref href="c_MapElements.dita#Maps"/> for more information.<draft-comment>Rephrase
               this note if they aren't requiring a shortdesc--instead of creating an empty container
               topic for that heading </draft-comment></note></li>
       </ul>
