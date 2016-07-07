@@ -31,7 +31,7 @@ The project contains:
 your own style guide - in case you do not have one already. This was contributed
 by [Comtech Services](http://www.comtech-serv.com) 
 
-* Library of generic rules, defined as Schematorn abstract patters
+* Library of generic rules, defined as Schematron abstract patters
 
 * XSLT script that will generate a Schematron file that contains all the rules 
 defined in the style guide topics, each with a link that points back so the 
@@ -119,7 +119,7 @@ will point to the style guide topics that describe their usage.
 
     to replace `dita` with `dita-my-project`.
     
-    For eaxh framework, oXygen will try to load this configuration file from 
+    For each framework, oXygen will try to load this configuration file from 
     such an URL, and if that is mapped by the catalog to some actual 
     configuration file, then that will be automatically used to provide links to
     style guide topics from the element and attribute tooltips. 
