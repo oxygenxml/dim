@@ -20,12 +20,11 @@
     <!-- aliases for conversion protocols -->	
     <rewriteURI uriStartString="dim2sch:/" rewritePrefix="convert:/processor=xslt;ss=urn:processors:dim2sch.xsl!/"/>
     
-    <!-- dim2sch:/urn:info-model/bm_InformationModelBookmap.ditamap -->
-    <!-- urn:info-model/bm_InformationModelBookmap.ditamap -->
+    <!-- dim2sch:/urn:info-model/styleguide.ditamap -->
+    <!-- urn:info-model/styleguide.ditamap -->
     <!-- urn:processors:dim2sch.xsl -->
-    <!-- convert:/processor=xslt;ss=urn:processors:dim2sch.xsl!/urn:info-model/bm_InformationModelBookmap.ditamap -->
+    <!-- convert:/processor=xslt;ss=urn:processors:dim2sch.xsl!/urn:info-model/styleguide.ditamap -->
     <!-- urn:info-model/c_InformationTypes.dita -->
     
     <rewriteURI uriStartString="md2html:/" rewritePrefix="convert:/processor=xhtml/processor=js;js=urn:processors:pagedown%2FMarkdown.Converter.js;fn=convertExternal!/"/>
-    <!--  md2html:/urn:dim/README.md -->
 </catalog>
