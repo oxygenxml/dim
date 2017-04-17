@@ -27,7 +27,7 @@ data[audience~='styleguide']:after {
     content: 
         oxy_button(actionID, 'add.link', transparent, true)
         " "
-        oxy_button(actionID, 'delete.element', transparent, true)
+        oxy_button(actionID, 'delete.element', transparent, true, enableInReadOnlyContext, true)
         " "
     ;
     display:block;
@@ -59,7 +59,7 @@ section[audience~='rules'] dl:after {
     
     display:block;
     content :
-        oxy_button(actionID, 'delete.element', transparent, true)
+        oxy_button(actionID, 'delete.element', transparent, true, enableInReadOnlyContext, true)
     ;
 }
 
@@ -93,6 +93,15 @@ section[audience~='rules'] dt {
     width:30%;
     padding-left:2%;
 }
+
+section[audience~='rules'] dl {
+    -oxy-editable:false;
+}
+
+section[audience~='rules'] dd {
+    -oxy-editable:true;
+}
+
 
 section[audience~='rules'] dd {
     width:60%;
