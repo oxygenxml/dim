@@ -95,7 +95,7 @@
     <sqf:fix id="restrictWords_setNew">
         <sqf:param name="parentElement" abstract="true"/>
         <sqf:description>
-            <sqf:title>The content of the element "<value-of select="'$parentElement'"/>" will be setted by an user entry.</sqf:title>
+            <sqf:title>The content of the element "<value-of select="'$parentElement'"/>" will be set by a user entry.</sqf:title>
         </sqf:description>
         <sqf:user-entry name="new-content">
             <sqf:description>
