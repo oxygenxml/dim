@@ -27,4 +27,6 @@ fl["23"]= "c_TitlingTopics.html";
 fl["24"]= "c_UserInterface.html";
 fl["25"]= "c_UsingInlineElements.html";
 fl["26"]= "c_WritingShortDescriptions.html";
-var doStem = false
+fl["27"]= "overview.html";
+fl["28"]= "shortdescriptions.html";
+var doStem = false;searchLoaded = true;

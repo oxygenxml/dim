@@ -1,469 +1,958 @@
 /*
 
-David Cramer
-<david AT thingbag DOT net>
+ David Cramer
+ <david AT thingbag DOT net>
 
-Kasun Gajasinghe
-<kasunbg AT gmail DOT com>
+ Kasun Gajasinghe
+ <kasunbg AT gmail DOT com>
 
-Copyright © 2008-2012 Kasun Gajasinghe, David Cramer
+ Copyright © 2008-2012 Kasun Gajasinghe, David Cramer
 
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+ Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
-1. The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+ 1. The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
-2. Except as contained in this notice, the names of individuals credited with contribution to this software shall not be used in advertising or otherwise to promote the sale, use or other dealings in this Software without prior written authorization from the individuals in question.
+ 2. Except as contained in this notice, the names of individuals credited with contribution to this software shall not be used in advertising or otherwise to promote the sale, use or other dealings in this Software without prior written authorization from the individuals in question.
 
-3. Any stylesheet derived from this Software that is publicly distributed will be identified with a different name and the version strings in any derived Software will be changed so that no possibility of confusion between the derived package and this Software will exist.
+ 3. Any stylesheet derived from this Software that is publicly distributed will be identified with a different name and the version strings in any derived Software will be changed so that no possibility of confusion between the derived package and this Software will exist.
 
-Warranty: THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL DAVID CRAMER, KASUN GAJASINGHE, OR ANY OTHER CONTRIBUTOR BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ Warranty: THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL DAVID CRAMER, KASUN GAJASINGHE, OR ANY OTHER CONTRIBUTOR BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-*/
+ */
 
 
 /*
-  List of modifications added by the Oxygen Webhelp plugin:
-   
-  1. Make sure the space-separated words from the search query are 
-     passed to the search function realSearch() in all cases (the 
-	 total number of words can be less than or greater than 10 words).
-	 
-  2. Accept as valid search words a sequence of two words separated 
-     by ':', '.' or '-'.
-	 
-  3. Convert the search query to lowercase before executing the search.
-  
-  4. Do not omit words between angle brackets from the title of the 
-     search results.
+ List of modifications added by the Oxygen Webhelp plugin:
 
-  5. Normalize search results HREFs and add '#' for no-frames webhelp
+ 1. Make sure the space-separated words from the search query are
+ passed to the search function searchSingleWord() in all cases (the
+ total number of words can be less than or greater than 10 words).
 
-  6. Keep custom footer in TOC after searching some text
+ 2. Accept as valid search words a sequence of two words separated
+ by ':', '.' or '-'.
 
-*/
+ 3. Convert the search query to lowercase before executing the search.
 
-// Return true if "word1" starts with "word2"  
-function startsWith(word1, word2) {
-    var prefix = false;
-    if (word1 !== null && word2 !== null) {
-        if (word2.length <= word1.length) {
-            prefix = true;
-            for (var i = 0; i < word2.length; i++) {
-              if (word1.charAt(i) !== word2.charAt(i)) {
-                  prefix = false;
-                  break;
-              }
-            }
-        }
-    } else {
-        if (word1 !== null) {
-            prefix = true;
-        }
-    }
-    return prefix;
-}
+ 4. Do not omit words between angle brackets from the title of the
+ search results.
 
+ 5. Normalize search results HREFs and add '#' for no-frames webhelp
 
-if (!("console" in window) || !("firebug" in console)) {
- var names = ["log", "debug", "info", "warn", "error", "assert", "dir", "dirxml", "group", "groupEnd", "time", "timeEnd", "count", "trace", "profile", "profileEnd"];
- window.console = {};
- for (var i = 0, len = names.length; i < len; ++i) {
- window.console[names[i]] = function(){};
- }
-}
+ 6. Keep custom footer in TOC after searching some text
 
-function logLocal(msg){
-  console.log(msg);
-}
+ 7. Accept as valid search words that contains only 2 characters
 
+ */
 
-if (typeof debug !== 'function') {
-  function debug(msg,obj){
-    if ( withFrames ){
-      if (typeof parent.debug !== 'function') {
-        logLocal(msg);
-      }else{
-        if (typeof msg!=="undefined"){
-          if (typeof msg==="object"){
-            parent.debug('['+src+']',msg);
-          }else{
-            parent.debug('['+src+']'+msg,obj);
-          }
-        }
-      }
-    }else{
-      logLocal(msg);
-    }
-  }
-}
-
-var htmlfileList = "htmlFileList.js";
-var htmlfileinfoList = "htmlFileInfoList.js";
+/**
+ * Is set to true when the CJK tokenizer is used.
+ * @type {boolean}
+ */
 var useCJKTokenizing = false;
 
-var w = new Object();
-var scoring = new Object();
-
-var searchTextField = '';
-var no = 0;
-var noWords = 0;
-var partialSearch1 = "There is no page containing all the search terms.";
-var partialSearch2 = "Partial results:";
-var warningMsg = '<div style="padding: 5px;margin-right:5px;;background-color:#FFFF00;">';
-warningMsg+='<b>Please note that due to security settings, Google Chrome does not highlight';
-warningMsg+=' the search results.</b><br>';
-warningMsg+='This happens only when the WebHelp files are loaded from the local file system.<br>';
-warningMsg+='Workarounds:';
-warningMsg+='<ul>';
-warningMsg+='<li>Try using another web browser.</li>';
-warningMsg+='<li>Deploy the WebHelp files on a web server.</li>';
-warningMsg+='</div>';
-var txt_filesfound = 'Results';
-var txt_enter_at_least_1_char = "Search string can't be void";
-var txt_enter_at_least_2_char = "Search string must have at least two characters";
-var txt_enter_more_than_10_words = "Only first 10 words will be processed.";
-var txt_browser_not_supported = "Your browser is not supported. Use of Mozilla Firefox is recommended.";
-var txt_please_wait = "Please wait. Search in progress...";
-var txt_results_for = "Results for:";
+/**
+ * The map with indexed words.
+ *
+ * w[word] = topicID*score, topicID*score;
+ */
+var w = {};
 
 /**
- * @description This function make a search request. If all necessary resources are loaded search occurs
- *              otherwise search will be delayed until all resources are loaded.
- * @param ditaSearch_Form HTML form which requested the search.
+ * Array with excluded words from search.
+ *
+ * @type {[string]}
  */
-function searchRequest( ditaSearch_Form ) {
-    $('#search').trigger('click');
-    var ready = setInterval(function(){
-        if( searchLoaded ) {
-            $('#loadingError').remove();
-            SearchToc( ditaSearch_Form );
-            clearInterval(ready);
-        } else {
-            if ($('#loadingError').length < 1) {
-                $('#searchResults').prepend('<span id="loadingError">' + getLocalization('Loading, please wait ...') + '</span>');
+var excluded = [];
+
+/**
+ * The search query used in search process, after it was filtered.
+ */
+var realSearchQuery;
+
+/**
+ * It is true when the user searches for a single word between quotes, like "flower".
+ * In this case only this word will be displayed as search result.
+ *
+ * Note that it is not taken into consideration when stemming is activated.
+ *
+ * @type {boolean}
+ */
+var singleWordExactMatch = false;
+
+/**
+ * It is true when the search query seems to be a part of am URL or file path.
+ * For this situation we will search using 'contains' method.
+ *
+ * @type {boolean}
+ */
+var searchInsideFilePath = false;
+
+/**
+ * It is true when original search expression contains boolean operators.
+ *
+ * @type {boolean}
+ */
+var booleanSearch = false;
+
+/**
+ * The default boolean search operator.
+ * @type {string}
+ */
+var defaultOperator = "or";
+
+
+/**
+ * List of all known operators.
+ * @type {string[]}
+ */
+var knownOperators = ["and", "or", "not"];
+
+/**
+ * A hashtable which maps stems to query words
+ */
+var stemQueryMap = [];
+
+/**
+ * A map that contains search results organized by categories.
+ *
+ * @type {}
+ */
+var resultCategoriesMap = {};
+
+/**
+ * The number of result categories already counted.
+ *
+ * @type {number}
+ */
+var resultCategoriesCount = 0;
+
+/**
+ * Arrays with file IDs that were already in search result.
+ *
+ * @type {Array}
+ */
+var resultCategoriesMapFiles = [];
+
+/**
+ * An object describing the search result. It contains a string with the search expression and a list with documents
+ * where search terms were found.
+ *
+ * @param {string} searchExpression The search expression that belongs/represents this result.
+ * It might be different from the initial search expression after stop words and invalid boolean operators were removed.
+ * @param {[string]} The array with excluded words from initial search expression.
+ * @param {string} originalSearchExpression The initial search expression.
+ * @param {DocumentInfo[]} documents The array containing the search result grouped by topic/document.
+ *
+ * @constructor
+ */
+function SearchResult(searchExpression, excluded, originalSearchExpression, documents) {
+    this.searchExpression = searchExpression;
+    this.excluded = excluded;
+    this.documents = documents;
+    this.originalSearchExpression = originalSearchExpression;
+}
+
+/**
+ * An object containing the search result for a single topic/HTML page.
+ * Contains pointer to the topicID, title, short description and the list of words that were found.
+ *
+ * @param {string} topicID The ID of the topic. Can be used to identify unique a document in the search result.
+ * @param {string} relativePath The relative path to the topic.
+ * @param {string} title The topic title.
+ * @param {string} shortDescription The topic short description.
+ * @param {[string]} words The array with words contained by this topic.
+ * @param {int} scoring The search scoring computed for this document.
+ * @constructor
+ */
+function DocumentInfo(topicID, relativePath, title, shortDescription, words, scoring) {
+    this.topicID = topicID;
+    this.relativePath = relativePath;
+    this.title = title;
+    this.shortDescription = shortDescription;
+    this.words = words;
+    this.scoring = scoring;
+}
+
+/**
+ * This is the main function of the WH search library used to execute a search query.
+ * The stop words are filtered.
+ *
+ * @param {String} searchQuery The search query
+ * @return {SearchResult}The search result containing the search expression together with an arrays
+ * of DocumentInfo objects.
+ */
+function performSearch(searchQuery) {
+    debug("searchQuery", searchQuery);
+    init();
+
+    var initialSearchExpression = searchQuery;
+    var phraseSearch = false;
+    searchQuery = searchQuery.trim();
+    if (searchQuery.length > 2 && !useCJKTokenizing) {
+        var firstChar = searchQuery.charAt(0);
+        var lastChar = searchQuery.charAt(searchQuery.length - 1);
+        phraseSearch =
+            (firstChar == "'" || firstChar == '"') &&
+            (lastChar == "'" || lastChar == '"');
+    }
+
+    // Remove ' and " characters
+    searchQuery = searchQuery.replace(/"/g, " ").replace(/'/g, " ")
+
+
+    realSearchQuery = preprocessSearchQuery(searchQuery, phraseSearch);
+    debug("Search query after pre-process: ", realSearchQuery);
+    if (realSearchQuery.trim().length != 0) {
+        // Add the default boolean operator between words if it is missing
+        searchQuery = normalizeQuery(realSearchQuery);
+
+        var searchWordCount = 1;
+        if (!useCJKTokenizing) {
+            var sw = searchQuery.split(" ");
+            searchWordCount = sw.length;
+            singleWordExactMatch = phraseSearch && searchWordCount == 1;
+
+            if (!singleWordExactMatch && !phraseSearch) {
+                searchInsideFilePath = isURLorFilePath(realSearchQuery);
             }
         }
-    }, 100);
-}
 
-/**
- * This function find the all matches using the search term
- */
-function SearchToc(ditaSearch_Form) {
-  debug('SearchToc(..)');
-  //START - EXM-30790
-  var footer = $("#searchResults .footer");
-  //END - EXM-30790
-  // Check browser compatibitily
-  if (navigator.userAgent.indexOf("Konquerer") > -1) {
-    alert(getLocalization(txt_browser_not_supported));
-    return;
-  }
+        // Convert to RPN notation
+        var rpnExpression = convertToRPNExpression(searchQuery);
 
-  searchTextField = trim(ditaSearch_Form.textToSearch.value);
-  // Eliminate the cross site scripting possibility.
-  searchTextField = searchTextField.replace(/</g, " ");
-  searchTextField = searchTextField.replace(/>/g, " ");
-  searchTextField = searchTextField.replace(/\"/g, " ");
-  searchTextField = searchTextField.replace(/\'/g, " ");
-  searchTextField = searchTextField.replace(/=/g, " ");
-  searchTextField = searchTextField.replace(/\(/g, " ");
-  searchTextField = searchTextField.replace(/\)/g, " ");
-  searchTextField = searchTextField.replace(/0\\/g, " ");
-  searchTextField = searchTextField.replace(/\\/g, " ");
-  searchTextField = searchTextField.replace(/\//g, " ");
- 
-  var expressionInput = searchTextField;
-  debug('Search for: '+expressionInput);
+        // Perform search with RPN expression
+        var res = calculateRPN(rpnExpression);
+        var sRes = res.value;
 
-  if (expressionInput.length < 1) {
-    alert(getLocalization(txt_enter_at_least_1_char));
-    document.searchForm.textToSearch.focus();
-  } else if ((expressionInput.length == 1) && (!expressionInput.toString().match(/[\u3000-\u9FFF]/))) {
-    alert(getLocalization(txt_enter_at_least_2_char));
-    document.searchForm.textToSearch.focus();
-  } else {
-    var splitSpace = searchTextField.split(" ");
-    noWords = splitSpace;
-    if (noWords.length > 9) {
-      // Allow to search maximum 10 words
-      alert(getLocalization(txt_enter_more_than_10_words));
-      expressionInput = '';
-      for (var x = 0 ; x < 10 ; x++){
-        expressionInput = expressionInput + " " + noWords[x];
-      }
-      realSearch(expressionInput);
-      document.searchForm.textToSearch.focus();
-    } else {
-          
-      // START - EXM-20996
-      expressionInput = '';
-      for (var x = 0 ; x < noWords.length ; x++) {
-        expressionInput = expressionInput + " " + noWords[x];
-      }
-      // END - EXM-20996
-             
-      realSearch(expressionInput);
-      $(ditaSearch_Form).find('#textToSearch').focus();
-    }
-  }
-  debug('End SearchToc(..)');
+        if (searchWordCount == 1) {
+            // single word search
+            if(!singleWordExactMatch && !doStem && !useCJKTokenizing) {
+                // Perform exact match first
+                singleWordExactMatch = true;
+                var exactMatchRes = calculateRPN(rpnExpression);
+                addSearchResultCategory(exactMatchRes.value);
 
-  // START - EXM-29420
-    if (typeof normalizeLink == 'function') {
-  $('.searchresult li a').each(function () {
-      var old = $(this).attr('href');
-      var newHref = '#' + normalizeLink(old);
-      /* If with frames */
-      if ( withFrames ) {
-          newHref = normalizeLink(old);
-      }
-      if (old == 'javascript:void(0)') {
-          $(this).attr('href', '#!_' + $(this).text());
-      } else {
-          $(this).attr('href', newHref);
-          info('alter link:' + $(this).attr('href') + ' from ' + old);
-      }
-  });
-    }
-  //END - EXM-29420
-  //START - EXM-30790
-  $("#searchResults").append(footer);
-  $("#searchResults").scrollTop(0);
-  //END - EXM-30790
-  $('#search').trigger('click');
-}
-
-var stemQueryMap = new Array();  // A hashtable which maps stems to query words
-
-var scriptLetterTab=null;
-/**
- * This function parses the search expression,
- * loads the indices and displays the results
- */
-function realSearch(expressionInput) {
-  debug('realSearch('+expressionInput+')');
-  /**
-   *data initialisation
-   */
-  scriptLetterTab = new Scriptfirstchar(); // Array containing the first letter of each word to look for
-  var searchFor = "";       // expression in lowercase and without special caracters
-  var wordsList = new Array(); // Array with the words to look for
-  var finalWordsList = new Array(); // Array with the words to look for after removing spaces
-  var linkTab = new Array();
-  var fileAndWordList = new Array();
-  var txt_wordsnotfound = "";
-
-  /* EXM-26412 */
-  expressionInput = expressionInput.toLowerCase();
-  /*  START - EXM-20414 */
-  searchFor = expressionInput.replace(/<\//g, "_st_").replace(/\$_/g, "_di_").replace(/%2C|%3B|%21|%3A|@|\/|\*/g, " ").replace(/(%20)+/g, " ").replace(/_st_/g, "</").replace(/_di_/g, "%24_");
-  /*  END - EXM-20414 */
-
-  searchFor = searchFor.replace(/  +/g, " ");
-  searchFor = searchFor.replace(/ $/, "").replace(/^ /, "");
-
-  wordsList = searchFor.split(" ");
-  wordsList.sort();
-  debug('words from search:',wordsList);
-  //set the tokenizing method
-  if(typeof indexerLanguage != "undefined" && (indexerLanguage=="zh" || indexerLanguage=="ko")){
-    useCJKTokenizing=true;
-  } else {
-    useCJKTokenizing=false;
-  }
-  debug('useCJKTokenizing='+useCJKTokenizing);
-  //If Lucene CJKTokenizer was used as the indexer, then useCJKTokenizing will be true. Else, do normal tokenizing.
-  // 2-gram tokenizinghappens in CJKTokenizing,
-  // If doStem then make tokenize with Stemmer
-  var finalArray;
-  if (doStem){
-    debug('doStem='+doStem);
-    if(useCJKTokenizing){
-      finalWordsList = cjkTokenize(wordsList);
-      finalArray = finalWordsList;
-    } else {
-      finalWordsList = tokenize(wordsList);
-    }
-  } else if(useCJKTokenizing){
-    finalWordsList = cjkTokenize(wordsList);
-    finalArray = finalWordsList;
-   debug('CJKTokenizing, finalWordsList: ' + finalWordsList);
-  }
-  if(!useCJKTokenizing){
-    /**
-     * Compare with the indexed words (in the w[] array), and push words that are in it to tempTab.
-     */
-    var tempTab = new Array();
-            
-    var splitedValues = expressionInput.split(" ");
-    finalWordsList = finalWordsList.concat(splitedValues);
-    finalArray = finalWordsList;
-    finalArray = removeDuplicate(finalArray);
-    var wordsArray = '';
-    for (var t in finalWordsList) {
-      if (!contains(stopWords, finalWordsList[t])) {
-          if (doStem){
-            if (w[finalWordsList[t].toString()] == undefined) {
-              txt_wordsnotfound += finalWordsList[t] + " ";
+                // Add other results with lower priority
+                addSearchResultCategory(sRes);
             } else {
-              tempTab.push(finalWordsList[t]);
+                addSearchResultCategory(sRes);
             }
-          } else {
-            var searchedValue = finalWordsList[t].toString();
-            var listOfWordsStartWith = wordsStartsWith(searchedValue);
-            if (listOfWordsStartWith != undefined) {
-              wordsArray += listOfWordsStartWith;
+
+        } else {
+            if (phraseSearch) {
+                sRes = filterResultsForPhraseSearch(res.value, realSearchQuery);
+                addSearchResultCategory(sRes);
+            } else if (booleanSearch) {
+                groupResultsByWordCount(sRes);
+            } else {
+                // Search criterion was not specified
+                var phraseSearchResult =
+                    filterResultsForPhraseSearch(res.value, realSearchQuery);
+                addSearchResultCategory(phraseSearchResult);
+
+                groupResultsByWordCount(sRes);
             }
-         }
-      }
-    }
-    wordsArray = wordsArray.substr(0, wordsArray.length - 1);
-    if (!doStem){
-      finalWordsList = wordsArray.split(",");
-    } else {
-      finalWordsList = tempTab;
-    }
-    txt_wordsnotfound = expressionInput;
-    finalWordsList = removeDuplicate(finalWordsList);
-  }
-
-  debug('finalWordsList  ' + finalWordsList);
-
-  if (finalWordsList.length) {
-    //search 'and' and 'or' one time
-    fileAndWordList = SortResults(finalWordsList);
-    var cpt = 0;
-    if (fileAndWordList != undefined) {
-      cpt = fileAndWordList.length;
-      var maxNumberOfWords = fileAndWordList[0][0].motsnb;
-    }
-    if (cpt > 0) {
-      var searchedWords = noWords.length;
-      var foundedWords  = fileAndWordList[0][0].motslisteDisplay.split(",").length;
-      
-      // EXM-27607 START Check if a stop word was in search string.
-      var stopWordsPresent = 0;
-      for (var searchWord = 0; searchWord < wordsList.length; searchWord++) {
-        for (var stopWord = 0; stopWord < stopWords.length; stopWord++) {
-          if (wordsList[searchWord] == stopWords[stopWord]) {
-              stopWordsPresent = 1;
-              break;
-          }
         }
-      }
-      // EXM-27607 STOP
-      
-      if ((searchedWords != foundedWords) && (stopWordsPresent == 0)) {
-        linkTab.push("<font class=\"highlightText\">" + getLocalization(partialSearch1) + "<br>" + getLocalization(partialSearch2) + "</font>");
-      }
-    }
-    
-    for (var i = 0; i < cpt; i++) {
-      var hundredProcent = fileAndWordList[i][0].scoring + 100 * fileAndWordList[i][0].motsnb;
-      var ttScore_first = fileAndWordList[i][0].scoring;
-      var numberOfWords = fileAndWordList[i][0].motsnb;
-      if (fileAndWordList[i] != undefined) {
-        linkTab.push("<p>" + getLocalization(txt_results_for) + " " + "<span class=\"searchExpression\">" + fileAndWordList[i][0].motslisteDisplay + "</span>" + "</p>");
 
-        linkTab.push("<ul class='searchresult'>");
-        for (t in fileAndWordList[i]) {
-          var ttInfo = fileAndWordList[i][t].filenb;
-          // Get scoring
-          var ttScore = fileAndWordList[i][t].scoring;
+        sRes = sortSearchResults();
 
-          debug('score for'+t+' = '+ttScore);
+        var docInfos = [];
+        for (var i = 0; i < sRes.length; i++) {
+            var cDoc = sRes[i];
 
-          var tempInfo = fil[ttInfo];
-          var pos1 = tempInfo.indexOf("@@@");
-          var pos2 = tempInfo.lastIndexOf("@@@");
-          var tempPath = tempInfo.substring(0, pos1);
-          // EXM-27709 START
-          // Display words between '<' and '>' in title of search results.
-          var tempTitle = tempInfo.substring(pos1 + 3, pos2)
+            var topicInfo = fil[cDoc.filenb];
+
+            if (topicInfo == undefined) {
+                warn("There is no definition for topic with ID ", cDoc.filenb);
+                continue;
+            }
+
+            var pos1 = topicInfo.indexOf("@@@");
+            var pos2 = topicInfo.lastIndexOf("@@@");
+            var relPath = topicInfo.substring(0, pos1);
+
+            // EXM-27709 START
+            // Display words between '<' and '>' in title of search results.
+            var topicTitle = topicInfo.substring(pos1 + 3, pos2)
                 .replace(/</g, "&lt;").replace(/>/g, "&gt;");
-          // EXM-27709 END
-          var tempShortdesc = tempInfo.substring(pos2 + 3, tempInfo.length);
+            // EXM-27709 END
+            var topicShortDesc = topicInfo.substring(pos2 + 3, topicInfo.length);
 
-          if (tempPath == 'toc.html'){
-            continue;
-          }
-          var split = fileAndWordList[i][t].motsliste.split(",");
-          arrayString = 'Array(';
-          for(var x in finalArray){
-            if (finalArray[x].length > 2 || useCJKTokenizing || indexerLanguage == "ja"){
-              arrayString+= "'" + finalArray[x] + "',";
+            var wordsStrArray = [];
+            for (var k in cDoc.wordsList) {
+                wordsStrArray.push(cDoc.wordsList[k].word);
             }
-          }
-          arrayString = arrayString.substring(0,arrayString.length - 1) + ")";
-//          /*  START - EXM-20414 */
-//          arrayString = arrayString.replace(".", "\\\\.");
-//          /*  END - EXM-20414 */
-          var idLink = 'foundLink' + no;
-          var link = 'return openAndHighlight(\'' + tempPath + '\', ' + arrayString + '\)';
-          var linkString = '<li><a id="' + idLink + '" href="' + tempPath + '" class="foundResult" onclick="'+link+'">' + tempTitle + '</a>';
-          var starWidth = (ttScore * 100/ hundredProcent)/(ttScore_first/hundredProcent) * (numberOfWords/maxNumberOfWords);
-          starWidth = starWidth < 10 ? (starWidth + 5) : starWidth;
-          // Keep the 5 stars format
-          if (starWidth > 85){
-            starWidth = 85;
-          }
-          // Also check if we have a valid description
-          if ((tempShortdesc != "null" && tempShortdesc != '...')) {
-            linkString += "\n<div class=\"shortdesclink\">" + tempShortdesc + "</div>";
-          }
-          
-          try {
-          if (webhelpSearchRanking) {
-            // Add rating values for scoring at the list of matches
-            linkString += "<div id=\"rightDiv\">";
-            linkString += "<div id=\"star\">";
-            linkString += "<div id=\"star0\" class=\"star\">";
-            linkString += "<div id=\"starCur0\" class=\"curr\" style=\"width: " + starWidth + "px;\">&nbsp;</div>";
-            linkString += "</div>";
-            linkString += "<br style=\"clear: both;\">";
-            linkString += "</div>";
-            linkString += "</div>";
-          }
-          } catch (e) {
-            debug(e);
-          }
-          
-          linkString += "</li>";
-          linkTab.push(linkString);
-          no++;
-        }
-        linkTab.push("</ul>");
-      }
-    }
-  }
 
-  var results = "";
-  if (linkTab.length > 0) {
-    results = "<p>";
-    for (t in linkTab) {
-      results += linkTab[t].toString();
+            var docInfo =
+                new DocumentInfo(
+                    cDoc.filenb,
+                    relPath,
+                    topicTitle,
+                    topicShortDesc,
+                    wordsStrArray,
+                    cDoc.scoring);
+
+            docInfos.push(docInfo);
+        }
     }
-    results += "</p>";
-  } else {
-    results = "<p>" + getLocalization("Search no results") + " " + "<span class=\"searchExpression\">" + txt_wordsnotfound + "</span>" + "</p>";
-  }
-    
-  // Verify if the browser is Google Chrome and the WebHelp is used on a local machine
-  // If browser is Google Chrome and WebHelp is used on a local machine a warning message will appear
-  // Highlighting will not work in this conditions. There is 2 workarounds
-  if (notLocalChrome){
-    document.getElementById('searchResults').innerHTML = results;
-  } else {
-    document.getElementById('searchResults').innerHTML = warningMsg + results;
-  }
-  debug('end realSearch('+expressionInput+')');
+    // Filter expression to cross site scripting possibility
+    initialSearchExpression = filterOriginalSearchExpression(initialSearchExpression);
+    var searchResult = new SearchResult(realSearchQuery, excluded, initialSearchExpression, docInfos);
+    return searchResult;
 }
 
-// Return true if "word" value is an element of "arrayOfWords"  
+/**
+ * Initialize the library for search.
+ */
+function init() {
+    searchInsideFilePath = false;
+    excluded = [];
+    realSearchQuery = "";
+    singleWordExactMatch = false;
+    booleanSearch = false;
+    resultCategoriesMap = {};
+    resultCategoriesCount = 0;
+    resultCategoriesMapFiles = [];
+}
+
+/**
+ * Add a search result category. This new added category has a lower priority.
+ *
+ * @param searchCategory The search results category.
+ */
+function addSearchResultCategory (searchCategory) {
+    // Filter results that was already registered
+    /*info("************ addSearchResultCategory ", searchCategory);*/
+    var filteredResults = [];
+    for (var si = 0; si < searchCategory.length; si ++) {
+        // Make sure that score is greater than 0
+        searchCategory[si].scoring = Math.max(1, searchCategory[si].scoring);
+
+        if (resultCategoriesMapFiles.indexOf(searchCategory[si].filenb) == -1) {
+            filteredResults.push(searchCategory[si]);
+
+            resultCategoriesMapFiles.push(searchCategory[si].filenb);
+        }
+    }
+
+    if (filteredResults.length > 0) {
+        resultCategoriesMap[resultCategoriesCount ++] = filteredResults;
+    }
+}
+
+/**
+ * Scale scoring to be between 0 and 100.
+ *
+ * @param {[ResultPerFile]} sortResult The sort result to scale.
+ */
+function scaleSortResultScoring(sortResult) {
+    var maxScore = 0;
+    for (var i = 0; i < sortResult.length; i ++) {
+        maxScore = Math.max(maxScore, sortResult[i].scoring);
+    }
+
+    if (maxScore != 0) {
+        var ratio = 99 / maxScore;
+
+        for (var i = 0; i < sortResult.length; i++) {
+            var s = Math.ceil(sortResult[i].scoring * ratio);
+
+            var s = Math.min(99, s);
+            sortResult[i].scoring = s;
+        }
+    }
+}
+
+function sortSearchResults() {
+    var result = [];
+
+    var keys = [];
+    for (var prop in resultCategoriesMap) {
+        keys.push(prop);
+    }
+    keys.sort();
+
+    var catNumber = keys.length;
+    for (var k = 0; k < keys.length; k++) {
+        var r = resultCategoriesMap[k];
+
+
+        scaleSortResultScoring(r);
+
+
+        r.sort(function (first, second) {
+            return - (first.scoring - second.scoring);
+        });
+
+        for (var ri = 0; ri < r.length; ri ++) {
+            r[ri].scoring = r[ri].scoring + ((catNumber - 1 - k) * 100);
+        }
+
+        result = result.concat(r);
+    }
+
+    /*info("final result:", result);*/
+    return result;
+}
+
+/**
+ * Filter results for phrase search.
+ *
+ * @param {[ResultPerFile]} resPerFileArray The array with search results to be filtered.
+ * @param realSearchQuery The search query.
+ * @returns {Array} The filtered array.
+ */
+function filterResultsForPhraseSearch (resPerFileArray, realSearchQuery) {
+    var searchWords =  realSearchQuery.split(" ");
+
+    var fResult = [];
+    // Iterate over all results
+    for (var i = 0; i < resPerFileArray.length; i++) {
+        // Test if number of words are the same
+        if (searchWords.length == resPerFileArray[i].wordsList.length) {
+
+            // Test if words are the same
+            var sameWords = true;
+            for (var j = 0; j < resPerFileArray[i].wordsList.length; j++) {
+                var sj = searchWords[j];
+                if (typeof stemmer != "undefined" && doStem) {
+                    sj = stemmer(sj);
+                }
+                sj = sj.toLowerCase();
+
+                if (sj != resPerFileArray[i].wordsList[j].word) {
+                    sameWords = false;
+                    break;
+                }
+
+            }
+
+            if (sameWords) {
+                // Test if indices are consecutive
+
+                var firstWordIndices = resPerFileArray[i].wordsList[0].indices;
+
+                for (var fi in firstWordIndices) {
+                    var cidx = parseInt(firstWordIndices[fi], 32);
+                    if (cidx == -1) {
+                        continue;
+                    }
+
+                    var consecutiveIndices = true;
+                    // Test if next words indices are consecutive
+                    for (var ii = 1; ii < resPerFileArray[i].wordsList.length; ii++) {
+
+                        var nextIndices = resPerFileArray[i].wordsList[ii].indices;
+
+                        var nextIdxFound = false;
+                        for (var nIdx in nextIndices) {
+                            var cRes = parseInt(nextIndices[nIdx], 32);
+
+                            if(cRes != -1 &&  cidx == cRes - 1) {
+                                cidx = cRes;
+                                nextIdxFound = true;
+                                break;
+                            }
+                        }
+
+                        if (!nextIdxFound) {
+                            consecutiveIndices = false;
+                            break;
+                        }
+                    }
+
+                    if (consecutiveIndices) {
+                        fResult.push(resPerFileArray[i]);
+                        break;
+                    }
+                }
+            }
+        }
+    }
+    return fResult;
+}
+
+/**
+ * Filter the original search query to avoid cross site scripting possibility.
+ *
+ * @param {string} searchTextField The search query to process.
+ * @returns {string} The filtered search query.
+ */
+function filterOriginalSearchExpression(searchTextField) {
+    // Eliminate the cross site scripting possibility.
+    searchTextField = searchTextField.replace(/</g, " ")
+        .replace(/>/g, " ")
+        .replace(/"/g, " ")
+        .replace(/'/g, " ")
+        .replace(/=/g, " ")
+        .replace(/0\\/g, " ")
+        .replace(/\\/g, " ")
+        .replace(/\//g, " ")
+        .replace(/  +/g, " ");
+
+    /*  START - EXM-20414 */
+    searchTextField =
+        searchTextField.replace(/<\//g, "_st_").replace(/\$_/g, "_di_").replace(/%2C|%3B|%21|%3A|@|\/|\*/g, " ").replace(/(%20)+/g, " ").replace(/_st_/g, "</").replace(/_di_/g, "%24_");
+    /*  END - EXM-20414 */
+
+    searchTextField = searchTextField.replace(/  +/g, " ");
+    searchTextField = searchTextField.replace(/ $/, "").replace(/^ /, " ");
+
+    return searchTextField;
+}
+
+
+/**
+ * Pre-process the search query before it is used as search expression. It removes the stop words.
+ *
+ * @param {string} query The search query to process.
+ * @param {boolean} phraseSearch True if phrase search was detected.
+ * @returns {string} The processing result.
+ */
+function preprocessSearchQuery(query, phraseSearch){
+    var searchTextField = trim(query);
+
+    // Add a space between '(' or ')' and the real word
+    searchTextField = searchTextField.replace(/\((\S*)/g, '( $1');
+    searchTextField = searchTextField.replace(/\)(\S*)/g, ') $1');
+    searchTextField = searchTextField.replace(/(\S*)\)/g, '$1 )');
+
+    var expressionInput = searchTextField;
+
+    var wordsArray = [];
+    var splitExpression = expressionInput.split(" ");
+
+    // Exclude/filter stop words
+    for (var t in splitExpression) {
+        var cw = splitExpression[t].toLowerCase();
+        if (cw.trim().length == 0) {
+            // Empty string
+            continue;
+        }
+
+        var isParenthesis =
+            "(" == cw || ")" == cw;
+
+        if (contains(knownOperators, cw)) {
+            // Boolean operators are excluded from phrase search
+            if (phraseSearch) {
+                excluded.push(cw);
+            } else {
+                wordsArray.push(cw);
+            }
+        } else if(isParenthesis) {
+            // Paranthesis are excluded from phrase search
+            if (phraseSearch) {
+                excluded.push(cw);
+            } else {
+                wordsArray.push(cw);
+            }
+        } else if (contains(stopWords, cw)) {
+            // Exclude stop words
+            excluded.push(cw);
+        } else {
+            wordsArray.push(cw);
+        }
+    }
+
+    expressionInput = wordsArray.join(" ");
+
+    realSearchQuery = expressionInput;
+    return expressionInput.trim();
+}
+
+/**
+ * Group the search results by word count.
+ *
+ * @param {[ResultPerFile]} searchResults The search results to be grouped.
+ */
+function groupResultsByWordCount(searchResults) {
+    var resultsByWordCount = {};
+
+    for (var sri = 0; sri < searchResults.length; sri ++) {
+        var csr = searchResults[sri];
+
+        var wc = csr.wordsList.length;
+        if (resultsByWordCount[wc] == undefined) {
+            resultsByWordCount[wc] = [];
+        }
+        resultsByWordCount[wc].push(csr);
+    }
+    /*info("Results by words count:", resultsByWordCount);*/
+
+    var keys = [];
+    for (var prop in resultsByWordCount) {
+        keys.push(prop);
+    }
+    keys.sort();
+    /*info("Sorted keys", keys);*/
+
+    for (var k = keys.length - 1; k >= 0; k--) {
+        var ck = keys[k];
+
+        addSearchResultCategory(resultsByWordCount[ck]);
+    }
+}
+
+/**
+ * @description Combine two selectors into one
+ * e.g: "and or" => "or"
+ * @param {String} op1 Operator one
+ * @param {String} op2 Operator two
+ * @returns {String} Resulted operator
+ */
+function combineOperators(op1, op2) {
+    if (op1 == op2) {
+        return op1;
+    }
+
+    if (op1=="not" || op2=="not") {
+        return "not";
+    }
+
+    if (op1=="or" || op2=="or") {
+        return "or";
+    }
+}
+
+/**
+ * @param word Word to check if is an known operator or not
+ * @returns {boolean} TRUE if searched word is a known operator
+ *                    FALSE otherwise
+ */
+function isKnownOperator(word){
+    return inArray(word, knownOperators);
+}
+
+/**
+ * @description Normalize query so that we have an operator between each two adjacent search terms. We'll add the defaultOperator if the
+ * operator is missing.
+ * e.g: If the defaultOperator is "and" the "iris flower" query will be "iris and flower"
+ *
+ * @param {String} query Search query
+ * @return {String} Normalized query
+ */
+function normalizeQuery(query) {
+    debug("normalizeQuery("+query+")");
+    var toReturn = [];
+
+    // Remove whitespaces from the beginning and from the end of the expression
+    query = query.toLowerCase().trim();
+    // Consider "-" (dash) character to be "and" operator
+    //query = query.replace(/-/g, ' and ');
+    // Replace multiple spaces with a single space
+    query = query.replace( /  +/g, ' ' );
+    // Remove space after left bracket
+    query = query.replace( /\( /g, '(' );
+    // Remove space before right bracket
+    query = query.replace( / \)/g, ')' );
+
+    var queryParts = query.split(" ");
+    for (var i=0; i<queryParts.length; i++) {
+        // Skip empty parts
+        var currentWord = queryParts[i];
+        if (currentWord=="") {
+            continue;
+        }
+
+        var knownOperator = isKnownOperator(currentWord);
+        booleanSearch = booleanSearch || knownOperator;
+        if (toReturn.length == 0) {
+            // First item in result should be a term, not an operator
+            if (!knownOperator) {
+                toReturn.push(currentWord);
+            }
+        } else {
+            // Combine multiple operators into one
+            if (isKnownOperator(toReturn[toReturn.length-1]) && knownOperator) {
+                toReturn[toReturn.length-1] = combineOperators(toReturn[toReturn.length-1], currentWord);
+            }
+            // Add default operator when no operator is specified
+            if (!isKnownOperator(toReturn[toReturn.length-1]) && !knownOperator) {
+                toReturn.push(defaultOperator);
+                toReturn.push(currentWord);
+            }
+            // Add operator after term
+            if (!isKnownOperator(toReturn[toReturn.length-1]) && knownOperator) {
+                toReturn.push(currentWord);
+            }
+            // Add term after operator
+            if (isKnownOperator(toReturn[toReturn.length-1]) && !knownOperator) {
+                toReturn.push(currentWord);
+            }
+        }
+    }
+
+    // Remove the last operators from the list
+    for (i = toReturn.length - 1; i>=0; i--) {
+        if (isKnownOperator(toReturn[i])) {
+            toReturn.pop();
+        } else {
+            break;
+        }
+    }
+
+    return toReturn.join(" ");
+}
+
+/**
+ * @description Convert search expression from infix notation to reverse polish notation (RPN): iris and flower => iris flower and
+ * @param {string} search Search expression to be converted. e.g.: iris and flower or (gerbera not salvia)
+ * @return {String} Search expression in RPN notation
+ */
+function convertToRPNExpression(search) {
+    debug("convertToRPNExpression("+search+")");
+    var stringToStore="";
+    var stack=[];
+    var item = "";
+    var items = [];
+    for (var i=0;i<search.length;i++) {
+        if (search[i]!=" " && search[i]!="(" && search[i]!=")") {
+            item+=search[i];
+        }
+        if (search[i]==" ") {
+            if (item!="") {
+                items.push(item);
+                item = "";
+            }
+        }
+        if (search[i]=="(") {
+            if (item!="") {
+                items.push(item);
+                items.push("(");
+                item = "";
+            } else {
+                items.push("(");
+            }
+        }
+        if (search[i]==")") {
+            if (item!="") {
+                items.push(item);
+                items.push(")");
+                item = "";
+            } else {
+                items.push(")");
+            }
+        }
+    }
+
+    if (item != "") {
+        items.push(item);
+    }
+
+    for (i=0;i<items.length;i++) {
+        if (isTerm(items[i])) {
+            stringToStore+=items[i] + " ";
+        }
+        if (inArray(items[i], knownOperators)) {
+            while (stack.length>0 && inArray(stack[stack.length-1],knownOperators)) {
+                stringToStore+=stack.pop() + " ";
+            }
+            stack.push(items[i]);
+        } else if (items[i]=="(") {
+            stack.push(items[i]);
+        } else if (items[i]==")") {
+            var popped = stack.pop();
+            while (popped!="(") {
+                stringToStore+=popped + " ";
+                popped = stack.pop();
+            }
+        }
+    }
+
+    while (stack.length > 0) {
+        stringToStore+=stack.pop() + " ";
+    }
+
+    return stringToStore.trim();
+}
+
+/**
+ * @description Compute results from a RPN expression
+ * @param {string} rpn Expression in Reverse Polish notation
+ * @return {Page} An object that contains the search result.
+ */
+function calculateRPN(rpn) {
+    debug("calculate(" + rpn + ")");
+    var lastResult;
+    var rpnTokens = trim(rpn);
+    rpnTokens = rpnTokens.split(' ');
+    var result;
+
+    var stackResults = [];
+
+    var realSearchWords = [];
+    for(var i = 0; i < rpnTokens.length; i++) {
+        var token = rpnTokens[i];
+
+        if (isTerm(token)) {
+            result = searchSingleWord(token);
+
+            debug(token, " -- single word search result -- ", result);
+            realSearchWords.push(token);
+
+            if (result.length > 0) {
+                stackResults.push(new BooleanSearchOperand(result));
+            } else {
+                stackResults.push(new BooleanSearchOperand([]));
+            }
+        } else {
+            switch (token) {
+                case "and":
+                    // debug("Implement AND operator");
+                    lastResult = stackResults.pop();
+                    if (lastResult.value !== undefined) {
+                        stackResults.push(stackResults.pop().and(lastResult));
+                    }
+                    break;
+                case "or":
+                    lastResult = stackResults.pop();
+                    if (lastResult.value !== undefined) {
+                        stackResults.push(stackResults.pop().or(lastResult));
+                    }
+                    break;
+                case "not":
+                    lastResult = stackResults.pop();
+                    if (lastResult.value !== undefined) {
+                        stackResults.push(stackResults.pop().not(lastResult));
+                    }
+                    break;
+                default:
+                    debug("Error in calculateRPN(string) Method!");
+                    break;
+            }
+        }
+    }
+
+    realSearchQuery = realSearchWords.join(" ");
+    return stackResults[0];
+}
+
+/**
+ * Tests if a given string is a valid search term or not.
+ *
+ * @param {string} string String to look for in the known operators list
+ * @return {boolean} TRUE if the search string is a search term
+ *                   FALSE if the search string is not a search term
+ */
+function isTerm(string) {
+    return !inArray(string, knownOperators) && string.indexOf("(") == -1 && string.indexOf(")") == -1;
+}
+
+/**
+ * @description Search for an element into an array
+ * @param needle Searched element
+ * @param haystack Array of elements
+ * @return {boolean} TRUE if the searched element is part of the array
+ *                   FALSE otherwise
+ */
+function inArray(needle, haystack) {
+    var length = haystack.length;
+    for(var i = 0; i < length; i++) {
+        if(haystack[i] == needle) return true;
+    }
+
+    return false;
+}
+
+/**
+ * Search for a single word/term.
+ *
+ * @param {String} wordToFind A single search term to search for.
+ * @return {[ResultPerFile]} Array with the resulted pages and indices.
+ */
+function searchSingleWord(wordToFind) {
+    debug('searchSingleWord("' + wordToFind + '")');
+
+    wordToFind = trim(wordToFind);
+    wordToFind = wordToFind.toLowerCase();
+
+    var txt_wordsnotfound = "";
+    var wordsList = [wordToFind];
+    debug('words from search:', wordsList);
+
+    // set the tokenizing method
+    useCJKTokenizing = !!(typeof indexerLanguage != "undefined" && (indexerLanguage == "zh" || indexerLanguage == "ko"));
+    //If Lucene CJKTokenizer was used as the indexer, then useCJKTokenizing will be true. Else, do normal tokenizing.
+    // 2-gram tokenizing happens in CJKTokenizing,
+    // If doStem then make tokenize with Stemmer
+    //var finalArray;
+
+    /**
+     * data initialisation
+     */
+    var finalWordsList = []; // Array with the words to look for after removing spaces
+    if (doStem) {
+        if (useCJKTokenizing) {
+            // Array of words
+            finalWordsList = cjkTokenize(wordsList);
+        } else {
+            // Array of words
+            finalWordsList = tokenize(wordsList);
+        }
+    } else if (useCJKTokenizing) {
+        // Array of words
+        finalWordsList = cjkTokenize(wordsList);
+        debug('CJKTokenizing, finalWordsList: ' + finalWordsList);
+    } else {
+        finalWordsList = [wordToFind];
+    }
+
+    // Add the words that start with the searched words.
+    if (!useCJKTokenizing) {
+        /**
+         * Compare with the indexed words (in the w[] array), and push words that are in it to tempTab.
+         */
+        var tempTab = [];
+
+        var wordsArray = '';
+        for (var t in finalWordsList) {
+            if (!contains(stopWords, finalWordsList[t])) {
+                if (doStem || finalWordsList[t].toString().length == 2) {
+                    if (w[finalWordsList[t].toString()] == undefined) {
+                        txt_wordsnotfound += finalWordsList[t] + " ";
+                    } else {
+                        tempTab.push(finalWordsList[t]);
+                    }
+                } else {
+                    var searchedValue = finalWordsList[t].toString();
+                    var listOfWordsStartWith = searchedValue + ",";
+                    if (!singleWordExactMatch) {
+                        if (searchInsideFilePath) {
+                            listOfWordsStartWith = wordsContains(searchedValue);
+                        } else {
+                            listOfWordsStartWith = wordsStartsWith(searchedValue);
+                        }
+
+                    }
+
+                    if (listOfWordsStartWith != undefined) {
+                        listOfWordsStartWith = listOfWordsStartWith.substr(0, listOfWordsStartWith.length - 1);
+                        wordsArray = listOfWordsStartWith.split(",");
+                        for (var i in wordsArray) {
+                            tempTab.push(wordsArray[i]);
+                        }
+                    }
+                }
+            }
+        }
+        finalWordsList = tempTab;
+        finalWordsList = removeDuplicate(finalWordsList);
+    }
+
+    var fileAndWordList = [];
+    if (finalWordsList.length) {
+        fileAndWordList = searchStartWith(finalWordsList, wordToFind);
+    }
+
+    return fileAndWordList;
+}
+
+// Return true if "word" value is an element of "arrayOfWords"
 function contains(arrayOfWords, word) {
     var found = true;
-    if (word.length > 2 || indexerLanguage == "ja") {
+
+    if (word.length >= 2 || (indexerLanguage == "ja" && word.length >= 1)) {
         found = false;
         for (var w in arrayOfWords) {
             if (arrayOfWords[w] === word) {
@@ -476,395 +965,611 @@ function contains(arrayOfWords, word) {
 }
 
 // Look for elements that start with searchedValue.
-function wordsStartsWith(searchedValue){
-  var toReturn = '';
-  for (var sv in w) {
-      if (sv.toLowerCase().indexOf(searchedValue.toLowerCase()) == 0){
-          toReturn += sv + ","; 
+function wordsStartsWith(searchedValue) {
+    var toReturn = '';
+    for (var sv in w) {
+        if (sv.toLowerCase().indexOf(searchedValue.toLowerCase()) == 0) {
+            toReturn += sv + ",";
+        }
     }
-  }
-  return toReturn.length > 0 ? toReturn : undefined;
+    return toReturn.length > 0 ? toReturn : undefined;
 }
 
-function tokenize(wordsList){
-  debug('tokenize('+wordsList+')');
-  var stemmedWordsList = new Array(); // Array with the words to look for after removing spaces
-  var cleanwordsList = new Array(); // Array with the words to look for
-  for(var j in wordsList){
-    var word = wordsList[j];
-    if(typeof stemmer != "undefined" && doStem){
-      stemQueryMap[stemmer(word)] = word;
-    } else {
-      stemQueryMap[word] = word;
+// Look for indexed words that contains the searchedValue.
+function wordsContains(searchedValue) {
+    var toReturn = '';
+    for (var sv in w) {
+        if (sv.toLowerCase().indexOf(searchedValue.toLowerCase()) != -1) {
+            toReturn += sv + ",";
+        }
     }
-  }
-  debug('scriptLetterTab in tokenize: ', scriptLetterTab);
-  scriptLetterTab.add('s');
-  //stemmedWordsList is the stemmed list of words separated by spaces.
-  for (var t in wordsList) {
-    wordsList[t] = wordsList[t].replace(/(%22)|^-/g, "");
-    if (wordsList[t] != "%20") {
-      var firstChar=wordsList[t].charAt(0);
-      scriptLetterTab.add(firstChar);
-      cleanwordsList.push(wordsList[t]);
-    }
-  }
+    return toReturn.length > 0 ? toReturn : undefined;
+}
 
-  if(typeof stemmer != "undefined" && doStem){
-    //Do the stemming using Porter's stemming algorithm
-    for (var i = 0; i < cleanwordsList.length; i++) {
-      var stemWord = stemmer(cleanwordsList[i]);
-      stemmedWordsList.push(stemWord);
+function tokenize(wordsList) {
+    debug('tokenize(' + wordsList + ')');
+    var stemmedWordsList = []; // Array with the words to look for after removing spaces
+    var cleanwordsList = []; // Array with the words to look for
+    for (var j in wordsList) {
+        var word = wordsList[j];
+        if (typeof stemmer != "undefined" && doStem) {
+            var s = stemmer(word);
+            debug(word, " -stem- ", s);
+            stemQueryMap[s] = word;
+        } else {
+            stemQueryMap[word] = word;
+        }
     }
-  } else {
-    stemmedWordsList = cleanwordsList;
-  }
-  return stemmedWordsList;
+
+    //stemmedWordsList is the stemmed list of words separated by spaces.
+    for (var t in wordsList) {
+        if (wordsList.hasOwnProperty(t)) {
+            wordsList[t] = wordsList[t].replace(/(%22)|^-/g, "");
+            if (wordsList[t] != "%20") {
+                cleanwordsList.push(wordsList[t]);
+            }
+        }
+    }
+
+    if (typeof stemmer != "undefined" && doStem) {
+        //Do the stemming using Porter's stemming algorithm
+        for (var i = 0; i < cleanwordsList.length; i++) {
+            var stemWord = stemmer(cleanwordsList[i]);
+            stemmedWordsList.push(stemWord);
+        }
+    } else {
+        stemmedWordsList = cleanwordsList;
+    }
+    return stemmedWordsList;
 }
 
 //Invoker of CJKTokenizer class methods.
-function cjkTokenize(wordsList){
-  var allTokens= new Array();
-  var notCJKTokens= new Array();
-  var j=0;
-  debug('in cjkTokenize(), wordsList: ', wordsList);
-  for(j=0;j<wordsList.length;j++){
-    var word = wordsList[j];
-    debug('in cjkTokenize(), next word: ', word);
-    if(getAvgAsciiValue(word) < 127){
-      notCJKTokens.push(word);
-    } else {
-      debug('in cjkTokenize(), use CJKTokenizer');
-      var tokenizer = new CJKTokenizer(word);
-      var tokensTmp = tokenizer.getAllTokens();
-      allTokens = allTokens.concat(tokensTmp);
-      debug('in cjkTokenize(), found new tokens: ', allTokens);
+function cjkTokenize(wordsList) {
+    var allTokens = [];
+    var notCJKTokens = [];
+    debug('in cjkTokenize(), wordsList: ', wordsList);
+    for (var j = 0; j < wordsList.length; j++) {
+        var word = wordsList[j];
+        debug('in cjkTokenize(), next word: ', word);
+        if (getAvgAsciiValue(word) < 127) {
+            notCJKTokens.push(word);
+        } else {
+            debug('in cjkTokenize(), use CJKTokenizer');
+            var tokenizer = new CJKTokenizer(word);
+            var tokensTmp = tokenizer.getAllTokens();
+            allTokens = allTokens.concat(tokensTmp);
+            debug('in cjkTokenize(), found new tokens: ', allTokens);
+        }
     }
-  }
-  allTokens = allTokens.concat(tokenize(notCJKTokens));
-  return allTokens;
+    allTokens = allTokens.concat(tokenize(notCJKTokens));
+    return allTokens;
 }
 
 //A simple way to determine whether the query is in english or not.
-function getAvgAsciiValue(word){
-  var tmp = 0;
-  var num = word.length < 5 ? word.length:5;
-  for(var i=0;i<num;i++){
-    if(i==5) break;
-    tmp += word.charCodeAt(i);
-  }
-  return tmp/num;
+function getAvgAsciiValue(word) {
+    var tmp = 0;
+    var num = word.length < 5 ? word.length : 5;
+    for (var i = 0; i < num; i++) {
+        if (i == 5) break;
+        tmp += word.charCodeAt(i);
+    }
+    return tmp / num;
 }
 
 //CJKTokenizer
-function CJKTokenizer(input){
-  this.input = input;
-  this.offset=-1;
-  this.tokens = new Array();
-  this.incrementToken = incrementToken;
-  this.tokenize = tokenize;
-  this.getAllTokens = getAllTokens;
-  this.unique = unique;
+function CJKTokenizer(input) {
+    this.input = input;
+    this.offset = -1;
+    this.tokens = [];
+    this.incrementToken = incrementToken;
+    this.tokenize = tokenize;
+    this.getAllTokens = getAllTokens;
+    this.unique = unique;
 
-  function incrementToken(){
-    if(this.input.length - 2 <= this.offset){
-      return false;
+    function incrementToken() {
+        if (this.input.length - 2 <= this.offset) {
+            return false;
+        } else {
+            this.offset += 1;
+            return true;
+        }
+    }
+
+    function tokenize() {
+        return this.input.substring(this.offset, this.offset + 2);
+    }
+
+    function getAllTokens() {
+        while (this.incrementToken()) {
+            var tmp = this.tokenize();
+            this.tokens.push(tmp);
+        }
+        return this.unique(this.tokens);
+    }
+
+    function unique(a) {
+        var r = [];
+        o:for (var i = 0, n = a.length; i < n; i++) {
+            for (var x = 0, y = r.length; x < y; x++) {
+                if (r[x] == a[i]) continue o;
+            }
+            r[r.length] = a[i];
+        }
+        return r;
+    }
+}
+
+
+
+/**
+ * Array.unique( strict ) - Remove duplicate values
+ *
+ * @param array The array to search.
+ * @returns {*} The array without duplicates.
+ */
+function unique(array) {
+    debug("unique(",array,")");
+    var a = [];
+    var i;
+    var l = array.length;
+
+    if (array[0] != undefined) {
+        a[0] = array[0];
     }
     else {
-      this.offset+=1;
-      return true;
+        return -1;
     }
-  }
 
-  function tokenize(){
-    return this.input.substring(this.offset,this.offset+2);
-  }
-
-  function getAllTokens(){
-    while(this.incrementToken()){
-      var tmp = this.tokenize();
-      this.tokens.push(tmp);
-    }
-    return this.unique(this.tokens);
-  }
-
-  function unique(a){
-    var r = new Array();
-      o:for(var i = 0, n = a.length; i < n; i++){
-        for(var x = 0, y = r.length; x < y; x++){
-          if(r[x]==a[i]) continue o;
+    for (i = 1; i < l; i++) {
+        if (indexof(a, array[i], 0) < 0) {
+            a.push(array[i]);
         }
-        r[r.length] = a[i];
-      }
-    return r;
-  } 
+    }
+
+    return a;
 }
 
-
-/* Scriptfirstchar: to gather the first letter of index js files to upload */
-function Scriptfirstchar() {
-  this.strLetters = "";
-}
-
-Scriptfirstchar.prototype.add=function(caract) {
-  if (typeof this.strLetters == 'undefined') {
-    this.strLetters = caract;
-  } else if (this.strLetters.indexOf(caract) < 0) {
-    this.strLetters += caract;
-  }
-
-  return 0;
-}
-
-/* end of scriptfirstchar */
-
-
-// Array.unique( strict ) - Remove duplicate values
-function unique(tab) {
-  var a = new Array();
-  var i;
-  var l = tab.length;
-
-  if (tab[0] != undefined) {
-    a[0] = tab[0];
-  }
-  else {
+/**
+ * Finds the index of an element in an array.
+ *
+ * @param array The array.
+ * @param element The element to find.
+ * @param begin The begin index.
+ * @returns The index of the element or -1.
+ */
+function indexof(array, element, begin) {
+    for (var i = begin; i < array.length; i++) {
+        if (array[i] == element) {
+            return i;
+        }
+    }
     return -1;
-  }
-
-  for (i = 1; i < l; i++) {
-    if (indexof(a, tab[i], 0) < 0) {
-      a.push(tab[i]);
-    }
-  }
-  return a;
-}
-function indexof(tab, element, begin) {
-  for (var i = begin; i < tab.length; i++) {
-    if (tab[i] == element) {
-      return i;
-    }
-  }
-  return -1;
 
 }
 /* end of Array functions */
 
 
 /**
- * This function creates an hashtable:
- *  - The key is the index of a html file which contains a word to look for.
- *  - The value is the list of all words contained in the html file.
+ * Searches in the indexed words for the terms in words and sort the mathes by scoring.
  *
- * @param words - list of words to look for.
- * @return the hashtable fileAndWordList
+ * @param {Array} words - list of words to look for.
+ * @param {String} searchedWord - search term typed by user
+ * @return {Array} - the hashtable fileAndWordList
  */
-function SortResults(words) {
+function searchStartWith(words, searchedWord) {
+    if (words.length == 0 || words[0].length == 0) {
+        return null;
+    }
 
-  var fileAndWordList = new Object();
-  if (words.length == 0 || words[0].length == 0) {
-    return null;
-  }
-    
-  // In generated js file we add scoring at the end of the word
-  // Example word1*scoringForWord1,word2*scoringForWord2 and so on
-  // Split after * to obtain the right values
-  var scoringArr = Array();
-  for (var t in words) {
-    // get the list of the indices of the files.
-    var listNumerosDesFicStr = w[words[t].toString()];
-    var tab = listNumerosDesFicStr.split(",");
-    //for each file (file's index):
-    for (var t2 in tab) {
-      var tmp = '';
-      var idx = '';
-      var temp = tab[t2].toString();
-      if (temp.indexOf('*') != -1){
-        idx = temp.indexOf('*');
-        tmp = temp.substring(idx + 3, temp.length);
-        temp = temp.substring(0,idx);
-      }
-      scoringArr.push(tmp);
-      if (fileAndWordList[temp] == undefined) {
-        fileAndWordList[temp] = "" + words[t];
-      } else {
-        fileAndWordList[temp] += "," + words[t];
-      }
-    }
-  }
-  var fileAndWordListValuesOnly = new Array();
-  // sort results according to values
-  var temptab = new Array();
-  finalObj = new Array();
-  for (t in fileAndWordList) {
-    finalObj.push(new newObj(t,fileAndWordList[t]));
-  }
-  finalObj = removeDerivates(finalObj);
-  for (t in finalObj) {
-    tab = finalObj[t].wordList.split(',');
-    var tempDisplay = new Array();
-    for (var x in tab) {
-      if(stemQueryMap[tab[x]] != undefined && doStem){
-        tempDisplay.push(stemQueryMap[tab[x]]); //get the original word from the stem word.
-      } else {
-        tempDisplay.push(tab[x]); //no stem is available. (probably a CJK language)
-      }
-    }
-    var tempDispString = tempDisplay.join(", ");
-    var index;
-    for (x in fileAndWordList) {
-      if (x === finalObj[t].filesNo) {
-        index = x;
-        break;
-      }
-    }
-    var scoring = findRating(fileAndWordList[index], index);
-    temptab.push(new resultPerFile(finalObj[t].filesNo, finalObj[t].wordList, tab.length, tempDispString, scoring));
-    fileAndWordListValuesOnly.push(finalObj[t].wordList);
-  }
-  fileAndWordListValuesOnly = unique(fileAndWordListValuesOnly);
-  fileAndWordListValuesOnly = fileAndWordListValuesOnly.sort(compareWords);
+    // In generated js file we add scoring at the end of the word
+    // Example word1*scoringForWord1,word2*scoringForWord2 and so on
+    // Split after * to obtain the right values
 
-  var listToOutput = new Array();
-  for (var j in fileAndWordListValuesOnly) {
-    for (t in temptab) {
-      if (temptab[t].motsliste == fileAndWordListValuesOnly[j]) {
-        if (listToOutput[j] == undefined) {
-          listToOutput[j] = new Array(temptab[t]);
-        } else {
-          listToOutput[j].push(temptab[t]);
+    // Group the words by topicID -> {word, indices}
+    var fileAndWordList = {};
+    for (var t in words) {
+        // get the list of the indices of the files.
+        var topicIDAndScore = w[words[t]];
+
+        if (topicIDAndScore != undefined) {
+            var topicInfoArray = topicIDAndScore.split(",");
+
+            //for each file (file's index):
+            for (var t2 in topicInfoArray) {
+                var tmp = '';
+
+                var temp = topicInfoArray[t2].toString();
+                var idx = temp.indexOf('*');
+                if (idx != -1) {
+                    var tid = temp.substring(0, idx);
+
+                    // Extract word indices
+                    var starLastIdx = temp.indexOf("*", idx + 1);
+                    var wordIndices = [];
+                    if (starLastIdx != -1) {
+                        var indicesStr = temp.substr(starLastIdx + 1);
+                        wordIndices = indicesStr.split('$');
+                    }
+
+                    if (fileAndWordList[tid] == undefined) {
+                        fileAndWordList[tid] = [];
+                    }
+
+                    var wAndIdx = {
+                        word: words[t],
+                        indices: wordIndices
+                    };
+
+                    fileAndWordList[tid].push(wAndIdx);
+                } else {
+                    warn("Unexpected writing format, '*' delimiter is missing.");
+                }
+            }
         }
-      }
     }
-  }
-  // Sort results by scoring, descending on the same group
-  for (var i in listToOutput) {
-    listToOutput[i].sort(function(a, b){
-      return b.scoring - a.scoring;
+
+
+    // An array with TopicIDAndWordList objects
+    var tidWordsArray = [];
+    for (t in fileAndWordList) {
+        tidWordsArray.push(new TopicIDAndWordList(t, fileAndWordList[t]));
+    }
+    tidWordsArray = removeDerivates(tidWordsArray, searchedWord);
+
+    // Compute the array with results per file
+    var resultsPerFileArrays = [];
+    for (t in tidWordsArray) {
+        var cTopicIDAndWordList = tidWordsArray[t];
+
+        var scoring =
+            computeScoring(fileAndWordList[cTopicIDAndWordList.filesNo], cTopicIDAndWordList.filesNo);
+        resultsPerFileArrays.push(
+            new ResultPerFile(
+                cTopicIDAndWordList.filesNo,
+                cTopicIDAndWordList.wordList,
+                scoring));
+    }
+
+    // Sort by score
+    resultsPerFileArrays.sort(function (a, b) {
+        return b.scoring - a.scoring;
     });
-  }
-  // If we have groups with same number of words, 
-  // will sort groups by higher scoring of each group
-  for (var i = 0; i < listToOutput.length - 1; i++) {
-    for (var j = i + 1; j < listToOutput.length; j++) {
-      if (listToOutput[i][0].motsnb < listToOutput[j][0].motsnb 
-        || (listToOutput[i][0].motsnb == listToOutput[j][0].motsnb
-          && listToOutput[i][0].scoring < listToOutput[j][0].scoring)
-        ) {
-        var x = listToOutput[i];
-        listToOutput[i] = listToOutput[j];
-        listToOutput[j] = x;
-      }
-    }
-  }
 
-  return listToOutput;
+    return resultsPerFileArrays;
 }
 
-// Remove derivates words from the list of words
-function removeDerivates(obj){
-  var toResultObject = new Array(); 
-  for (i in obj){
-    var filesNo  = obj[i].filesNo;
-    var wordList = obj[i].wordList;
-    var wList = wordList.split(",");    
-    var searchedWords = searchTextField.toLowerCase().split(" ");
-    for (var k = 0 ; k < searchedWords.length ; k++){
-      for (var j = 0 ; j < wList.length ; j++){       
-        if (startsWith(wList[j], searchedWords[k])){
-          wList[j] = searchedWords[k];
+/**
+ * Remove derivatives words from the list of words with the original word.
+ *
+ * @param {[TopicIDAndWordList]} obj Array that contains results for searched words
+ * @param {String} searchedWord search term typed by user
+ * @return {Array} Clean array results without duplicated and derivatives words
+ */
+function removeDerivates(obj, searchedWord) {
+
+    var toResultObject = [];
+    for (var i in obj) {
+        var filesNo = obj[i].filesNo;
+        var wordList = obj[i].wordList;
+
+        // concat word results if word starts with the original word
+        var wordIndicesMap = {};
+        for (var j=0; j < wordList.length; j++) {
+            var w = wordList[j].word;
+            if (searchInsideFilePath) {
+                if (w.indexOf(searchedWord) != -1) {
+                    w = searchedWord;
+                }
+            } else {
+                if (startsWith(w, searchedWord)) {
+                    w = searchedWord;
+                }
+            }
+
+            if (wordIndicesMap[w] == undefined) {
+                wordIndicesMap[w] = wordList[j].indices;
+            } else {
+                wordIndicesMap[w] = wordIndicesMap[w].concat(wordList[j].indices);
+            }
         }
-      }
+
+        var newWordsAray = [];
+        for (var w in wordIndicesMap) {
+            newWordsAray.push(
+                {
+                    word: w,
+                    indices: wordIndicesMap[w]
+                }
+            );
+        }
+
+        toResultObject.push(new TopicIDAndWordList(filesNo, newWordsAray));
     }
-    wList = removeDuplicate(wList);
-    var recreateList = '';
-    for(var x in wList){
-      recreateList+=wList[x] + ",";
-    }
-    recreateList = recreateList.substr(0, recreateList.length - 1);
-    toResultObject.push(new newObj(filesNo, recreateList));
-  }
-  return toResultObject;
+
+    return toResultObject;
 }
 
-function newObj(filesNo, wordList){
-  this.filesNo = filesNo;
-  this.wordList = wordList;
+/**
+ * Object to keep the topicID and a list of words that was found in that topic.
+ *
+ * @param filesNo The topic ID or file number.
+ * @param {[obj]} wordList An array of {word, [idx]} objects.
+ * @constructor
+ */
+function TopicIDAndWordList(filesNo, wordList) {
+    this.filesNo = filesNo;
+    this.wordList = wordList;
 }
 
 
 // Object.
 // Add a new parameter - scoring.
-function resultPerFile(filenb, motsliste, motsnb, motslisteDisplay, scoring, group) {
-  //10 - spring,time - 2 - spring, time - 55 - 3
-  this.filenb = filenb;
-  this.motsliste = motsliste;
-  this.motsnb = motsnb;
-  this.motslisteDisplay= motslisteDisplay;
-  this.scoring = scoring;
+
+/**
+ * An object containing the search result for a single topic.
+ * Contains pointer to the topicID and the list of words found.
+ *
+ * @param filenb The topic ID or number.
+ * @param {obj[]} wordsList The array with words separated.
+ * The object has form: {word: "flower"; indices: {1, 5, 7}}
+ * @param scoring The scoring associated with this topic.
+ *
+ * @constructor
+ */
+function ResultPerFile(filenb, wordsList, scoring) {
+    this.filenb = filenb;
+    this.wordsList = wordsList;
+    this.scoring = scoring;
 }
 
-function findRating(words, nr){
-  var sum = 0;
-  var xx = words.split(',');
-  for (var jj = 0 ; jj < xx.length ; jj++){
-    var wrd = w[xx[jj]].split(',');
-    for (var ii = 0 ; ii < wrd.length ; ii++){
-      var wrdno = wrd[ii].split('*');
-      if (wrdno[0] == nr){
-        sum+=parseInt(wrdno[1]);
-      }
+/**
+ * Compute score for one or more words for a given topic ID.
+ *
+ * @param words {[word: string, indices: [integer]]} The list with words separated by ','.
+ * @param topicID {number} The topic ID.
+ * @returns {number} The score for the given words.
+ */
+function computeScoring(words, topicID) {
+    var sum = 0;
+
+    for (var jj = 0; jj < words.length; jj++) {
+        var cWord = words[jj].word;
+        // Check if the word was indexed
+        if (w[cWord] !== undefined) {
+            // w["flowering"]="1*5,3*7";
+            var topicIDScoreArray = w[cWord].split(',');
+            for (var ii = 0; ii < topicIDScoreArray.length; ii++) {
+                var tidAndScore = topicIDScoreArray[ii].split('*');
+                if (tidAndScore[0] == topicID) {
+                    sum += parseInt(tidAndScore[1]);
+                }
+            }
+        }
     }
-  }
-  return sum;
+    return sum;
 }
 
 function compareWords(s1, s2) {
-  var t1 = s1.split(',');
-  var t2 = s2.split(',');
-  if (t1.length == t2.length) {
-    return 0;
-  } else if (t1.length > t2.length) {
-    return 1;
-  } else {
-    return -1;
-  }
-}
-// return false if browser is Google Chrome and WebHelp is used on a local machine, not a web server 
-function verifyBrowser(){
-  var returnedValue = true;
-  BrowserDetect.init();
-  var browser = BrowserDetect.browser;
-  var addressBar = window.location.href;
-  if (browser == 'Chrome' && addressBar.indexOf('file://') === 0){
-    returnedValue = false;
-  }
-    
-  return returnedValue;
+    var t1 = s1.split(',');
+    var t2 = s2.split(',');
+    if (t1.length == t2.length) {
+        return 0;
+    } else if (t1.length > t2.length) {
+        return 1;
+    } else {
+        return -1;
+    }
 }
 
 // Remove duplicate values from an array
 function removeDuplicate(arr) {
-  var r = new Array();
-    o:for(var i = 0, n = arr.length; i < n; i++) {
-      for(var x = 0, y = r.length; x < y; x++) {
-        if(r[x]==arr[i]) continue o;
-      }
-      r[r.length] = arr[i];
+    var r = [];
+    o:for (var i = 0, n = arr.length; i < n; i++) {
+        for (var x = 0, y = r.length; x < y; x++) {
+            if (r[x] == arr[i]) continue o;
+        }
+        r[r.length] = arr[i];
     }
-  return r;
+    return r;
 }
 
 function trim(str, chars) {
-  return ltrim(rtrim(str, chars), chars);
+    debug("Trim a string... " + str);
+    return ltrim(rtrim(str, chars), chars);
 }
- 
+
 function ltrim(str, chars) {
-  chars = chars || "\\s";
-  return str.replace(new RegExp("^[" + chars + "]+", "g"), "");
+    chars = chars || "\\s";
+    return str.replace(new RegExp("^[" + chars + "]+", "g"), "");
 }
- 
+
 function rtrim(str, chars) {
-  chars = chars || "\\s";
-  return str.replace(new RegExp("[" + chars + "]+$", "g"), "");
+    chars = chars || "\\s";
+    return str.replace(new RegExp("[" + chars + "]+$", "g"), "");
+}
+
+/**
+ * PATCH FOR BOOLEAN SEARCH
+ */
+
+/**
+ * @description Object with resulted pages as array
+ * @param {[ResultPerFile]}resPerFileArray Array that contains partial results
+ * @constructor
+ */
+function BooleanSearchOperand(resPerFileArray) {
+    this.value = resPerFileArray;
+
+    this.toString = function() {
+        var stringResult = "";
+
+        stringResult += "INDEX\t|\tfilenb\t|\tscoring\n";
+        for (var i=0;i<this.value.length;i++) {
+            stringResult += i + ".\t\t|\t" + this.value[i].filenb + "\t\t|\t" + this.value[i].scoring + "\n";
+        }
+
+        return stringResult;
+    };
+
+    this.writeIDs = function() {
+        var stringResult = "";
+
+        for (var i=0;i<this.value.length;i++) {
+            stringResult += this.value[i].filenb + " | ";
+        }
+
+        return stringResult;
+    };
+
+    /**
+     * Combine two search results using AND function.
+     *
+     * @param {BooleanSearchOperand} secondOperand The second boolean operand to combine with.
+     * @returns {BooleanSearchOperand} The AND operation result.
+     */
+    this.and = function and(secondOperand) {
+        var result = [];
+
+        for (var x=0; x < this.value.length; x++) {
+            var found = false;
+            for (var y=0; y < secondOperand.value.length; y++) {
+                if (this.value[x].filenb == secondOperand.value[y].filenb) {
+                    this.value[x].wordsList = this.value[x].wordsList.concat(secondOperand.value[y].wordsList);
+                    this.value[x].scoring += secondOperand.value[y].scoring;
+                    found = true;
+                    break;
+                }
+            }
+            if (found) {
+                result.push(this.value[x]);
+            }
+        }
+
+        this.value = result;
+
+        return this;
+    };
+
+    /**
+     * Conbine two search results using OR operator.
+     *
+     * @param {Pages} operand The second operand.
+     * @returns {BooleanSearchOperand} The new operand after applying the OR operator.
+     */
+    this.or = function or(operand) {
+        this.value = this.value.concat(operand.value);
+        var result = [];
+
+        for (var i=0;i<this.value.length;i++) {
+            var unique = true;
+            for (var j=0;j<result.length;j++) {
+                if (this.value[i].filenb == result[j].filenb) {
+                    result[j].wordsList =  result[j].wordsList.concat(this.value[i].wordsList);
+                    var numberOfWords = result[j].wordsList.length;
+                    result[j].scoring = this.value[i].scoring + result[j].scoring;
+                    unique = false;
+                    break;
+                }
+            }
+            if (unique) {
+                result.push(this.value[i]);
+            }
+        }
+
+        this.value = result;
+
+        return this;
+    };
+
+    this.not = function not(newArray) {
+        var result = [];
+
+        for (var x=0; x < this.value.length; x++) {
+            var found = false;
+            for (var y=0; y<newArray.value.length; y++) {
+                if (this.value[x].filenb == newArray.value[y].filenb) {
+                    found = true;
+                }
+            }
+            if (!found) {
+                result.push(this.value[x]);
+            }
+        }
+
+        this.value = result;
+
+        return this;
+    };
+}
+
+/**
+ * Utility method to debug a message. By default delegated to the console.log, but it can be overwritten
+ * by other scripts.
+ *
+ * @param args The list with arguments.
+ */
+function debug () {
+    var res = typeof console.log;
+    if (res === "function") {
+        console.log.apply(console, arguments );
+    }
+}
+
+/**
+ * Utility method to debug a message. By default delegated to the console.log, but it can be overwritten
+ * by other scripts.
+ *
+ * @param args The list with arguments.
+ */
+function warn () {
+    var res = typeof console.log;
+    if (res === "function") {
+        console.warn(console, arguments );
+    }
+}
+
+/**
+ * Utility method to debug a message. By default delegated to the console.log, but it can be overwritten
+ * by other scripts.
+ *
+ * @param args The list with arguments.
+ */
+function info () {
+    var res = typeof console.info;
+    if (res === "function") {
+        console.info.apply(console, arguments );
+    }
+}
+
+
+// Return true if "word1" starts with "word2"
+function startsWith(word1, word2) {
+    var prefix = false;
+    if (word1 !== null && word2 !== null) {
+        if (word2.length <= word1.length) {
+            prefix = true;
+            for (var i = 0; i < word2.length; i++) {
+                if (word1.charAt(i) !== word2.charAt(i)) {
+                    prefix = false;
+                    break;
+                }
+            }
+        }
+    } else {
+        if (word1 !== null) {
+            prefix = true;
+        }
+    }
+    return prefix;
+}
+
+/**
+ * Detect if a search token seems to be an URL or file path.
+ *
+ * @param toTest The search expression.
+ * @returns {boolean} True if the search query seems to be an URL or file path.
+ */
+function isURLorFilePath(toTest) {
+    var re = new RegExp('[\./\\\-:]');
+    return re.test(toTest);
 }

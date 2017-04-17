@@ -1,0 +1,48 @@
+/** 
+ * Styles for Index page.
+ */
+
+/* Indexterms page */
+.wh_index_terms li, .wh_index_terms ul{
+    padding-left: 10px;
+    list-style: none;
+}
+.wh_index_terms li.wh_term{
+    line-height: 1.5em;
+}
+a.wh_term_target{
+    padding-left:5px;
+    vertical-align: super;
+    font-size: .8em;
+}
+.wh_index_terms .wh_first_letter{
+    text-indent: 0;
+    list-style: none;
+    font-size: 2em;
+    font-weight: bold;
+    display: inline-block;
+    border-bottom: 1px solid;
+    width: 100%;
+    margin: .4em 0 .2em;
+}
+
+/**
+ * Index page. Set multi-column layout.
+ */
+.wh_term_group > ul {
+    column-count: auto;
+    column-width: 20em;
+    column-gap: 1em;
+    column-rule: none;
+}
+
+/**
+ * Try to avoid column break between an index group and its first child.
+ */
+.wh_term {
+    display: block;
+}
+.wh_term > ul > .wh_term:first-child {
+    break-before: avoid-column;
+    -webkit-column-break-before: avoid;
+}

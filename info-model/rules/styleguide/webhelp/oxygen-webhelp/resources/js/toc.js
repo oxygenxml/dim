@@ -1,11 +1,9 @@
 /*
 
-Oxygen Webhelp plugin
-Copyright (c) 1998-2015 Syncro Soft SRL, Romania.  All rights reserved.
-Licensed under the terms stated in the license file EULA_Webhelp.txt
-available in the base directory of this Oxygen Webhelp plugin.
+Oxygen Webhelp Plugin
+Copyright (c) 1998-2017 Syncro Soft SRL, Romania.  All rights reserved.
 
- */
+*/
 
 var iframeDir = "";
 var wh = parseUri(window.location);
@@ -42,25 +40,83 @@ var notLocalChrome = verifyBrowser();
 function getParameter(parameter) {
     var whLocation = "";
 
+    var toReturn = undefined;
+
     try {
-        whLocation = parent.location;
-        var p = parseUri(whLocation);
-    } catch (e) {
-        debug(e);
         whLocation = window.location;
         var p = parseUri(whLocation);
+
+        toReturn = p.queryKey[parameter];
+    } catch (e) {
+        debug(e);
     }
 
-    return p.queryKey[parameter];
+    return toReturn;
+}
+
+/**
+ * @description Get all GET parameters and keep all unknown parameters
+ * @return {String} Query with all parameters
+ */
+function parseParameters() {
+    debug("parseParameters()...");
+    var excludeParameters = ["contextId", "appname"];
+    var whLocation = "";
+    var query = "?";
+
+    var p = {};
+
+    try {
+        whLocation = window.location;
+        p = parseUri(whLocation);
+    } catch (e) {
+        debug(e);
+    }
+
+    var parameters = p.queryKey;
+
+    for (var para in parameters) {
+        if ($.inArray(para, excludeParameters) == -1) {
+            query += para + "=" + parameters[para] + "&";
+        }
+    }
+
+    query = query.substr(0, query.length - 1);
+
+    debug("QUERY: "+ query);
+
+    return query;
 }
 
 // Used to inject search form where we need it
-var searchForm = '<form name="searchForm" id="searchForm" action="javascript:void(0)"' +
-    'onsubmit="searchRequest(this);">' +
-    '<input type="text" id="textToSearch" name="textToSearch" class="textToSearch"' +
-    'size="30" placeholder="Search"/>' +
-    '</form>';
+var searchForm = '<form name="searchForm" id="searchForm" onsubmit="return executeQuery();">' +
+	'<input type="text" id="textToSearch" name="textToSearch" class="textToSearch" size="30" placeholder="Search" />' +
+	'</form>';
 
+/**
+ * @description Search using Google Search if it is available, otherwise use our search engine to execute the query
+ * @return {boolean} Always return false
+ */
+function executeQuery() {
+	var input = document.getElementById('textToSearch');
+	try {
+		var element = google.search.cse.element.getElement('searchresults-only0');
+	} catch (e) {
+		debug(e);
+	}
+	if (element != undefined) {
+		if (input.value == '') {
+			element.clearAllResults();
+		} else {
+			element.execute(input.value);
+		}
+	} else {
+		searchRequest('wh-classic');
+	}
+	
+	return false;
+}
+	
 /**
  * Debug functions 
  */
@@ -81,18 +137,27 @@ function warn(msg, obj) {
 }
 
 function openTopic(anchor) {
+    $("#contentBlock ul").css("background-color", $("#splitterContainer #leftPane").css('background-color'));
+    $("#contentBlock li").css("background-color", "transparent");
     if ($(anchor).attr('target') === undefined) {
-            /* Remove the old selection and add selection to the clicked item */
-            $('#contentBlock li span').removeClass('menuItemSelected');
-            $(anchor).parent('li span').addClass('menuItemSelected');
+        /* Remove the old selection and add selection to the clicked item */
+        $('#contentBlock li span').removeClass('menuItemSelected');
+        $(anchor).parent('li span').addClass('menuItemSelected');
 
-            /* Calculate index of selected item and write value to cookie */
-            var findIndexOf = $(anchor).closest('li');
-            var index = $('#contentBlock li').index(findIndexOf);
+        /* Calculate index of selected item and write value to cookie */
+        var findIndexOf = $(anchor).closest('li');
+        var index = $('#contentBlock li').index(findIndexOf);
+
+        if ( wh.protocol == 'https' ) {
+            $.cookie('wh_pn', index, { secure: true });
+        } else {
             $.cookie('wh_pn', index);
+        }
 
-            /* Redirect to requested page */
-            redirect($(anchor).attr('href'));
+        $('#contentBlock .menuItemSelected').parent('li').first().css('background-color', $('#contentBlock .menuItemSelected').css('background-color'));
+
+        /* Redirect to requested page */
+        redirect($(anchor).attr('href'));
     } else {
         window.open($(anchor).attr('href'), $(anchor).attr('target'));
     }
@@ -101,6 +166,8 @@ function openTopic(anchor) {
 
 $(document).ready(function () {
     $('#preload').hide();
+
+    var query = parseParameters();
 
     if ( !withFrames ) {
         $('.framesLink').after(searchForm);
@@ -115,13 +182,15 @@ $(document).ready(function () {
      * {Refactored}
      * @description Selects the clicked item
      */
-    $('#contentBlock li a').click(function() {
+    $('#contentBlock li a').click(function(ev) {
+        if (!ev.altKey && !ev.ctrlKey && !ev.shiftKey && ev.button==0) {
+            ev.preventDefault();
         if ($(this).attr('href').indexOf('#!_') == 0) {
             // expand topichead
             toggleItem($(this));
             // find first descendant that is a topicref with href attribute
             // and open that topicref
-            $(this).parents('li').first().find('li a').each(function() {
+                $(this).parents('li').first().find('li a').each(function () {
                 if ($(this).attr('href').indexOf('#!_') != 0) {
                      openTopic($(this));
                      return false;
@@ -132,63 +201,91 @@ $(document).ready(function () {
              openTopic($(this));
         }
         return false;
+        } else {
+            if ($(this).attr('href').indexOf('#!_') == 0) {
+                // expand topichead
+                toggleItem($(this));
+                // find first descendant that is a topicref with href attribute
+                // and open that topicref
+                $(this).parents('li').first().find('li a').each(function () {
+                    if ($(this).attr('href').indexOf('#!_') != 0) {
+                        openTopic($(this));
+                        return false;
+                    }
+                    return true;
+    });
+                return false;
+            }
+        }
     });
     
     var contextId = getParameter('contextId');
+    var appname = getParameter('appname');
+
     var q = getParameter('q');
 
-    if (((location.href.indexOf("#")==-1 && !withFrames ) || (q==undefined && withFrames)) 
-      && (contextId == undefined || contextId == "")) {
-          contextId = $('#tree a[data-id]:eq(0)').attr('data-id');
-    }
-
     if (contextId !== undefined && contextId != "") {
-        var found = false;
-        $.each($('#tree a[data-id*="' + contextId + '"]'), function () {
-            var idArray = $(this).attr('data-id').split(" ");
-            if ($.inArray(contextId, idArray) >= 0) {
-                try {
-                    var p = parseUri(parent.location);
-                } catch (e) {
-                    debug(e);
-                    var p = parseUri(window.location);
-                }
-    
-                if (!withFrames) {
-                    var newLocation = "";
-                    if (p.host != '') {
-                        newLocation = p.protocol + '://' + p.host + ':' + p.port + p.path + '#' + $(this).attr('href');
-                } else {
-                        newLocation = p.protocol + '://' + p.port + p.path + '#' + $(this).attr('href');
-                }
-                    parent.location = newLocation;
-                } else {
-                    $(this).trigger('click');
-                }
-                found = true;
+        var scriptTag = document.createElement("script");
+        scriptTag.type = "text/javascript";
+        scriptTag.src = "context-help-map.js";
+        document.getElementsByTagName('head')[0].appendChild(scriptTag);
 
-                return false;
+        var ready = setInterval(function () {
+            if (helpContexts != undefined) {
+                for (var i = 0; i < helpContexts.length; i++) {
+                    var ctxt = helpContexts[i];
+                    if (contextId == ctxt["appid"] && (appname == undefined || appname == ctxt["appname"])) {
+                        var path = ctxt["path"];
+                        if (path != undefined && path!="") {
+                            if (withFrames) {
+                                try {
+                                    var newLocation = whUrl + path;
+                                    window.parent.contentwin.location.href = newLocation;
+                                } catch (e) {
+                                    debug(e);
+                                }
+                            } else {
+                                var newLocation = window.location.protocol + '//' + window.location.host;
+                                
+                                newLocation+= window.location.pathname + query + '#' + path;
+                                window.location=newLocation;
+                            }
+                        }
+                        break;
+                    }
+                }
+                clearInterval(ready);
             }
-        });
-
-        if (!found && withFrames) {
-            $('#tree a[data-id]').first().trigger('click');
-        }
+        }, 100);
     } else {
+        try {
+            var p = parseUri(parent.location);
+        } catch (e) {
+            debug(e);
+            var p = parseUri(window.location);
+        }
         if (withFrames) {
             if (q != undefined) {
                 try {
-                    var p = parseUri(parent.location);
+                	var link = p.protocol + '://' + p.host + ':' + p.port + q;
+	                window.parent.contentwin.location.href = link;
                 } catch (e) {
                     debug(e);
-                    var p = parseUri(window.location);
                 }
-                var link = p.protocol + '://' + p.host + ':' + p.port + q;
-                window.parent.contentwin.location.href = link;
             } else {
-                $('#tree a').first().trigger('click');
+								openTopic($('#tree a').first());
             }
         }
+    }
+
+    var searchQuery = getParameter("searchQuery");
+    debug("Search for: " + searchQuery);
+    if (searchQuery!=undefined && searchQuery!="") {
+        $("#textToSearch").val(decodeURI(searchQuery));
+        if (!withFrames) {
+            loadSearchResources();
+        }
+        $("#searchForm").submit();
     }
 
     // Show clicked TAB
@@ -222,23 +319,27 @@ $(document).ready(function () {
     });
 
     // Toggle clicked item from TOC
-    $('#contentBlock li>span').click(function () {
+    $('#contentBlock li>span').click(function (ev) {
+        if ( !ev.shiftKey && !ev.ctrlKey && !ev.altKey && ev.button==0 ) {
+            ev.preventDefault();
         toggleItem($(this));
-    })
+        }
+
+    });
 
     // Determine if li element have submenus and sets corresponded class
     $('#contentBlock li>span').each(function () {
-        if ($(this).parent().find('>ul').size() > 0) {
+        if ($(this).parent().find('>ul').length > 0) {
             $(this).addClass('hasSubMenuClosed');
         } else {
             $(this).addClass('topic');
         }
-    })
+    });
 
-    debug('discover foldables ' + $('#tree > ul li > span').size() + ' - ' + $('#tree > ul li > span.topic').size());
+    debug('discover foldables ' + $('#tree > ul li > span').length + ' - ' + $('#tree > ul li > span.topic').length);
 
     // Calculate number of foldable nodes and show/hide expand buttons
-    noFoldableNodes = $('#tree > ul li > span').size() - $('#tree > ul li > span.topic').size();
+    noFoldableNodes = $('#tree > ul li > span').length - $('#tree > ul li > span.topic').length;
     showHideExpandButtons();
 
     // Set title of expand/collapse all buttons
@@ -270,7 +371,7 @@ $(window).resize(function(){
         $("#searchResults").css("height", hAvailable);
     }
     if ($("#indexBlock").is(":visible")) {
-        var hAvailable = parseInt($("body").height())-parseInt($("#header").height())-parseInt($("#indexForm").height())-parseInt($("#indexForm").css("padding-top"))-parseInt($("#indexForm").css("padding-bottom"));
+        var hAvailable = parseInt($("body").height())-parseInt($("#header").height())-parseInt($("#indexForm").height())-parseInt($("#indexForm").css("padding-top"))-parseInt($("#indexForm").css("padding-bottom"))-parseInt($("#bck_toc").css("padding-top"));
         $("#iList").css("height", hAvailable);
     }
     if ($("#contentBlock").is(":visible")) {
@@ -284,6 +385,27 @@ $(window.parent).resize(function () {
     clearTimeout(resizeTimer);
     resizeTimer = setTimeout(resizeContent, 10);
 });
+
+// Return true if "word1" starts with "word2"
+function startsWith(word1, word2) {
+    var prefix = false;
+    if (word1 !== null && word2 !== null) {
+        if (word2.length <= word1.length) {
+            prefix = true;
+            for (var i = 0; i < word2.length; i++) {
+                if (word1.charAt(i) !== word2.charAt(i)) {
+                    prefix = false;
+                    break;
+                }
+            }
+        }
+    } else {
+        if (word1 !== null) {
+            prefix = true;
+        }
+    }
+    return prefix;
+}
 
 /**
  * {Refactored}
@@ -344,21 +466,18 @@ function initTabs() {
  */
 function loadIndexterms() {
     try {
-        $('#loadingError').remove();
-        if (typeof window.indextermsLoaded == 'undefined') {
-            $("#indexBlock #iList").load("./oxygen-webhelp/indexterms.html", 
-                function() {
-                    $('#indexList li a').each(function() {
-                         var old = $(this).attr('href');
-                         if (withFrames) {
-                            $(this).attr('href', normalizeLink(old));
-                         } else {
-                            $(this).attr('href', '#' + normalizeLink(old));
-                            $(this).removeAttr("target");
-                         }
-                    })
-                });
-        }
+        var scriptTag = document.createElement("script");
+        scriptTag.type = "text/javascript";
+        scriptTag.src = "oxygen-webhelp/indexterms.js";
+        document.getElementsByTagName('head')[0].appendChild(scriptTag);
+        
+        var loaded = setInterval(function(){
+            if ( trim($("#indexBlock #iList").html()) != '' ) {
+                // append footer
+                $("#indexBlock #iList").append($("#leftPane .footer"));
+                clearInterval(loaded);
+            }
+        }, 10);
     } catch (e) {
         if ( $("#indexList").length < 1 ) {
             $("#index").html('<span id="loadingError">Index loading error: ' + e + '</span>');
@@ -366,6 +485,15 @@ function loadIndexterms() {
     }
 }
 
+/**
+ * @description Select "Content" tab if no other tab is selected
+ */
+function initializeTabsMenu() {
+    debug("Active tabs: ", $(".selectedClass").length);
+    if ( $(".selectedTab").length == 0 ) {
+        showMenu('content');
+    }
+}
 
 /**
  * {Refactored}
@@ -389,7 +517,7 @@ function showMenu(displayTab) {
         // generates menu tabs
         if ($("#" + currentTabId).length > 0) {
             // show selected block
-            selectedBlock = displayTab + "Block";
+            var selectedBlock = displayTab + "Block";
             if (currentTabId == displayTab) {
                 $("#" + selectedBlock).show();
                 $('#' + currentTabId).addClass('selectedTab');
@@ -400,19 +528,21 @@ function showMenu(displayTab) {
         }
     }
     if (displayTab == 'content') {
+        $("#bck_toc").removeAttr('style');
         if ( $('#searchResults').text() == '' && !withFrames ) {
             $('#search').hide();
         }
         searchedWords = "";
         var hAvailable = parseInt($("body").height())-parseInt($("#header").height())-parseInt($("#bck_toc").css("padding-top"));
-        $("#bck_toc").css("height", hAvailable).css("overflow", "auto");
+        $("#bck_toc").css("height", hAvailable);
         $("#contentBlock").append($("#leftPane .footer"));
+        scrollToVisibleItem();
     }
     if (displayTab == 'search') {
         $('#search').show();
         $('.textToSearch').focus();
         searchedWords = $('#textToSearch').text();
-        $("#bck_toc").css("overflow", "hidden")
+        $("#bck_toc").css("overflow", "hidden");
         $("#bck_toc,#bck_toc #indexBlock").css("height", "100%");
         if ( !withFrames ) {
             var hAvailable = parseInt($("body").height()) - parseInt($("#header").height());
@@ -428,15 +558,16 @@ function showMenu(displayTab) {
         }
         if ( !withFrames ) {
             loadIndexterms();
+        } else {
+            $("#iList").append($("#leftPane .footer"));
         }
         
         $('#id_search').focus();
         searchedWords = "";
-        $("#bck_toc").css("overflow", "hidden")
+        $("#bck_toc").css("overflow", "hidden");
         $("#bck_toc,#bck_toc #searchBlock").css("height", "100%");
-        var hAvailable = parseInt($("body").height())-parseInt($("#header").height())-parseInt($("#indexForm").height())-parseInt($("#indexForm").css("padding-top"))-parseInt($("#indexForm").css("padding-bottom"));
+        var hAvailable = parseInt($("body").height())-parseInt($("#header").height())-parseInt($("#indexForm").height())-parseInt($("#indexForm").css("padding-top"))-parseInt($("#indexForm").css("padding-bottom"))-parseInt($("#bck_toc").css("padding-top"));
         $("#iList").css("height", hAvailable);
-        $("#iList").append($("#leftPane .footer"));
     }
 }
 /**
@@ -511,6 +642,7 @@ function verifyBrowser() {
  * @description Reposition the tooltips when browser is resized
  */
 function resizeContent() {
+    breadCrumbWidth = parseInt($('#breadcrumbLinks').css('width'));
     var need = tocWidth + navLinksWidth + breadCrumbWidth;
     var needMin = tocWidth + navLinksWidthMin + breadCrumbWidth;
     debug('NEED: '+need+' | NEED-MIN: '+needMin);
@@ -531,14 +663,15 @@ function resizeContent() {
         if(parseInt($('.tool tr:first').css('width')) < parseInt(needMin*1.05)) {
             debug('Need to hide part of breadcrumbs');
             $('#productToolbar .navheader_parent_path').each(function () {
-                if ($(this).attr('title').length>37) {
+                $(this).attr("data-title")==undefined ? $(this).attr("data-title", $(this).text()) : null;
+                if ($(this).attr('data-title').length>37) {
                     $(this).text($(this).text().replace(/\./gi, '').substr(0, 37) + "...");
                 }
             });
         } else {
-            debug('Need to show all breadcrumbs')
+            debug('Need to show all breadcrumbs');
             $('#productToolbar .navheader_parent_path').each(function () {
-                $(this).text($(this).attr('title'));
+                $(this).text($(this).attr("data-title"));
             });
         }
     } else {
@@ -546,7 +679,6 @@ function resizeContent() {
         navHeader.css("min-width", "326px");
         navLinks.show();
     }
-    //showScrolls();
 }
 
 debug('<hr> Load Window....');
@@ -562,6 +694,9 @@ debug('os:' + navigator.appVersion);
  * @param words (type:Array) - Words to be highlighted
  */
 function highlightSearchTerm(words) {
+    if (words.length < 1) {
+        return false;
+    }
     if (notLocalChrome) {
         if (words != null) {
             // highlight each term in the content view
@@ -583,6 +718,25 @@ function highlightSearchTerm(words) {
 }
 
 /**
+ * @description Remove highlight from right frame, except in Chrome when is opened locally
+ */
+function clearHighlights() {
+    debug("clearHighlights()");
+    if (top==self) {
+        if (notLocalChrome) {
+            $('#frm').contents().find('body').removeHighlight();
+        }
+    } else {
+        // For index with frames
+        try {
+            $(window.parent.contentwin.document).find('body').removeHighlight();
+        } catch (e) {
+            debug(e);
+        }
+    }
+}
+
+/**
  * @description Show/Hide the expand/collapse buttons from the 'Content' tab
  */
 function showHideExpandButtons() {
@@ -592,12 +746,12 @@ function showHideExpandButtons() {
             $('#expandAllLink').show();
             $('#collapseAllLink').show();
         } else {
-            if ($('#tree > ul li > span.hasSubMenuOpened').size() != noFoldableNodes) {
+            if ($('#tree > ul li > span.hasSubMenuOpened').length != noFoldableNodes) {
                 $('#expandAllLink').show();
             } else {
                 $('#expandAllLink').hide();
             }
-            if ($('#tree > ul > li > span.hasSubMenuOpened').size() <= 0) {
+            if ($('#tree > ul > li > span.hasSubMenuOpened').length <= 0) {
                 $('#collapseAllLink').hide();
             } else {
                 $('#collapseAllLink').show();
@@ -639,25 +793,32 @@ function collapseAll() {
  * @description Scroll TOC to make currently selected item visible.
  */
 function scrollToVisibleItem() {
-    var tocSelectedItemPos = $(".menuItemSelected").offset();
-    var tocContentPos = $(".menuItemSelected").parents("#contentBlock").offset();
-    var tocSelectedItemOffset = {
-        top: tocSelectedItemPos.top - tocContentPos.top,
-        left: tocSelectedItemPos.left - tocContentPos.left
-    }
+    var $menuItemSelected = $(".menuItemSelected");
+    try {
+        var tocSelectedItemPos = $menuItemSelected.offset();
+        var tocContentPos = $menuItemSelected.parents("#contentBlock").offset();
+        var tocSelectedItemOffset = {
+            top: tocSelectedItemPos.top - tocContentPos.top,
+            left: tocSelectedItemPos.left - tocContentPos.left
+        };
+    
+        var $contentBlock = $("#contentBlock");
+        var contentToc = $contentBlock.offset();
+        var toc = $contentBlock.parents("#bck_toc").offset();
+        var contentTocOffset = {
+            top: contentToc.top - toc.top,
+            left: contentToc.left - toc.left
+        };
+        var $bckToc = $("#bck_toc");
+        var contentTocHeight = $bckToc.height();
+        var maxLimit = contentTocHeight - contentTocOffset.top;
+        var minLimit = 0 - contentTocOffset.top;
 
-    var contentToc = $("#contentBlock").offset();
-    var toc = $("#contentBlock").parents("#bck_toc").offset();
-    var contentTocOffset = {
-        top: contentToc.top - toc.top,
-        left: contentToc.left - toc.left
-    }
-    var contentTocHeight = $("#bck_toc").height();
-    var maxLimit = contentTocHeight - contentTocOffset.top;
-    var minLimit = 0 - contentTocOffset.top;
-
-    if (tocSelectedItemOffset.top < minLimit || tocSelectedItemOffset.top > maxLimit) {
-        $("#bck_toc").scrollTop(tocSelectedItemOffset.top);
+        if (tocSelectedItemOffset.top < minLimit || tocSelectedItemOffset.top > maxLimit) {
+            $bckToc.scrollTop(tocSelectedItemOffset.top);
+        }
+    } catch (e) {
+        debug(e);
     }
 }
 
@@ -673,13 +834,13 @@ function toggleItem(loc, forceOpen) {
     $(loc).parent().parents('#contentBlock li').find('>span').addClass('hasSubMenuOpened');
     $(loc).parent().parents('#contentBlock li').find('>span').removeClass('hasSubMenuClosed');
     if (loc.hasClass('hasSubMenuOpened') && !(forceOpen == true)) {
-        if ($(loc).parent().find('>ul').size() > 0) {
+        if ($(loc).parent().find('>ul').length > 0) {
             $(loc).removeClass('hasSubMenuOpened');
             $(loc).addClass('hasSubMenuClosed');
             $(loc).parent('#contentBlock li').find('>ul').hide();
         }
     } else {
-        if ($(loc).parent().find('>ul').size() > 0) {
+        if ($(loc).parent().find('>ul').length > 0) {
             $(loc).addClass('hasSubMenuOpened');
             $(loc).removeClass('hasSubMenuClosed');
             $(loc).parent('#contentBlock li').find('>ul').show();
@@ -701,14 +862,42 @@ function showParents() {
         if ($.cookie("wh_pn") != "" && $.cookie("wh_pn") !== undefined && $.cookie("wh_pn") !== null) {
 
             // Read index of currently selected item and calculate next / previous index
-            currentTOCSelection = parseInt($.cookie("wh_pn"));
-            prevTOCIndex = currentTOCSelection -1;
-            nextTOCIndex = currentTOCSelection + 1;
+            var currentTOCSelection = parseInt($.cookie("wh_pn"));
+            var prevTOCIndex = currentTOCSelection -1;
+            var nextTOCIndex = currentTOCSelection + 1;
 
             // Get the href of the parent / next / previous related to current item
-            prevTOCSelection = $('#tree li:eq(' + prevTOCIndex + ')').find('a').attr('href');
-            nextTOCSelection = $('#tree li:eq(' + nextTOCIndex + ')').find('a').attr('href');
-            parentTOCSelection = $('#tree li:eq(' + currentTOCSelection + ')').parents('ul').parents('li').find('a').attr('href');
+            var prevTOCSelection = getUrlWithoutAnchor($('#tree li:eq(' + prevTOCIndex + ')').find('a').attr('href'));
+            var nextTOCSelection = getUrlWithoutAnchor($('#tree li:eq(' + nextTOCIndex + ')').find('a').attr('href'));
+
+
+            // Current href
+            var currentTOCSelectionBase = getUrlWithoutAnchor($('#tree li:eq(' + currentTOCSelection + ')').find('a').attr('href'));
+
+            while (getUrlWithoutAnchor(nextTOCSelection) == currentTOCSelectionBase) {
+                nextTOCIndex++;
+                nextTOCSelection = $('#tree li:eq(' + nextTOCIndex + ')').find('a').attr('href');
+            }
+
+            var auxSelection = currentTOCSelection-2;
+            var auxHref = $('#tree li:eq(' + auxSelection + ')').find('a').attr('href');
+            while (auxHref != undefined && getUrlWithoutAnchor(prevTOCSelection) == getUrlWithoutAnchor(auxHref)) {
+                prevTOCIndex=auxSelection;
+                prevTOCSelection = $('#tree li:eq(' + prevTOCIndex + ')').find('a').attr('href');
+
+                auxSelection--;
+                auxHref = $('#tree li:eq(' + auxSelection + ')').find('a').attr('href');
+            }
+
+            auxSelection = currentTOCSelection;
+            auxHref = currentTOCSelectionBase;
+            while (getUrlWithoutAnchor(auxHref) == currentTOCSelectionBase) {
+                auxSelection--;
+                auxHref = $('#tree li:eq(' + auxSelection + ')').find('a').attr('href');
+            }
+            auxSelection++;
+
+            var parentTOCSelection = getUrlWithoutAnchor($('#tree li:eq(' + auxSelection + ')').closest('ul').closest('li').find('a').attr('href'));
 
             // Eliminate the first character (#), for no-frames webhelp
             if (prevTOCSelection !== undefined) {
@@ -729,12 +918,12 @@ function showParents() {
                 parentTOCSelection = "undefined";
             }
 
+            var navLinks;
             // Get the element that contains navigation links and hide irrelevant links
             if ( !withFrames ) {
-                var navLinks = $('#navigationLinks');
+                navLinks = $('#navigationLinks');
             } else {
-                var navLinks = $(parent.frames[ "contentwin"].document).find('.nav');
-                navLinks = $(navLinks).find('.navheader');
+                navLinks = $(parent.frames[ "contentwin"].document).find('.nav').find('.navheader');
 
                 var footerLinks = $(parent.frames[ "contentwin"].document).find('.navfooter');
                 $(footerLinks).find('.navparent').hide();
@@ -759,6 +948,25 @@ function showParents() {
     } else {
         debug("P: document not loaded...");
     }
+}
+
+/**
+ * @description Removes anchors from the given URL
+ * @param url {string} URL to remove anchor from
+ * @returns {string}
+ */
+function getUrlWithoutAnchor(url){
+    var toReturn = url;
+
+    if (url == undefined || url == "undefined") {
+        return url;
+    }
+    
+    if (url.lastIndexOf("#") > 0) {
+        toReturn = url.substring(0, url.lastIndexOf("#"))
+    }
+
+    return toReturn;
 }
 
 /**

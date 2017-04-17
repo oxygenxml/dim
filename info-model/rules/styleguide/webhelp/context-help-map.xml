@@ -12,7 +12,7 @@
    <appContext helpID="Lists" path="c_CreatingLists.html"/>
    <appContext helpID="InlineElements" path="c_UsingInlineElements.html"/>
    <appContext helpID="InlineElements" path="c_UserInterface.html"/>
-   <appContext helpID="Maps" path="c_MapsAndBookMaps.html"/>
+   <appContext helpID="Maps" path="c_MapsAndBookmaps.html"/>
    <appContext helpID="Maps" path="c_Maps.html"/>
    <appContext helpID="MapStructure" path="c_MapStructure.html"/>
    <appContext helpID="Maps" path="c_MapElements.html"/>
@@ -24,6 +24,7 @@
    <appContext helpID="select-atts" path="c_DisplayAttributes.html"/>
    <appContext helpID="ReuseStrategy" path="c_ReuseStrategy.html"/>
    <appContext helpID="WritingForReuse" path="c_NormalizingContent.html"/>
+   <appContext helpID="CommonContentOverview" path="c_CommonContentOverview.html"/>
    <appContext helpID="concept_vtz_r2q_xh" path="c_CollectionFiles.html"/>
    <appContext helpID="NamingConvention" path="c_NamingConvention.html"/>
 </map>

@@ -1,3 +1,9 @@
+/*
+
+Oxygen WebHelp Plugin
+Copyright (c) 1998-2017 Syncro Soft SRL, Romania.  All rights reserved.
+
+*/
 /**
  * @description If Chrome and page is local redirect to index_frames.html
  */
@@ -35,13 +41,11 @@ $(document).ready(function () {
     /**
      * @description Action to take on iframe unload
      */
-    $('#frm').unload(function (ev) {
+    $('#frm').on('unload', function (ev) {
         ev.preventDefault();
         return false;
     });
     loaded = true;
-
-    showMenu('content');
 
     if (!notLocalChrome) {
         var warningMsg = 'Chrome limits JavaScript functionality when a page is loaded from the local disk. This prevents the normal help viewer from loading.\nYou will be redirected to the frameset version of the help.';
@@ -60,12 +64,12 @@ $(document).ready(function () {
             });
             var warning = '<div id="warning">Not all features will be enabled using Google Chrome for webhelp loaded from local file system!</div>';
             $('#productTitle .framesLink').append(warning);
-        };
+	    }
     }
 
     $('#textToSearch').on('focus', function(){
         try {
-        loadSearchResources();
+            loadSearchResources();
         } catch (e) {
             if ( $('#loadingError').length < 1 ) {
                 $('#searchResults').prepend('<span id="loadingError">' + e + '</span>');
@@ -74,66 +78,32 @@ $(document).ready(function () {
         }
     });
     
-});
+    $("#oldFrames").click(function(){
+        var newLink = "";
+        try {
+            var currentLink = parseUri($('#frm').attr('src'));
 
-/**
- * @description Dyncamically load scripts using cache
- * @param url URL of the script to be loaded
- * @param options A set of key/value pairs that configure the Ajax request. All settings are optional.
- * @return {*} Returns the XMLHttpRequest object that $.ajax() creates.
- */
-jQuery.cachedScript = function( url, options ) {
-
-    // Allow user to set any option except for dataType, cache, and url
-    options = $.extend( options || {}, {
-        dataType: "script",
-        cache: true,
-        url: url,
-        contentType: "application/x-www-form-urlencoded; charset=UTF-8"
+            newLink = $(this).attr("href") + "?q=" + currentLink.relative;
+            $(this).attr("href", newLink);
+        } catch (e) {
+            debug(e);
+        }
     });
-
-    // Use $.ajax() since it is more flexible than $.getScript
-    // Return the jqXHR object so we can chain callbacks
-    return jQuery.ajax( options );
-};
+});
 
 /**
  * @description Dynamically load resources needed when search function is called.
  */
 function loadSearchResources() {
     if (typeof window.indexerLanguage == 'undefined') {
-        $.cachedScript("oxygen-webhelp/search/htmlFileList.js")
-            .done(function (script, textStatus) {
-                $.cachedScript("oxygen-webhelp/search/htmlFileInfoList.js")
-                    .done(function (script, textStatus) {
-                        $.cachedScript("oxygen-webhelp/search/index-1.js")
-                            .done(function (script, textStatus) {
-                                $.cachedScript("oxygen-webhelp/search/index-2.js")
-                                    .done(function (script, textStatus) {
-                                        $.cachedScript("oxygen-webhelp/search/index-3.js")
-                                            .done(function (script, textStatus) {
-                                                searchLoaded = true;
-        })
-                                            .fail(function (jqxhr, settings, exception) {
-                                                throw exception;
-        });
-        })
-                                    .fail(function (jqxhr, settings, exception) {
-                                        throw exception;
-        });
-        })
-                            .fail(function (jqxhr, settings, exception) {
-                                throw exception;
-        });
-        })
-                    .fail(function (jqxhr, settings, exception) {
-                        throw exception;
-        });
-        })
-            .fail(function (jqxhr, settings, exception) {
-                throw exception;
-        });
-}
+        var scripts = ["oxygen-webhelp/search/htmlFileInfoList.js?uniqueId=20170417121421", "oxygen-webhelp/search/index-1.js?uniqueId=20170417121421", "oxygen-webhelp/search/index-2.js?uniqueId=20170417121421", "oxygen-webhelp/search/index-3.js?uniqueId=20170417121421"];
+        for (var entry in scripts) {
+            var scriptTag = document.createElement("script");
+            scriptTag.type = "text/javascript";
+            scriptTag.src = scripts[entry];
+            document.getElementsByTagName('head')[0].appendChild(scriptTag);
+        }
+    }
 }
 
 /**
@@ -180,12 +150,47 @@ function showDivs() {
 }
 
 /**
+ * @description Check if an URL is available or not
+ * @param pageUrl - URL to be checked
+ * @returns {boolean} true if page is available
+ *                    false if page is not available
+ */
+function isPageAvailable(pageUrl){
+    debug("isPageAvailable(" + pageUrl + ")");
+    var toReturn = true;
+    var request = new XMLHttpRequest();
+    request.open('HEAD', pageUrl, false);
+    request.onload = function(){
+        if(request.status === 404 || request.status === 403){
+            debug(pageUrl + " does not exists!");
+            toReturn = false;
+        }
+    };
+    request.send();
+
+    return toReturn;
+}
+
+/**
  * @description Load dynamicURL to iFrame
  * @param dynamicURL - URL to be loaded
  */
 function loadIframe(dynamicURL) {
     debug('loadIframe(' + dynamicURL + ')');
+    dynamicURL = dynamicURL.replace(/%23/g,'#').replace(/%2F/ig,'/');
     var anchor = "";
+
+    try {
+        var parsedUri = parseUri(dynamicURL);
+        if (parsedUri.protocol != "") {
+            debug("Cross-site redirect security exception!");
+            return false;
+        }
+    } catch (e) {
+        debug(e);
+        return false;
+    }
+
     if (dynamicURL.indexOf("#") > 0) {
         //anchor
         anchor = dynamicURL.substr(dynamicURL.indexOf("#"));
@@ -199,8 +204,14 @@ function loadIframe(dynamicURL) {
         tempLink = tempLinks[tempLinks.length-1];
     }
     if (tempLink.indexOf('.') != -1 && tempLink.indexOf('.htm') === -1 && tempLink.indexOf('.xhtm') === -1) {
-        debug('open in new window: ' + tempLink);
-        window.open(tempLink, '_blank');
+        tempLink = whUrl + encodeURI(decodeURI(tempLink));
+
+        if (isPageAvailable(tempLink)) {
+        	debug('open in new window: ' + tempLink);
+        	window.open(tempLink, '_blank');
+        } else {
+            debug("Page doesn't exist in current WebHelp output!");
+        }
         return;
     }
 
@@ -208,6 +219,10 @@ function loadIframe(dynamicURL) {
     var iframeHeaderCell = document.getElementById('rightPane');
     var iframeHeader = document.createElement('IFRAME');
     iframeHeader.id = 'frm';
+	iframeHeader.name = 'frm';
+	// Avoid double encoding the topic path loaded in iFrame
+    // If dynamicURL is not encoded the decodeURI will not change it
+	dynamicURL = whUrl + encodeURI(decodeURI(dynamicURL));
     iframeHeader.src = dynamicURL;
     iframeHeader.frameBorder = 0;
     iframeHeader.align = 'center';
@@ -220,7 +235,7 @@ function loadIframe(dynamicURL) {
     iframeHeader.style.display = 'none';
     iframeHeaderCell.appendChild(iframeHeader);
 
-    $('#frm').load(function () {
+    $('#frm').on('load', function () {
         setTimeout(function(){
             tocWidth = parseInt($('#tocMenu').css('width'));
             navLinksWidth = parseInt($('#navigationLinks').css('width'));
@@ -231,7 +246,11 @@ function loadIframe(dynamicURL) {
             resizeContent();
 
             // Rewrite page title to contain topic title (EXM-30681)
-            $("title").html($("title").attr("title") + " - " + $("#frm").contents().find("title").html());
+            try {
+                $("title").html($("title").attr("title") + " - " + $("#frm").contents().find("title").html());
+            } catch (e) {
+                debug(e);
+            }
 
             // EXM-31118 Rewrite anchors relative to current loaded frame to contain frame link
             var links = $('#frm').contents().find('a');
@@ -244,7 +263,7 @@ function loadIframe(dynamicURL) {
             }
             $.each(links, function(){
                 var link = $(this).attr('href');
-                if(link.indexOf('#')==0) {
+                if(link!==undefined && link.indexOf('#')==0) {
                     $(this).attr('href', currentLocation+link);
                 }
             });
@@ -252,104 +271,191 @@ function loadIframe(dynamicURL) {
         debug('#frm.load');
         if (notLocalChrome) {
             debug('#frm.load 1');
-            $('#frm').contents().find('.navfooter').before('<div class="footer_separator" style="border-top: 1px solid #EEE;"><!-- --></div>').hide();
-            $('#frm').contents().find('.frames').hide();
-            
-            $('#frm').contents().find('a, area').click(function (ev) {
-                var hrf = $(this).attr('href');
-                /*EXM-26476 The mailto protocol is not properly detected by the parseUri utility.*/
-                if (hrf && hrf.length > 6 && hrf.substring(0, 7) == "mailto:") {
-                    return;
-                }
-                
-                /* EXM-27247 Ignore <a> elements with the "target" attribute.*/
-                var target = $(this).attr('target');
-                if (target) {
-                    // Let the default processing take place.
-                    return;
-                }
+            try {
+                $('#frm').contents().find('.navfooter').before('<div class="footer_separator" style="border-top: 1px solid #EEE;"><!-- --></div>').hide();
+                $('#frm').contents().find('.frames').hide();
 
-                var p = parseUri(hrf);
-                if (p.protocol != '') {
-                    //Let the default processing take place.
-                    return;
+                $('#frm').contents().find('a, area').click(function (ev) {
+                    if ( !ev.altKey && !ev.shiftKey && !ev.ctrlKey && ev.button==0 ) {
+                    var hrf = $(this).attr('href');
+                    /*EXM-26476 The mailto protocol is not properly detected by the parseUri utility.*/
+                    if (hrf && hrf.length > 6 && hrf.substring(0, 7) == "mailto:") {
+                        return;
+                    }
+
+                    /* EXM-27247 Ignore <a> elements with the "target" attribute.*/
+                    var target = $(this).attr('target');
+                    if (target) {
+                        // Let the default processing take place.
+                        return;
+                    }
+
+                    var p = parseUri(hrf);
+                    if (p.protocol != '') {
+                        //Let the default processing take place.
+                        $(this).attr("target", "blank");
+                        return;
+                    } else {
+                        // EXM-27800 Decide to ignore or keep iframeDir in the path
+                        // of the target of the <a> link based on ID of parent div element.
+                        var topicRelativePath = '#' + processHref(hrf, $(this).closest("div").attr("id"));
+                        var currentTopicRelativePath = window.location.href.substr(window.location.href.indexOf("#"));
+                            if (currentTopicRelativePath == topicRelativePath) {
+                            return;
+                        } else {
+                            var newUrl = pageName + location.search + topicRelativePath;
+                            window.location.href = whUrl + newUrl;
+                        }
+
+                        ev.preventDefault();
+                    }
+                    return false;
+                    }
+                });
+
+                debug('#frm.load 2');
+                if (navigator.appVersion.indexOf("MSIE 7.") == -1) {
+                    $('#navigationLinks').html($('#frm').contents().find('.navheader .navparent, .navheader .navprev, .navheader .navnext'));
+                    $('#frm').contents().find('.navheader').hide();
                 } else {
-                    // EXM-27800 Decide to ignore or keep iframeDir in the path
-                    // of the target of the <a> link based on ID of parent div element.
-                    var newUrl = pageName + location.search + '#' +
-                    processHref(hrf, $(this).closest("div").attr("id"));
-                    window.location.href = whUrl + newUrl;
-                    ev.preventDefault();
+                    $('#frm').contents().find("table.nav").find("tr:first-child").hide();
                 }
-                return false;
-            });
-
-            debug('#frm.load 2');
-            if (navigator.appVersion.indexOf("MSIE 7.") == -1) {
-              $('#navigationLinks').html($('#frm').contents().find('div.navheader .navparent, div.navheader .navprev, div.navheader .navnext'));
-              $('#frm').contents().find('div.navheader').hide();
-            } else {
-              //  $('#navigationLinks').html($('#frm').contents().find('div.navheader').parent().html());
-
-                $('#frm').contents().find("table.nav").find("tr:first-child").hide();
-            }
-            /**
-             * Nu mai ascundem toc-ul - ii scadem relevanta din indexer
-             * EXM-25565
-             */
-            //$('#frm').contents().find('.toc').hide();
-            if (navigator.appVersion.indexOf("MSIE 7.") == -1) {
-              $('#breadcrumbLinks').html($('#frm').contents().find('table.nav a.navheader_parent_path'));
-            } else {
-
-            }
-            // normalize links
-            $('#breadcrumbLinks a, #navigationLinks a').each(function () {
-                var oldLink = $(this).attr('href');
-                // we generate from oxygen '../'s in from of link
-                while (oldLink.indexOf('../') == 0) {
-                    info('strip \'../\' from ' + oldLink);
-                    oldLink = oldLink.substring(3);
+                /**
+                 * Nu mai ascundem toc-ul - ii scadem relevanta din indexer
+                 * EXM-25565
+                 */
+                //$('#frm').contents().find('.toc').hide();
+                if (navigator.appVersion.indexOf("MSIE 7.") == -1) {
+                 $('#breadcrumbLinks').html($('#frm').contents().find('span.topic_breadcrumb_links'));
                 }
-                $(this).attr('href', stripUri(oldLink));
-            });
-            if (navigator.appVersion.indexOf("MSIE 7.") == -1) {
-              showParents();
-              $('#frm').contents().find('table.nav').hide();
-            } else {
+                // normalize links
+                $('#breadcrumbLinks a, #navigationLinks a').each(function () {
+                    var oldLink = $(this).attr('href');
+                    // we generate from oxygen '../'s in from of link
+                    while (oldLink.indexOf('../') == 0) {
+                        info('strip \'../\' from ' + oldLink);
+                        oldLink = oldLink.substring(3);
+                    }
+                    $(this).attr('href', stripUri(oldLink));
+                });
+                if (navigator.appVersion.indexOf("MSIE 7.") == -1) {
+                  showParents();
+                  $('#frm').contents().find('table.nav').hide();
+                } else {
 
+                }
+            } catch (e) {
+                debug(e);
             }
         }
         $('#frm').show();
         $('div.tooltip').remove();
-        $('#breadcrumbLinks').find('a').after('<span>&nbsp;/&nbsp;</span>');
+        
+        /* Recompute the breadcrumb by looking at the selection in the TOC... */
+        recomputeBreadcrumb(-1);
+        
+        $('#breadcrumbLinks').find('a').after('<span></span>');
         $('#breadcrumbLinks').find('span').last().html('&nbsp;&nbsp;');
         $('.navparent a').click(function () {
             if ($.cookie("wh_pn") != "" && $.cookie("wh_pn") !== undefined && $.cookie("wh_pn") !== null) {
                 currentTOCSelection = parseInt($.cookie("wh_pn"));
                 parentTOCSelection = $('#tree li:eq(' + currentTOCSelection + ')').parents('ul').parents('li').index('li');
-                $.cookie('wh_pn', parentTOCSelection);
+                
+                if ( wh.protocol == 'https' ) {
+                    $.cookie('wh_pn', parentTOCSelection, { secure: true });
+                } else {
+                    $.cookie('wh_pn', parentTOCSelection);
+                }
             }
         });
         $('.navprev a').click(function () {
             prevTOCSelection = parseInt($.cookie('wh_pn')) -1;
-            $.cookie('wh_pn', prevTOCSelection);
+            
+            if ( wh.protocol == 'https' ) {
+                $.cookie('wh_pn', prevTOCSelection, { secure: true });
+            } else {
+                $.cookie('wh_pn', prevTOCSelection);
+            }
         });
         $('.navnext a').click(function () {
             nextTOCSelection = parseInt($.cookie('wh_pn')) + 1;
-            $.cookie('wh_pn', nextTOCSelection);
+            
+            if ( wh.protocol == 'https' ) {
+                $.cookie('wh_pn', nextTOCSelection, { secure: true });
+            } else {
+                $.cookie('wh_pn', nextTOCSelection);
+            }
         });
 
         highlightSearchTerm(searchedWords);
 
         // Click on navigation links without text
-	    $('.navparent,.navprev,.navnext').unbind('click').bind('click', function(){
-	        $(this).find('a').trigger('click');
+	    $('.navparent,.navprev,.navnext').unbind('click').bind('click', function(ev){
+	        $(this).find('a').trigger(ev);
 	    });
 
 
         scrollToVisibleItem();
     });
+}
+
+/**
+ * @description Recompute the breadcrumb based on the selection in the TOC.
+ * @param breadcrumbLevels - Number of links to be displayed in the breadcrumb
+ *                           Default: -1. All parents will be displayed.
+ */
+function recomputeBreadcrumb(breadcrumbLevels) {
+    if (breadcrumbLevels==undefined) {
+        breadcrumbLevels = -1;
+    }
+    /*Most of the times we'll try to compute the link starting from the TOC selection...*/
+    if (currentTOCSelection != null && currentTOCSelection != 'none') {
+        var selectedLi = $('#contentBlock li:eq(' + currentTOCSelection + ')');
+        var parentLis = selectedLi.parents("#contentBlock li");
+        if (parentLis.length > 0) {
+            // Keep title attributes from old breadcrumbs
+            var oldBreadcrumbs = $('#breadcrumbLinks').clone();
+            var titles = [];
+            $.each(oldBreadcrumbs.find('.topic_breadcrumb_link > .navheader_parent_path'), function(){
+                titles[$(this).attr('href')] = $(this).attr('title');
+            });
+
+            // Remove all children
+            $('#breadcrumbLinks').empty();
+
+            // Decide how many breadcrumbs to show
+            var i = parentLis.length - 1;
+            if ( breadcrumbLevels != -1 && breadcrumbLevels < parentLis.length) {
+                i=breadcrumbLevels-1;
+            }
+
+            for (i; i >= 0; i--) {
+                //Get the current span.
+                var currentSpan = $(parentLis[i]).children("span");
+                if (currentSpan.length != 0) {
+                    /*We need to translate the TOC span to a breadcrumb span...*/
+                    var span = currentSpan.clone();
+                    span.removeAttr('class');
+                    span.addClass('topic_breadcrumb_link');
+
+                    var aHref = span.children("a");
+                    if (aHref.length > 0) {
+                        /*We need to translate the TOC a href to a breadcrumb a href...*/
+                        var firstAHref = $(aHref[0]);
+                        firstAHref.removeAttr("data-id");
+                        firstAHref.removeAttr('class');
+                        firstAHref.addClass('navheader_parent_path');
+                        // Add title attribute if we found an equivalent one from old breadrumbs
+                        var cleanHref = firstAHref.attr('href').substr(1);
+                        if (titles[cleanHref]!==undefined) {
+                            firstAHref.attr('title', titles[cleanHref]);
+                        }
+                    }
+                    $('#breadcrumbLinks').append(span);
+                }
+            }
+        }
+    }
 }
 
 /**
@@ -360,6 +466,8 @@ function loadIframe(dynamicURL) {
  */
 function markSelectItem(hrl, startWithMatch) {
     debug("hrl: " + hrl);
+    $("#contentBlock ul").css("background-color", $("#splitterContainer #leftPane").css('background-color'));
+    $("#contentBlock li").css("background-color", "transparent");
     
     if ($.cookie("wh_pn") !== undefined && parseInt($.cookie("wh_pn")) > -1 && $.cookie("wh_pn") != "") {
         currentTOCSelection = parseInt($.cookie("wh_pn"));
@@ -394,7 +502,12 @@ function markSelectItem(hrl, startWithMatch) {
                 var item = $(loc).first();
                 item.parent('li span').addClass('menuItemSelected');
                 var findIndexOf = $(loc).first().closest('li');
-                $.cookie("wh_pn", $('#contentBlock li').index(findIndexOf));
+                
+                if ( wh.protocol == 'https' ) {
+                    $.cookie('wh_pn', $('#contentBlock li').index(findIndexOf), { secure: true });
+                } else {
+                    $.cookie('wh_pn', $('#contentBlock li').index(findIndexOf));
+                }
             }
             toReturn = true;
         } else {
@@ -416,13 +529,20 @@ function markSelectItem(hrl, startWithMatch) {
                     var item = $(loc).first();
                     item.parent('li span').addClass('menuItemSelected');
                     var findIndexOf = $(loc).first().closest('li');
-                    $.cookie("wh_pn", $('#contentBlock li').index(findIndexOf));
+                    
+                    if ( wh.protocol == 'https' ) {
+                        $.cookie('wh_pn', $('#contentBlock li').index(findIndexOf), { secure: true });
+                    } else {
+                        $.cookie('wh_pn', $('#contentBlock li').index(findIndexOf));
+                    }
                 }
                 toReturn = true;
             }
         }
     }
     debug('markSelectItem(...) =' + toReturn);
+    $('#contentBlock .menuItemSelected').parent('li').first().css('background-color', $('#contentBlock .menuItemSelected').css('background-color'));
+
     return toReturn;
 }
 
@@ -484,6 +604,7 @@ function load(link) {
         hr="3";
         }
          */
+        hr = hr.replace(/%23/g,'#').replace(/%2F/ig,'/')
         debug(' link @ hash : ' + hr);
         var hrl = hr;
         if (hr.indexOf("#") > 0) {
@@ -532,6 +653,31 @@ function load(link) {
 }
 
 /**
+ * @description Resolves relative links (if needed)
+ *      e.g: ../../path1/../file_path.html => ../../file_path.html
+ *      e.g: path1/file_path.html => path1.file_path.html
+ * @param link Link that needs to be resolved
+ * @return {string} Resolved link
+ */
+function resolveRelativeLinks(link) {
+    debug("resolveRelativeLinks("+link+")");
+    var oldLink = link;
+    while (link.indexOf("..")>0) {
+    var arrayHRF = link.split("/");
+        for (var i = 0; i < arrayHRF.length; i++) {
+            if (arrayHRF[i] == ".." && i > 0) {
+            if (arrayHRF[i - 1] != "" && arrayHRF[i - 1] != "..") {
+                arrayHRF.splice(i - 1, 2);
+            }
+                link = resolveRelativeLinks(arrayHRF.join("/"));
+        }
+    }
+}
+    debug("resolveRelativeLinks: " + oldLink + " is " + link);
+    return link;
+}
+
+/**
  * @description Remove "../" from hrf
  * @example processHref(../../concepts/glossaryGenus.html)=concepts/glossaryGenus.html
  * @param hrf - the link hash
@@ -550,28 +696,17 @@ function processHref(hrf, idName) {
         if(pp.host=="") {
             pp.host = parseUri((location.hash).substring(1)).file;
         }
-        var toReturn = pp.host + pp.directory + pp.file;
+        toReturn = pp.host + pp.directory + pp.file;
 
         debug('parseUri(' + hrf + ')=' + pp.host + '+' + pp.directory + '+' + pp.file);
         debug('iframeDir=' + iframeDir);
-        count = (hrf.match(new RegExp("\\.\\.\\/", "g")) ||[]).length;
-        toReturn = toReturn.replace(new RegExp("\\.\\.\\/", "g"), '');
-        var dirParts = iframeDir.split("/");
-        for (i = 0; i < dirParts.length; i++) {
-            if (dirParts[i] == "") {
-                dirParts.splice(i, 1);
-            }
-        }
         
-        var dir = "";
-        for (i = 0; i <(dirParts.length - count);
-        i++) {
-            dir += dirParts[i] + "/";
-        }
+        toReturn = iframeDir + toReturn;
 
-        toReturn = dir + toReturn;
-        if (pp.anchor != "") {
-            toReturn = toReturn + "#" + pp.anchor;
+        toReturn = resolveRelativeLinks(toReturn);
+
+        if (pp.anchor!="") {
+            toReturn += "#" + pp.anchor;
         }
     }
 
@@ -583,7 +718,11 @@ var currentHref = window.location.href;
 $(function () {
     $(window).on("hashchange", function(e) {
         var newHref = window.location.href;
-        var textAreaContent = $("#frm").contents().find(".cleditorMain").find("iframe").contents().find("body").html();
+        try {
+            var textAreaContent = $("#frm").contents().find(".cleditorMain").find("iframe").contents().find("body").html();
+        } catch (e) {
+            debug(e);
+        }
 
         if(textAreaContent!='' && textAreaContent!==undefined && $("#frm").contents().find("#newComment").is(":visible") && currentHref!=newHref) {
             if (confirm(getLocalization("label.Unsaved"))) {
@@ -602,7 +741,7 @@ $(function () {
     $(window).hashchange();
 });
 
-if (!("onhashchange" in window) && ($.browser.msie)) {
+if (!("onhashchange" in window) && (BrowserDetect.browser=='Explorer')) {
     //IE and browsers that don't support hashchange
     $('#contentBlock a').bind('click', function () {
         var hash = $(this).attr('href');

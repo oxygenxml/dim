@@ -2,16 +2,13 @@
  * jQuery.splitter.js - animated splitter plugin
  *
  * version 1.0 (2010/01/02) 
- * 
+ *
+ *Licensed under the MIT license:
+*   http://www.opensource.org/licenses/mit-license.php
+*
+* Code cleaned up and made to pass jslint <scudette@google.com>. Also
+* changed default behaviour to not animate when dragged.
  */
-
-
-/**
- * The Oxygen Webhelp plugin redistributes this file under the terms of the MIT license. 
- * The full license terms of this license are available in the file MIT-License.txt 
- * located in the same directory as the present file you are reading. 
- */
-
  
 /**
 * jQuery.splitter() plugin implements a two-pane resizable animated window, using existing DIV elements for layout.
@@ -128,8 +125,8 @@
 
             // oXygen patch start
             visibleTOC = location.search.indexOf('toc.visible=false') != -1 ? false : true;
-            splitPos = visibleTOC ? opts.maxAsize : opts.minAsize;
-            _splitPos = visibleTOC ? opts.minAsize : opts.maxAsize;
+            splitPos = visibleTOC ? perc : opts.minAsize;
+            _splitPos = visibleTOC ? opts.minAsize : perc;
             var initialSplitTo = visibleTOC ? perc : opts.minAsize;
             splitTo(initialSplitTo,false,true);
 
@@ -153,7 +150,7 @@
                 _ghost = _ghost || C.clone(false).insertAfter(A);
                 splitter._initPos=C.position();
                 splitter._initPos[opts.moving]-=C[opts.sizing]();
-                _ghost.addClass(opts.ghostClass).css('position','absolute').css('z-index','250').css("-webkit-user-select", "none").width(C.width()).height(C.height()).css(opts.moving,splitter._initPos[opts.moving]);
+                _ghost.addClass(opts.ghostClass).css('position','absolute').css('top', C.offset().top+"px").css('z-index','250').css("-webkit-user-select", "none").width(C.width()).height(C.height()).css(opts.moving,splitter._initPos[opts.moving]);
                 mychilds.css("-webkit-user-select", "none");	// Safari selects A/B text on a move
                 // oXygen patch start
                 // in order to work with right iframe
@@ -254,7 +251,7 @@
                     A.show().css(opts.sizing,sizeA+'px');
                     B.show().css(opts.sizing,sizeB+'px');
                     Bt.show();
-                    if (!$.browser.msie ){
+                    if (BrowserDetect.browser!='Explorer' ){
                         mychilds.trigger("resize");
                         if(slave)slave.trigger("resize");
                     }
