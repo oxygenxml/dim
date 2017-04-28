@@ -9,7 +9,7 @@
     <taskbody>
         <steps id="steps_rts_klv_bq">
             <step>
-                <cmd/>
+                <cmd>sample</cmd>
             </step>
         </steps>
     </taskbody>
