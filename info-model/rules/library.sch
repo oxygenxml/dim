@@ -3,23 +3,25 @@
   queryBinding="xslt2">
   
   <pattern abstract="true" id="avoidWordInElement">
-    <title>Issue a warning if a word appears inside a specified
+    <title>Issue a warning if a word or a phrase appears inside a specified
       element</title>
     <p>This pattern allows you to advise users not to use a specific
-      word in an element.</p>
-    <p>As parameters we have <emph>word</emph> that points to the word
+      word in an element, or in multiple elements, if you separate them using '|'.</p>
+    <p>As parameters we have <emph>word</emph> that points to the word or phrase 
       that we need to check, <emph>element</emph> that points to the
-      element we will check to not contain that word and
+      element we will check to not contain that word or phrase and
       <emph>message</emph> that contains the message we should display
-      to the user in case the word appears in the specified element.</p>
+      to the user in case the word or phrase appears in the specified elements.</p>
     <parameters xmlns="http://oxygenxml.com/ns/schematron/params">
       <parameter>
         <name>element</name>
-        <desc>Specifies the element we will verify to not contain a specified word.</desc>
+        <desc>Specifies the element we will verify to not contain a specified word. 
+          You can specify multiple elements if you separate them using a pipe character, 
+          for example title|p will check both title and p elements. </desc>
       </parameter>
       <parameter>
         <name>word</name>
-        <desc>Specifies the word we will look for.</desc>
+        <desc>Specifies the word or phrase we will look for.</desc>
       </parameter>
       <parameter>
         <name>message</name>
@@ -28,7 +30,7 @@
       </parameter>
     </parameters> 
     <rule context="$element">
-      <assert test="not(tokenize(normalize-space(.), ' ') = '$word')"
+      <assert test="not(matches(., '(\s|^)($word)(\s|$)'))"
         role="warn" sqf:fix="avoidWordInElement_deleteWord avoidWordInElement_replaceWord">
         $message
       </assert>

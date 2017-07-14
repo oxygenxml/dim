@@ -21,24 +21,24 @@
         </sqf:user-entry>
         <sqf:replace match="@$attribute" target="{$new-attribute}" node-type="attribute" select="."/>
     </sqf:fix>
-    <sqf:fix id="avoidWordInElement_deleteWord" use-when=".//text()[tokenize(normalize-space(.), ' ') = '$word']" role="delete">
+    <sqf:fix id="avoidWordInElement_deleteWord" use-when=".//text()[matches(., '(\s|^)($word)(\s|$)')]" role="delete">
         <sqf:param name="word" abstract="true"/>
         <sqf:description>
-            <sqf:title>The word "<value-of select="'$word'"/>" will be deleted.</sqf:title>
+            <sqf:title>"<value-of select="'$word'"/>" will be deleted.</sqf:title>
         </sqf:description>
         <let name="quoted" value="'$word'"/>
         <sqf:stringReplace match=".//text()" regex="(\s|^)({$quoted})(\s|$)" >
             <xsl:value-of select="if (.=$quoted or ends-with(., $quoted) or starts-with(., $quoted)) then '' else ' '"/>
         </sqf:stringReplace>
     </sqf:fix>
-    <sqf:fix id="avoidWordInElement_replaceWord" use-when=".//text()[tokenize(normalize-space(.), ' ') = '$word']">
+    <sqf:fix id="avoidWordInElement_replaceWord" use-when=".//text()[matches(., '(\s|^)($word)(\s|$)')]">
         <sqf:param name="word" abstract="true"/>
         <sqf:description>
-            <sqf:title>The word "<value-of select="'$word'"/>" will be replaced by another word.</sqf:title>
+            <sqf:title>"<value-of select="'$word'"/>" will be replaced by another word or phase.</sqf:title>
         </sqf:description>
         <sqf:user-entry name="replace">
             <sqf:description>
-                <sqf:title>Please enter the word to replace.</sqf:title>
+                <sqf:title>Please enter the replasement word or phrase</sqf:title>
             </sqf:description>
         </sqf:user-entry>
         <let name="quoted" value="'$word'"/>
