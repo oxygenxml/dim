@@ -27,8 +27,8 @@
             <sqf:title>The word "<value-of select="'$word'"/>" will be deleted.</sqf:title>
         </sqf:description>
         <let name="quoted" value="'$word'"/>
-        <sqf:stringReplace match=".//text()" regex="(\s|^){$quoted}(\s|$)">
-            <value-of select="replace(concat(regex-group(1), regex-group(2)), '  ', ' ')"/>
+        <sqf:stringReplace match=".//text()" regex="(\s|^)({$quoted})(\s|$)" >
+            <xsl:value-of select="if (.=$quoted or ends-with(., $quoted) or starts-with(., $quoted)) then '' else ' '"/>
         </sqf:stringReplace>
     </sqf:fix>
     <sqf:fix id="avoidWordInElement_replaceWord" use-when=".//text()[tokenize(normalize-space(.), ' ') = '$word']">
