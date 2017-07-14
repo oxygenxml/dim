@@ -50,8 +50,11 @@
       <xsl:apply-templates mode="instantiate"/>
     </pattern>
   </xsl:template>
+  
   <xsl:template match="dlentry" mode="instantiate">
-    <param name="{dt}" value="{dd}"/>
+    <xsl:variable name="ap">'</xsl:variable>
+    <xsl:variable name="doubleap">''</xsl:variable>
+    <param name="{dt}" value="{replace(dd, $ap, $doubleap)}"/>
   </xsl:template>
   <xsl:template match="text()" mode="instantiate"/>
 
