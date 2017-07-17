@@ -6,7 +6,8 @@
     <title>Issue a warning if a word or a phrase appears inside a specified
       element</title>
     <p>This pattern allows you to advise users not to use a specific
-      word in an element, or in multiple elements, if you separate them using '|'.</p>
+      word in an element, or in multiple elements, if you separate them using '|'. 
+      The check is case insensitive.</p>
     <p>As parameters we have <emph>word</emph> that points to the word or phrase 
       that we need to check, <emph>element</emph> that points to the
       element we will check to not contain that word or phrase and
