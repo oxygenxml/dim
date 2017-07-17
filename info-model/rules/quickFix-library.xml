@@ -21,17 +21,19 @@
         </sqf:user-entry>
         <sqf:replace match="@$attribute" target="{$new-attribute}" node-type="attribute" select="."/>
     </sqf:fix>
-    <sqf:fix id="avoidWordInElement_deleteWord" use-when=".//text()[matches(., '(\s|^)($word)(\s|$)')]" role="delete">
+    <sqf:fix id="avoidWordInElement_deleteWord" use-when=".//text()[matches(., '(\s|^)($word)(\s|$)', 'i')]" role="delete">
         <sqf:param name="word" abstract="true"/>
         <sqf:description>
             <sqf:title>"<value-of select="'$word'"/>" will be deleted.</sqf:title>
         </sqf:description>
         <let name="quoted" value="'$word'"/>
-        <sqf:stringReplace match=".//text()" regex="(\s|^)({$quoted})(\s|$)" >
-            <xsl:value-of select="if (.=$quoted or ends-with(., $quoted) or starts-with(., $quoted)) then '' else ' '"/>
+        <sqf:stringReplace match=".//text()" regex="(?i)(\s|^)({$quoted})(\s|$)" >
+            <xsl:value-of select="if (lower-case(.)=lower-case($quoted) or 
+                ends-with(lower-case(.), lower-case($quoted)) or 
+                starts-with(lower-case(.), lower-case($quoted))) then '' else ' '"/>
         </sqf:stringReplace>
     </sqf:fix>
-    <sqf:fix id="avoidWordInElement_replaceWord" use-when=".//text()[matches(., '(\s|^)($word)(\s|$)')]">
+    <sqf:fix id="avoidWordInElement_replaceWord" use-when=".//text()[matches(., '(\s|^)($word)(\s|$)', 'i')]">
         <sqf:param name="word" abstract="true"/>
         <sqf:description>
             <sqf:title>"<value-of select="'$word'"/>" will be replaced by another word or phase.</sqf:title>
@@ -42,7 +44,7 @@
             </sqf:description>
         </sqf:user-entry>
         <let name="quoted" value="'$word'"/>
-        <sqf:stringReplace match=".//text()" regex="{$quoted}">
+        <sqf:stringReplace match=".//text()" regex="(?i){$quoted}">
             <value-of select="$replace"/>
         </sqf:stringReplace>
     </sqf:fix>

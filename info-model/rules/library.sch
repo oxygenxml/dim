@@ -30,7 +30,7 @@
       </parameter>
     </parameters> 
     <rule context="$element">
-      <assert test="not(matches(., '(\s|^)($word)(\s|$)'))"
+      <assert test="not(matches(., '(\s|^)($word)(\s|$)', 'i'))"
         role="warn" sqf:fix="avoidWordInElement_deleteWord avoidWordInElement_replaceWord">
         $message
       </assert>
