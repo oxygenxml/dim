@@ -1,9 +1,3 @@
-/*
- * Copyright (c) 2018 Syncro Soft SRL - All Rights Reserved.
- *
- * This file contains proprietary and confidential source code.
- * Unauthorized copying of this file, via any medium, is strictly prohibited.
- */
 package com.oxygenxml.gim.ui.ec;
 
 import java.util.HashMap;
