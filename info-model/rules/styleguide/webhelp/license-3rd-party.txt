@@ -2,7 +2,7 @@ DO NOT TRANSLATE OR LOCALIZE.
 
 THIRD-PARTY SOFTWARE NOTICES 
 
-This product may be based on or incorporates copyrighted material from the files listed below (collectively, “Third Party Code”).  
+This product may be based on or incorporates copyrighted material from the files listed below (collectively, "Third Party Code").  
 The Third Party Code is licensed to you under its original license terms which are provided below. 
 
 
