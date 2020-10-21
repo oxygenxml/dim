@@ -9,6 +9,24 @@
   <artifactId>oxygen-gim-extensions</artifactId>
   <name>Generic Information Model Extensions</name>
   <url>http://maven.apache.org</url>
+
+  <developers>
+    <developer>
+      <name>Alex Jitianu</name>
+      <email>alex_jitianu@sync.ro</email>
+      <roles>
+        <role>manager</role>
+      </roles>
+    </developer>
+    <developer>
+      <name>George Bina</name>
+      <email>george@sync.ro</email>
+      <roles>
+        <role>co-manager</role>
+      </roles>
+    </developer>
+  </developers>
+
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>

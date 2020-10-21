@@ -14,6 +14,23 @@
 
 	<version>1.0.0-SNAPSHOT</version>
 
+    <developers>
+      <developer>
+        <name>Alex Jitianu</name>
+        <email>alex_jitianu@sync.ro</email>
+        <roles>
+          <role>manager</role>
+        </roles>
+      </developer>
+      <developer>
+        <name>George Bina</name>
+        <email>george@sync.ro</email>
+        <roles>
+          <role>co-manager</role>
+        </roles>
+      </developer>
+    </developers>
+
 	<properties>	
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
