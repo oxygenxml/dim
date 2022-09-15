@@ -4127,7 +4127,7 @@ oxy:allows-child-element("*", "class", " topic/simpletable ")</String>
 														<serializableOrderedMap>
 															<entry>
 																<String>resourcePath</String>
-																<String>'http://www.oxygenxml.com/dita/styleguide/webhelp-feedback/index.html'</String>
+																<String>'https://www.oxygenxml.com/dita/styleguide/index.html'</String>
 															</entry>
 														</serializableOrderedMap>
 													</field>
@@ -4178,7 +4178,7 @@ $loc:=doc('http://www.oxygenxml.com/dita/styleguide/contentCompletionElementsMap
 return 
   if ($loc) 
     then $loc 
-    else 'http://www.oxygenxml.com/dita/styleguide/webhelp-feedback/' </String>
+    else 'http://www.oxygenxml.com/dita/styleguide/' </String>
 															</entry>
 														</serializableOrderedMap>
 													</field>
